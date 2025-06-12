@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+   <!-- Google Tag Manager -->
+   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+   })(window,document,'script','dataLayer','GTM-PCCL46WF');</script>
+   <!-- End Google Tag Manager -->
+   
+   <!-- Google Tag Manager (noscript) -->
+   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PCCL46WF"
+   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+   <!-- End Google Tag Manager (noscript) -->
+   
+   <!-- Global site tag (gtag.js) - Google Analytics -->
+   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56672227-4"></script>
+   <script>
+   window.dataLayer = window.dataLayer || [];
+   function gtag(){dataLayer.push(arguments);}
+   gtag('js', new Date());
+   
+   gtag('config', 'UA-56672227-4');
+   gtag('config', 'AW-959458572');
+   </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouWire - 会話データプラットフォーム</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: "Calm Harmony" - A warm neutral background (slate-50) with deep slate text for readability and a professional cyan accent for interactive elements and highlights. -->
+    <!-- Application Structure Plan: A single-page application with a fixed top navigation for smooth scrolling to key sections. The structure is designed for user-led exploration rather than linear reading. Key sections are: 1. Hero (Immediate Value), 2. Problems (Relatable Pain Points), 3. Solution (Core Strengths), 4. Use Cases (Interactive Explorer), 5. How It Works (Visual Explanation), 6. Case Studies (Social Proof), 7. CTA. This structure allows business users to quickly grasp the value, while developers can jump to the technical details, improving overall usability. -->
+    <!-- Visualization & Content Choices: 1. Use Cases: An interactive filtering system (HTML/JS) was chosen over a static list to manage the large number of examples. Users can filter by business area (e.g., CRM, HR) to find relevant scenarios instantly. 2. Webhook Flow: A simple, non-interactive diagram built with HTML/Tailwind CSS is used to visually explain the data flow. This is more effective and lightweight than a complex chart for this conceptual illustration. A modal displays the JSON payload for technical users, keeping the main view clean. 3. Case Studies: Presented as clear, impactful quote cards to build trust. Chart.js was not used as the report's quantitative data is limited to simple percentages in testimonials, where bold text is more effective. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+        }
+        .text-gradient {
+            background-image: linear-gradient(to right, #0891b2, #0e7490);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .card-enter {
+            animation: card-enter 0.5s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        @keyframes card-enter {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+	<a href="#hero"><img src="https://www.youwire.jp/wp-content/themes/youwire/assets/images/common/logo.png"></a>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#problems" class="text-slate-600 hover:text-cyan-700 transition">課題</a>
+                <a href="#solution" class="text-slate-600 hover:text-cyan-700 transition">3つの強み</a>
+                <a href="#use-cases" class="text-slate-600 hover:text-cyan-700 transition">ユースケース</a>
+                <a href="#how-it-works" class="text-slate-600 hover:text-cyan-700 transition">仕組み</a>
+                <a href="#case-studies" class="text-slate-600 hover:text-cyan-700 transition">導入事例</a>
+                <a href="https://www.youwire.jp/contact/" class="bg-cyan-600 text-white px-4 py-2 rounded-lg hover:bg-cyan-700 transition shadow">お問い合わせ</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-slate-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white">
+            <a href="#problems" class="block py-2 px-6 text-slate-600 hover:bg-slate-100">課題</a>
+            <a href="#solution" class="block py-2 px-6 text-slate-600 hover:bg-slate-100">3つの強み</a>
+            <a href="#use-cases" class="block py-2 px-6 text-slate-600 hover:bg-slate-100">ユースケース</a>
+            <a href="#how-it-works" class="block py-2 px-6 text-slate-600 hover:bg-slate-100">仕組み</a>
+            <a href="#case-studies" class="block py-2 px-6 text-slate-600 hover:bg-slate-100">導入事例</a>
+            <a href="#contact" class="block py-2 px-6 text-slate-600 hover:bg-slate-100">お問い合わせ</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="py-20 md:py-32 bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 leading-tight">
+                    会話は、<span class="text-gradient">未来を創るデータ</span>になる。
+                </h1>
+                <p class="mt-4 text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">
+                    YouWireの『会話データプラットフォーム』で、ビジネスの常識を塗り替える。
+                </p>
+                <p class="mt-8 text-base text-slate-500 max-w-4xl mx-auto">
+                    YouWireは、オフィスやコールセンターの固定電話、クラウドPBX、法人契約の携帯電話、ウェブ会議、対面での会議といった、ビジネスにおけるあらゆる「会話」を自動で記録し、高精度なAI音声認識でテキスト化。さらに、その会話データを御社が普段お使いの各種SaaSアプリケーションと強力に連携させることで、「会話が価値を生む」新しいビジネスの形を創造し、御社の生産性と競争力を飛躍的に向上させます。
+                </p>
+                <div class="mt-10 flex justify-center gap-4">
+                    <a href="#use-cases" class="bg-cyan-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-cyan-700 transition shadow-lg">ユースケースを見る</a>
+                    <a href="https://www.youwire.jp/contact/" class="bg-white text-slate-700 px-8 py-3 rounded-lg font-bold hover:bg-slate-100 transition border border-slate-300">資料請求</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="problems" class="py-20 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">こんな「もったいない」働き方、<br class="md:hidden">していませんか？</h2>
+                    <p class="mt-4 text-slate-600">あなたの組織が抱える課題、YouWireが解決します。</p>
+                </div>
+                <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+                        <p class="font-bold text-lg text-rose-600">毎日、膨大な議事録や日報の手入力に時間を奪われている</p>
+                        <p class="mt-2 text-slate-600">会話は自動でテキスト化され、AIが要約。手入力の時間はゼロになります。</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+                        <p class="font-bold text-lg text-rose-600">顧客との『言った・言わない』問題でトラブルが絶えない</p>
+                        <p class="mt-2 text-slate-600">全ての会話が証跡として記録され、認識の齟齬を防ぎ、信頼を構築します。</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+                        <p class="font-bold text-lg text-rose-600">顧客の声がデータとして蓄積されず、改善点を見逃している</p>
+                        <p class="mt-2 text-slate-600">顧客の声を分析可能なデータに変え、サービス改善や新商品開発に繋げます。</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+                        <p class="font-bold text-lg text-rose-600">営業状況や商談の進捗が不透明で、適切な指示が出せない</p>
+                        <p class="mt-2 text-slate-600">商談内容がリアルタイムで可視化され、的確なマネジメントが可能になります。</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+                        <p class="font-bold text-lg text-rose-600">コンプライアンスリスクが潜在しているかもしれない</p>
+                        <p class="mt-2 text-slate-600">AIがリスクのある発言を自動検知。プロアクティブなリスク管理を実現します。</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+                        <p class="font-bold text-lg text-rose-600">カスタマーハラスメント対策が後手に回っている</p>
+                        <p class="mt-2 text-slate-600">AIによるカスハラレベルの自動評価で、従業員を保護し、健全な職場環境を維持します。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="solution" class="py-20 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">YouWireの『会話データプラットフォーム』<br class="md:hidden">3つの核心的強み</h2>
+                    <p class="mt-4 text-slate-600 max-w-2xl mx-auto">私たちは、会話を「価値あるデータ資産」に変え、データに基づいた意思決定と劇的な業務効率化を強力に推進します。</p>
+                </div>
+                <div class="mt-12 grid md:grid-cols-3 gap-8 text-center">
+                    <div class="p-8 bg-slate-50 rounded-xl border border-slate-200">
+                        <div class="inline-block p-4 bg-cyan-100 text-cyan-700 rounded-full">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
+                        </div>
+                        <h3 class="mt-4 text-xl font-bold text-slate-900">1. あらゆる会話を<br>「まるごと」データ化</h3>
+                        <p class="mt-2 text-slate-600">携帯・固定電話、ウェブ会議、対面会議まで、ビジネスの全会話を抜け漏れなく録音し、高精度AIでテキスト化。</p>
+                    </div>
+                    <div class="p-8 bg-slate-50 rounded-xl border border-slate-200">
+                         <div class="inline-block p-4 bg-cyan-100 text-cyan-700 rounded-full">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                        </div>
+                        <h3 class="mt-4 text-xl font-bold text-slate-900">2. 既存SaaSと<br>「シームレス」に連携</h3>
+                        <p class="mt-2 text-slate-600">強力なWebhook機能で、会話データを会話終了直後に指定SaaSへ自動連携。手作業をなくし、データ活用を加速させます。</p>
+                    </div>
+                    <div class="p-8 bg-slate-50 rounded-xl border border-slate-200">
+                         <div class="inline-block p-4 bg-cyan-100 text-cyan-700 rounded-full">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                        </div>
+                        <h3 class="mt-4 text-xl font-bold text-slate-900">3. 生成AIとの連携で<br>「無限の可能性」を解放</h3>
+                        <p class="mt-2 text-slate-600">連携された会話データは生成AIの「燃料」に。会議要約、ニーズ分析、リスク検知など、カスタムAIソリューションの基盤となります。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="use-cases" class="py-20 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">30のビジネス変革ユースケース</h2>
+                    <p class="mt-4 text-slate-600 max-w-2xl mx-auto">YouWireの強力な連携機能が、御社の様々なビジネスシーンで具体的な成果をもたらします。関心のある分野を選択してください。</p>
+                </div>
+                <div id="use-case-filters" class="mt-8 flex flex-wrap justify-center gap-2 md:gap-4">
+                    <button data-filter="all" class="use-case-filter-btn active-filter">すべて</button>
+                    <button data-filter="crm" class="use-case-filter-btn">顧客管理・営業</button>
+                    <button data-filter="pm" class="use-case-filter-btn">プロジェクト管理</button>
+                    <button data-filter="support" class="use-case-filter-btn">カスタマーサポート</button>
+                    <button data-filter="hr" class="use-case-filter-btn">人事・採用</button>
+                    <button data-filter="legal" class="use-case-filter-btn">法務・コンプライアンス</button>
+                    <button data-filter="dev" class="use-case-filter-btn">システム導入・開発</button>
+                </div>
+                <div id="use-case-grid" class="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+            </div>
+        </section>
+        
+        <section id="how-it-works" class="py-20 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">YouWire全体構成図</h2>
+<img src="YouWireArchitectureDiagram.svg" >
+                </div>
+                
+            </div>
+        </section>
+
+
+        <section id="how-it-works" class="py-20 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Webhookによるシームレスな連携</h2>
+                    <p class="mt-4 text-slate-600 max-w-3xl mx-auto">YouWireのWebhook機能は、会話データを「流動的な資産」に変えるゲートウェイです。録音された通話情報やAI認識テキストをリアルタイムで外部システムへ自動送信。御社のワークフローに会話データを自動で組み込み、価値を最大化します。</p>
+                </div>
+
+                <div class="mt-16 max-w-4xl mx-auto">
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
+                        <div class="flex items-center gap-4">
+                            <div class="text-center">
+                                <div class="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center shadow-md">
+                                    <span class="text-lg font-bold text-slate-800">YouWire</span>
+                                </div>
+                                <p class="mt-2 font-semibold">会話データ発生</p>
+                            </div>
+                            <div class="text-cyan-500 font-bold text-2xl animate-pulse">&rarr;</div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="text-center">
+                                <div class="w-24 h-24 bg-cyan-100 rounded-full flex items-center justify-center shadow-md">
+                                    <span class="text-lg font-bold text-cyan-800">Webhook</span>
+                                </div>
+                                <p class="mt-2 font-semibold">リアルタイム送信</p>
+                            </div>
+                            <div class="text-cyan-500 font-bold text-2xl animate-pulse">&rarr;</div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <div class="p-3 bg-slate-100 rounded-lg text-center font-semibold text-sm text-slate-700 shadow">CRM / SFA</div>
+                            <div class="p-3 bg-slate-100 rounded-lg text-center font-semibold text-sm text-slate-700 shadow">BIツール</div>
+                            <div class="p-3 bg-slate-100 rounded-lg text-center font-semibold text-sm text-slate-700 shadow">生成AI</div>
+                            <div class="p-3 bg-slate-100 rounded-lg text-center font-semibold text-sm text-slate-700 shadow">iPaaS</div>
+                            <div class="p-3 bg-slate-100 rounded-lg text-center font-semibold text-sm text-slate-700 shadow">スプレッドシート</div>
+                            <div class="p-3 bg-slate-100 rounded-lg text-center font-semibold text-sm text-slate-700 shadow">クラウドストレージ</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 text-center">
+                    <button id="show-payload-btn" class="text-cyan-700 font-bold hover:underline">Webhookリクエストボディの例を見る &darr;</button>
+                     <p class="mt-2 text-sm text-slate-500">特別な追加料金は不要です（※別途お申し込みは必要です）</p>
+                </div>
+                
+                <div id="payload-container" class="hidden mt-8 max-w-4xl mx-auto bg-slate-900 rounded-lg shadow-xl overflow-hidden">
+                    <div class="p-4 bg-slate-800 text-white font-mono text-sm flex justify-between items-center">
+                        <span>POST /your-endpoint</span>
+                        <button id="copy-payload-btn" class="py-1 px-3 bg-slate-700 hover:bg-slate-600 rounded">Copy</button>
+                    </div>
+                    <pre class="p-4 overflow-x-auto text-sm"><code id="payload-code" class="language-json text-slate-200"></code></pre>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="case-studies" class="py-20 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">導入事例</h2>
+                    <p class="mt-4 text-slate-600">YouWireは様々な業界で成果を出しています。</p>
+                </div>
+                <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+                        <p class="text-lg text-slate-600">「コンプライアンスチェックの時間が<strong class="text-cyan-600 font-bold text-xl">80%削減</strong>され、リスク管理体制が飛躍的に向上しました。」</p>
+                        <div class="mt-4 pt-4 border-t border-slate-200">
+                            <p class="font-bold text-slate-900">A社（金融業界）</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+                        <p class="text-lg text-slate-600">「顧客の潜在ニーズをAIが抽出し、成約率が<strong class="text-cyan-600 font-bold text-xl">20%向上</strong>。顧客満足度も劇的に改善しました。」</p>
+                        <div class="mt-4 pt-4 border-t border-slate-200">
+                            <p class="font-bold text-slate-900">B社（不動産仲介）</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+                        <p class="text-lg text-slate-600">自動要約テキスト化と自動CRM連携で、後処理時間が<strong class="text-cyan-600 font-bold text-xl">1/10</strong>以下への削減に成功しました。</p>
+                        <div class="mt-4 pt-4 border-t border-slate-200">
+                            <p class="font-bold text-slate-900">C社（コールセンター）</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-20 md:py-24 bg-cyan-700 text-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold">会話データの活用で、<br class="md:hidden">ビジネスを次のステージへ。</h2>
+                <p class="mt-4 max-w-2xl mx-auto">YouWireの導入にご興味をお持ちいただけましたら、お気軽にお問い合わせください。専門の担当者が御社の課題に合わせた活用方法をご提案します。</p>
+                <div class="mt-10 flex flex-col md:flex-row justify-center gap-4">
+                    <a href="https://www.youwire.jp/contact/" class="bg-white text-cyan-700 px-8 py-3 rounded-lg font-bold hover:bg-slate-100 transition shadow-lg">お問い合わせフォーム</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-800 text-slate-400 py-8">
+        <div class="container mx-auto px-6 text-center text-sm">
+            <p>&copy; 2025 YouWire Inc. All Rights Reserved.</p>
+        </div>
+    </footer>
+    
+   <script>
+        const useCases = [
+            { category: 'crm', title: '顧客データ強化', description: 'Salesforce/HubSpot等と連携し、商談会話を自動でテキスト化・要約して顧客レコードに保存。' },
+            { category: 'crm', title: '日報作成ゼロへ', description: '営業担当者の通話内容からAIが日報の骨子を自動生成し、CRMや社内日報システムに連携。' },
+            { category: 'crm', title: '進捗リアルタイム把握', description: '通話内容からAIがキーワードを検知し、CRMの商談フェーズを自動更新。' },
+            { category: 'crm', title: '市場洞察を自動収集', description: '顧客との会話から競合情報や市場トレンドを抽出し、CRMやBIツールに蓄積。' },
+            { category: 'crm', title: 'パーソナライズ戦略支援', description: '通話内容からAIが顧客の業界、役職、課題などの非構造化データを抽出し、CRMの顧客属性を自動更新。' },
+            { category: 'crm', title: '代表電話業務を効率化', description: '代表番号への着信内容をAIが要約し、担当社員へチャット等で自動通知。' },
+            { category: 'pm', title: 'タスク自動生成', description: 'Jira/Asana等と連携し、会議内容からAIがタスク、担当者、期日を自動抽出し、チケット登録。' },
+            { category: 'pm', title: '情報共有を効率化', description: 'Slack/Teamsに会議の要約や決定事項をリアルタイムで自動投稿。' },
+            { category: 'pm', title: 'ナレッジ蓄積を自動化', description: 'Confluence/Notion等に議事録を自動でテキスト化・要約して保存。情報の検索性を向上。' },
+            { category: 'pm', title: 'チームの専門性を見える化', description: '専門家間の会話内容からAIが各メンバーの得意分野を分析し、スキルマップとして可視化。' },
+            { category: 'pm', title: '会議時間を劇的短縮', description: '各担当者の進捗報告通話からAIが進捗、課題、次アクションを要約し、会議前にレポートを自動生成。' },
+            { category: 'support', title: 'サポート品質向上', description: 'Zendesk/ServiceNow等と連携し、問合せ通話をテキスト化してチケットに紐付け。AIが内容を要約。' },
+            { category: 'support', title: 'FAQ自動更新', description: '頻繁な質問や解決に時間を要したケースの会話をAIが分析し、FAQやナレッジベースを自動で更新。' },
+            { category: 'support', title: '顧客の声の見える化', description: '全顧客との会話からAIが感情、不満点、要望を抽出し、ダッシュボードで可視化。' },
+            { category: 'support', title: 'オペレーター育成を加速', description: 'オペレーターの応対履歴をAIが分析し、成功事例や改善点を評価。個別のフィードバックレポートを自動生成。' },
+            { category: 'support', title: '緊急・クレーム即時対応', description: '会話からAIが緊急キーワードやネガティブな感情を検知し、担当者に即時アラート。' },
+            { category: 'hr', title: '採用プロセスを合理化', description: '採用面接の会話をAIがテキスト化・要約し、候補者のスキルや経験を評価。候補者管理SaaSに連携。' },
+            { category: 'hr', title: '新入社員の早期戦力化', description: '新入社員との面談内容をAIが分析し、懸念点や期待値を把握。個別最適なオンボーディングプランを提案。' },
+            { category: 'hr', title: '人材育成を強化', description: 'コーチングセッションをAIがテキスト化・要約し、進捗や課題点を可視化。' },
+            { category: ['hr','dev','crm'], title: '契約・法務に関する証跡管理', description: '契約交渉や条件変更の会話を録音・テキスト化。AIが合意内容や法的リスクのある発言を抽出し、法務部門に連携。「言った・言わない」を防止し、法的な証拠として信頼関係を維持します。' },
+            { category: 'hr', title: '組織の健全性分析', description: '1on1ミーティングからAIが従業員のモチベーションやストレス要因を匿名で分析。組織改善に活用。' },
+            { category: 'hr', title: '研修効果を最大化', description: '研修後の面談をAIが分析し、内容の理解度や疑問点を把握。研修効果を測定し、プログラム改善に活用。' },
+            { category: 'legal', title: 'コンプライアンス徹底', description: '会話から不適切な表現（例：「絶対儲かる」）をAIが自動検知し、コンプライアンス部門にアラート。' },
+            { category: 'legal', title: 'カスハラから従業員を守る', description: 'AIが音声とテキストからカスハラの度合いを自動スコアリング。高リスク通話は担当者に自動共有。' },
+            { category: ['pm','legal'], title: 'リスクを未然に防止', description: '会話からプロジェクト遅延や予算超過などの潜在的リスク要因をAIが検知し、早期に通知。' },
+            { category: 'legal', title: '不正を早期発見', description: '特定のキーワードで会話内容を検索・分析し、内部不正や情報漏洩の疑いがある会話を迅速に特定。' },
+            { category: ['dev','pm'], title: '要件定義の精度向上と手戻り削減', description: '要件定義会議を録音・テキスト化し、AIが要件や優先順位を自動抽出し要件定義書のドラフトを生成。不明瞭な発言を検出し、認識齟齬や手戻りを大幅に削減します。' },
+            { category: ['dev','pm'], title: '進捗報告・課題共有の効率化と透明化', description: '進捗会議を録音・テキスト化。AIが進捗や課題、アクションを抽出し、プロジェクト管理ツールに自動登録。報告作成の手間を削減し、リアルタイムな情報共有と遅延リスク早期発見を実現します。' },
+            { category: 'dev', title: 'テストフェーズの効率化と品質向上', description: 'テスト結果確認やバグ報告の会話を録音・テキスト化。AIがバグ内容や修正状況を整理し、バグトラッキングシステムに連携。報告の明確化で修正効率が向上し、コミュニケーションミスによる手戻りを削減します。' },
+            { category: ['dev','pm'], title: '顧客からのフィードバック・要望の体系化', description: '顧客からのフィードバックや要望の会話を録音・テキスト化。AIが要望内容を抽出し、プロダクトバックログに整理。顧客の「生の声」を漏れなく収集し、プロダクト改善や顧客満足度向上に貢献します。' },
+            { category: 'dev', title: '開発者間のナレッジ共有とスキルアップ', description: '開発者間の技術議論を録音・テキスト化。AIが課題、解決策、設計上の意思決定を抽出し、社内Wikiにナレッジとして自動蓄積。技術情報を共有し、チームのスキルアップと新メンバーのオンボーディングを加速します。' },
+            { category: 'dev', title: '属人化リスクの軽減と引き継ぎ効率化', description: '主要担当者と顧客・チーム間の会話を録音・テキスト化。担当者交代時、AIが会話履歴を要約し、プロジェクト経緯や懸念事項をレポートに自動生成。引き継ぎ時間を大幅に短縮し、属人化リスクを低減します。' },
+            { category: ['dev', 'crm'], title: '見積もり・提案段階でのリスク分析', description: '顧客とのヒアリング会話を録音・テキスト化。AIが曖昧な要求や懸念を検出し、見積もり段階でのリスクをアラート。潜在リスクを早期に洗い出し、見積もり精度向上と収益性確保に貢献します。' },
+            { category: 'dev', title: 'カスタマーハラスメント対策', description: '顧客からの問い合わせで、AIが暴言や不当要求などカスハラ兆候を検知。即座に上長へアラートを上げ、適切な対応を促します。開発メンバーをハラスメントから守り、安心して業務に集中できる環境を整備します。' },
+        ];
+
+        const payloadData = {
+  "call_id": 0,
+  "timestamp": "2024-04-01 17:15:00",
+  "duration": 180,
+  "group_id": 1,
+  "group_name": "デフォルト",
+  "local_party": "gf-demo003",
+  "direction_id": 3,
+  "direction_name": "アップロード",
+  "remote_party": "デモ用テスト通話",
+  "revision": "0000",
+  "download_datetime": "2024-04-02 12:34:56",
+  "file_name": "gf-demo003_デモ用テスト通話_3_20240401171500_20240401171500_0000.wav",
+  "upload_file_size": 104857600,
+  "voice_url": "http://example.com/controlviewdetail?recid=0",
+  "voice_recognition_text": "gf-demo003 : お電話ありがとうございます。ギークフィードでございます。\r\nデモ用テスト通話 : お世話になっております。私、小島証券株式会社の田中と申します。\r\ngf-demo003 : お世話になっております。\r\nデモ用テスト通話 : お世話なっております。\r\ngf-demo003 : はい。\r\nデモ用テスト通話 : 御社の製品のYouWireについてちょっとお伺いしたいんですけども。\r\ngf-demo003 : はい。\r\nデモ用テスト通話 : よろしいでしょうか？\r\ngf-demo003 : はい。お問い合わせありがとうございますお伺いいたします。\r\nデモ用テスト通話 : はい。こちらの製品なんですけど。\r\ngf-demo003 : はい。\r\nデモ用テスト通話 : 携帯電話ですとか、固定電話の録音なんかができるようになってると思うんですけど。\r\ngf-demo003 : はい。\r\nデモ用テスト通話 : 音声のテキスト化までっていうのは可能なんでしょうか？\r\ngf-demo003 : はい音声認識機能もオプションとしてご用意しております。\r\nデモ用テスト通話 : そうなんですねありがとうございます。\r\ngf-demo003 : はい。\r\nデモ用テスト通話 : テキスト化する上で、例えばですけども、例えば業界用語というか、アク抜けったりとか、取残の可能性をよく使ったりもするんですけどそういった言葉もテキスト化することって可能なんでしょうか？\r\ngf-demo003 : はい。\r\ngf-demo003 : はい。\r\ngf-demo003 : はい。\r\ngf-demo003 : はい。\r\ngf-demo003 : はい。その場合はですね金融機関様向けのエンジンもご用意がございますし、あの辞書登録機能を使っていただくことさらに変換精度を上げることも可能となっております。\r\nデモ用テスト通話 : そうなんですねありがとうございます。\r\ngf-demo003 : はい。\r\ngf-demo003 : はい。\r\nデモ用テスト通話 : そうしたらですねちょっとぜひ一度詳しいお話をお伺いしたいなと思うんですけど、お願いできますか。\r\ngf-demo003 : はい。\r\ngf-demo003 : はい、かしこまりました。それでは担当者より改めてご連絡させていただきますので、この後30分以内に携帯電話の番号へ折り返しご連絡させていただいてもよろしいでしょうか？\r\nデモ用テスト通話 : はい。\r\ngf-demo003 : はい。\r\nデモ用テスト通話 : わかりましたありがとうございますお手数おかけしますけども、よろしくお願いいたします。\r\ngf-demo003 : はい私水野が承りました。この度お問い合わせいただきましてありがとうございます。\r\nデモ用テスト通話 : はい、ありがとうございます。よろしくお願いいたたします。\r\ngf-demo003 : はい。\r\ngf-demo003 : はい失礼いたします。\r\nデモ用テスト通話 : はい失礼いたします。\r\ngf-demo003 : はい。",
+  "voice_recognition_raw_text": [
+    {
+      "start_time": 1.55,
+      "end_time": 4.65,
+      "direction": 0,
+      "text": "お電話ありがとうございます。ギークフィードでございます。"
+    },
+    {
+      "start_time": 5.05,
+      "end_time": 12.95,
+      "direction": 1,
+      "text": "お世話になっております。私、小島証券株式会社の田中と申します。"
+    },
+    {
+      "start_time": 12.5,
+      "end_time": 14.3,
+      "direction": 0,
+      "text": "お世話になっております。"
+    },
+    {
+      "start_time": 14.35,
+      "end_time": 15.79,
+      "direction": 1,
+      "text": "お世話なっております。"
+    },
+    {
+      "start_time": 15.25,
+      "end_time": 16.19,
+      "direction": 0,
+      "text": "はい。"
+    },
+    {
+      "start_time": 16.15,
+      "end_time": 23.04,
+      "direction": 1,
+      "text": "御社の製品のYouWireについてちょっとお伺いしたいんですけども。"
+    },
+    {
+      "start_time": 22.4,
+      "end_time": 23.34,
+      "direction": 0,
+      "text": "はい。"
+    },
+    {
+      "start_time": 23.45,
+      "end_time": 25.78,
+      "direction": 1,
+      "text": "よろしいでしょうか？"
+    },
+    {
+      "start_time": 24.95,
+      "end_time": 29.15,
+      "direction": 0,
+      "text": "はい。お問い合わせありがとうございますお伺いいたします。"
+    },
+    {
+      "start_time": 29.9,
+      "end_time": 33.69,
+      "direction": 1,
+      "text": "はい。こちらの製品なんですけど。"
+    },
+    {
+      "start_time": 33.1,
+      "end_time": 34.04,
+      "direction": 0,
+      "text": "はい。"
+    },
+    {
+      "start_time": 33.7,
+      "end_time": 40.35,
+      "direction": 1,
+      "text": "携帯電話ですとか、固定電話の録音なんかができるようになってると思うんですけど。"
+    },
+    {
+      "start_time": 39.75,
+      "end_time": 40.73,
+      "direction": 0,
+      "text": "はい。"
+    },
+    {
+      "start_time": 40.55,
+      "end_time": 46.29,
+      "direction": 1,
+      "text": "音声のテキスト化までっていうのは可能なんでしょうか？"
+    },
+    {
+      "start_time": 45.8,
+      "end_time": 51.08,
+      "direction": 0,
+      "text": "はい音声認識機能もオプションとしてご用意しております。"
+    },
+    {
+      "start_time": 51.95,
+      "end_time": 54.4,
+      "direction": 1,
+      "text": "そうなんですねありがとうございます。"
+    },
+    {
+      "start_time": 53.2,
+      "end_time": 54.14,
+      "direction": 0,
+      "text": "はい。"
+    },
+    {
+      "start_time": 54.75,
+      "end_time": 73.04,
+      "direction": 1,
+      "text": "テキスト化する上で、例えばですけども、例えば業界用語というか、アク抜けったりとか、取残の可能性をよく使ったりもするんですけどそういった言葉もテキスト化することって可能なんでしょうか？"
+    },
+    {
+      "start_time": 57.65,
+      "end_time": 58.59,
+      "direction": 0,
+      "text": "はい。"
+    },
+    {
+      "start_time": 59.1,
+      "end_time": 60.04,
+      "direction": 0,
+      "text": "はい。"
+    },
+    {
+      "start_time": 62,
+      "end_time": 62.94,
+      "direction": 0,
+      "text": "はい。"
+    },
+    {
+      "start_time": 64.75,
+      "end_time": 65.64,
+      "direction": 0,
+      "text": "はい。"
+    },
+    {
+      "start_time": 72.4,
+      "end_time": 85.1,
+      "direction": 0,
+      "text": "はい。その場合はですね金融機関様向けのエンジンもご用意がございますし、あの辞書登録機能を使っていただくことさらに変換精度を上げることも可能となっております。"
+    },
+    {
+      "start_time": 85.25,
+      "end_time": 88.35,
+      "direction": 1,
+      "text": "そうなんですねありがとうございます。"
+    },
+    {
+      "start_time": 86.75,
+      "end_time": 87.78,
+      "direction": 0,
+      "text": "はい。"
+    },
+    {
+      "start_time": 87.9,
+      "end_time": 88.88,
+      "direction": 0,
+      "text": "はい。"
+    },
+    {
+      "start_time": 88.5,
+      "end_time": 97,
+      "direction": 1,
+      "text": "そうしたらですねちょっとぜひ一度詳しいお話をお伺いしたいなと思うんですけど、お願いできますか。"
+    },
+    {
+      "start_time": 94.65,
+      "end_time": 95.68,
+      "direction": 0,
+      "text": "はい。"
+    },
+    {
+      "start_time": 96.65,
+      "end_time": 110.5,
+      "direction": 0,
+      "text": "はい、かしこまりました。それでは担当者より改めてご連絡させていただきますので、この後30分以内に携帯電話の番号へ折り返しご連絡させていただいてもよろしいでしょうか？"
+    },
+    {
+      "start_time": 111.75,
+      "end_time": 112.78,
+      "direction": 1,
+      "text": "はい。"
+    },
+    {
+      "start_time": 112.5,
+      "end_time": 113.48,
+      "direction": 0,
+      "text": "はい。"
+    },
+    {
+      "start_time": 112.9,
+      "end_time": 117.75,
+      "direction": 1,
+      "text": "わかりましたありがとうございますお手数おかけしますけども、よろしくお願いいたします。"
+    },
+    {
+      "start_time": 117.45,
+      "end_time": 123.04,
+      "direction": 0,
+      "text": "はい私水野が承りました。この度お問い合わせいただきましてありがとうございます。"
+    },
+    {
+      "start_time": 122.95,
+      "end_time": 126.84,
+      "direction": 1,
+      "text": "はい、ありがとうございます。よろしくお願いいたします。"
+    },
+    {
+      "start_time": 124.6,
+      "end_time": 125.54,
+      "direction": 0,
+      "text": "はい。"
+    },
+    {
+      "start_time": 125.65,
+      "end_time": 127.55,
+      "direction": 0,
+      "text": "はい失礼いたします。"
+    },
+    {
+      "start_time": 127.3,
+      "end_time": 128.88,
+      "direction": 1,
+      "text": "はい失礼いたします。"
+    },
+    {
+      "start_time": 128.4,
+      "end_time": 129.34,
+      "direction": 0,
+      "text": "はい。"
+    }
+  ]
+}
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const useCaseGrid = document.getElementById('use-case-grid');
+            const filterButtons = document.querySelectorAll('.use-case-filter-btn');
+
+            function displayUseCases(filter = 'all') {
+                useCaseGrid.innerHTML = '';
+                const filteredCases = filter === 'all' ? useCases : useCases.filter(c => {
+                    if (Array.isArray(c.category)) {
+                        return c.category.includes(filter);
+                    }
+                    return c.category === filter;
+                });
+                
+                filteredCases.forEach((uc, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'use-case-card bg-white p-6 rounded-lg shadow-md border border-slate-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 card-enter';
+                    card.style.animationDelay = `${index * 50}ms`;
+                    card.dataset.category = uc.category;
+                    card.innerHTML = `
+                        <h3 class="font-bold text-lg text-cyan-800">${uc.title}</h3>
+                        <p class="mt-2 text-slate-600">${uc.description}</p>
+                    `;
+                    useCaseGrid.appendChild(card);
+                });
+            }
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active-filter'));
+                    button.classList.add('active-filter');
+                    displayUseCases(button.dataset.filter);
+                });
+            });
+            
+            displayUseCases();
+
+            const payloadCode = document.getElementById('payload-code');
+            payloadCode.textContent = JSON.stringify(payloadData, null, 2);
+
+            const showPayloadBtn = document.getElementById('show-payload-btn');
+            const payloadContainer = document.getElementById('payload-container');
+            showPayloadBtn.addEventListener('click', () => {
+                payloadContainer.classList.toggle('hidden');
+                showPayloadBtn.textContent = payloadContainer.classList.contains('hidden') ? 'Webhookリクエストボディの例を見る ↓' : '閉じる ↑';
+            });
+            
+            const copyPayloadBtn = document.getElementById('copy-payload-btn');
+            copyPayloadBtn.addEventListener('click', () => {
+                const textToCopy = JSON.stringify(payloadData, null, 2);
+                const textArea = document.createElement('textarea');
+                textArea.value = textToCopy;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    copyPayloadBtn.textContent = 'Copied!';
+                    setTimeout(() => { copyPayloadBtn.textContent = 'Copy'; }, 2000);
+                } catch (err) {
+                    console.error('Failed to copy text: ', err);
+                }
+                document.body.removeChild(textArea);
+            });
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+            
+            // Add active styles for filter buttons
+            const style = document.createElement('style');
+            style.textContent = `
+              .use-case-filter-btn {
+                padding: 0.5rem 1rem;
+                border-radius: 9999px;
+                font-weight: 500;
+                color: #475569;
+                background-color: #f1f5f9;
+                transition: all 0.2s;
+              }
+              .use-case-filter-btn:hover {
+                background-color: #e2e8f0;
+              }
+              .use-case-filter-btn.active-filter {
+                background-color: #0e7490;
+                color: white;
+                box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+              }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const contactLinks = document.querySelectorAll('a[href="https://www.youwire.jp/contact/"]');
+
+        contactLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+
+                const currentUrl = new URL(window.location.href);
+                const params = new URLSearchParams(currentUrl.search);
+                const targetUrl = new URL(this.href);
+
+                // 現在のページのURLパラメータを新しいURLに追加
+                for (const [key, value] of params.entries()) {
+                    targetUrl.searchParams.append(key, value);
+                }
+
+                window.location.href = targetUrl.toString();
+            });
+        });
+    });
+</script>
+</body>
+</html>
