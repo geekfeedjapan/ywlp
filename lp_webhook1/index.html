@@ -703,6 +703,9 @@
                     targetUrl.searchParams.append(key, value);
                 }
 
+                // 新しいパラメータ 'fromlp=lp_webhook1' を追加
+                targetUrl.searchParams.set('fromlp', 'lp_webhook1');
+
                 window.location.href = targetUrl.toString();
             });
         });
