@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://www.google.com/recaptcha/api.js?render=6Lfn_QYsAAAAANjV1mJqtERXBaHZix8LyQQiiK3_" async defer></script>
 <style>
 :root {
   --blue-900: #0a1628;
@@ -2409,6 +2410,11 @@ mcpForm.addEventListener('submit', function(e) {
   // Cache FormData
   formDataCache = new FormData();
   formDataCache.append('_wpcf7_unit_tag', 'wpcf7-f3051-o1');
+  formDataCache.append('_wpcf7cf_hidden_group_fields', '');
+  formDataCache.append('_wpcf7cf_hidden_groups', '');
+  formDataCache.append('_wpcf7cf_visible_groups', '');
+  formDataCache.append('_wpcf7cf_repeaters', '');
+  formDataCache.append('_wpcf7cf_steps', '');
   formDataCache.append('company-name', vals['会社名']);
   formDataCache.append('your-name', vals['お名前']);
   formDataCache.append('your-tel', vals['電話番号']);
@@ -2446,6 +2452,10 @@ confirmSend.addEventListener('click', async function() {
   confirmMsg.style.display = 'none';
 
   try {
+    // Get reCAPTCHA v3 token
+    const recaptchaToken = await grecaptcha.execute('6Lfn_QYsAAAAANjV1mJqtERXBaHZix8LyQQiiK3_', { action: 'wpcf7_submit' });
+    formDataCache.append('_wpcf7_recaptcha_response', recaptchaToken);
+
     const res = await fetch('/wp-json/contact-form-7/v1/contact-forms/3051/feedback', {
       method: 'POST',
       body: formDataCache
