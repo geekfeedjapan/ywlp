@@ -1672,6 +1672,163 @@ a { text-decoration: none; color: inherit; }
         Anthropic社が開発し、OpenAI・Google・Microsoftが採用する<strong>AIツール連携のオープン標準プロトコル</strong>です。2025年にLinux Foundation傘下のAgentic AI Foundationに寄贈され、月間SDKダウンロード数9,700万以上。業界標準として急速に普及しています。YouWire MCP Serverはこの標準に準拠し、特定のAIベンダーにロックインされない柔軟な連携を実現します。
       </div>
     </div>
+    <div class="solution-diagram reveal" style="margin-top:48px; max-width:960px; margin-left:auto; margin-right:auto;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 580" font-family="'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Helvetica Neue', Arial, sans-serif" style="width:100%; height:auto; border-radius:12px; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
+  <defs>
+    <filter id="sh">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="2.5" flood-color="#1e3a5f" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="1120" height="580" rx="10" fill="#29a8e0"/>
+  <rect x="7" y="7" width="1106" height="566" rx="6" fill="#ffffff"/>
+  <g transform="translate(440, 26)">
+    <rect x="0" y="0" width="14" height="20" rx="7" fill="none" stroke="#1a3f7a" stroke-width="2.2"/>
+    <path d="M-4 14 Q-4 26 7 26 Q18 26 18 14" fill="none" stroke="#1a3f7a" stroke-width="2.2" stroke-linecap="round"/>
+    <line x1="7" y1="26" x2="7" y2="30" stroke="#1a3f7a" stroke-width="2.2" stroke-linecap="round"/>
+  </g>
+  <text x="466" y="50" font-size="26" font-weight="800" fill="#1a3f7a" letter-spacing="0.5">YouWire</text>
+  <text x="588" y="50" font-size="26" font-weight="600" fill="#29a8e0" letter-spacing="0.5">MCP</text>
+  <text x="560" y="94" font-size="23" font-weight="800" fill="#0f172a" text-anchor="middle">通話録音をAIが読み解く ─ YouWire MCP連携イメージ</text>
+  <rect x="30" y="124" width="200" height="356" rx="14" fill="#edf4fb" stroke="#c4d9ef" stroke-width="1.2"/>
+  <text x="130" y="152" font-size="13" font-weight="700" fill="#2563eb" text-anchor="middle" letter-spacing="0.5">自然言語で問いかける</text>
+  <g transform="translate(50, 170)">
+    <rect x="0" y="0" width="160" height="160" rx="10" fill="#ffffff" filter="url(#sh)"/>
+    <circle cx="80" cy="36" r="20" fill="#2e5ea3"/>
+    <path d="M50 76 Q50 56 80 56 Q110 56 110 76 L110 82 L50 82 Z" fill="#2e5ea3"/>
+    <rect x="36" y="90" width="88" height="44" rx="5" fill="#1e293b"/>
+    <rect x="40" y="93" width="80" height="34" rx="3" fill="#4da6e8"/>
+    <rect x="48" y="100" width="42" height="5" rx="2.5" fill="#fff" opacity="0.75"/>
+    <rect x="48" y="109" width="56" height="5" rx="2.5" fill="#fff" opacity="0.5"/>
+    <rect x="48" y="118" width="32" height="5" rx="2.5" fill="#fff" opacity="0.35"/>
+    <rect x="28" y="134" width="104" height="5" rx="2.5" fill="#94a3b8"/>
+    <text x="80" y="155" font-size="15" font-weight="800" fill="#1e293b" text-anchor="middle">ユーザー</text>
+  </g>
+  <g transform="translate(40, 350)">
+    <rect x="0" y="0" width="180" height="28" rx="9" fill="#fff" stroke="#a8c8e8" stroke-width="1"/>
+    <text x="12" y="19" font-size="11" fill="#1e293b" font-weight="500">💬「今週のクレーム通話は？」</text>
+    <rect x="0" y="34" width="180" height="28" rx="9" fill="#fff" stroke="#a8c8e8" stroke-width="1"/>
+    <text x="12" y="53" font-size="11" fill="#1e293b" font-weight="500">💬「月次レポートを作って」</text>
+    <rect x="0" y="68" width="180" height="28" rx="9" fill="#fff" stroke="#a8c8e8" stroke-width="1"/>
+    <text x="12" y="87" font-size="11" fill="#1e293b" font-weight="500">💬「通話の傾向を分析して」</text>
+  </g>
+  <g transform="translate(236, 230)">
+    <line x1="0" y1="18" x2="56" y2="18" stroke="#29a8e0" stroke-width="3" stroke-linecap="round"/>
+    <polygon points="56,11 70,18 56,25" fill="#29a8e0"/>
+    <text x="35" y="6" font-size="11" font-weight="700" fill="#1e293b" text-anchor="middle">対話</text>
+    <polygon points="14,58 0,65 14,72" fill="#2563eb"/>
+    <line x1="14" y1="65" x2="70" y2="65" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+    <text x="35" y="88" font-size="11" font-weight="700" fill="#1e293b" text-anchor="middle">回答</text>
+  </g>
+  <rect x="310" y="124" width="230" height="356" rx="14" fill="#e0eefa" stroke="#b0cce6" stroke-width="1.2"/>
+  <text x="425" y="152" font-size="13" font-weight="700" fill="#2563eb" text-anchor="middle" letter-spacing="0.3">AIがデータを取得・解析</text>
+  <g transform="translate(340, 170)">
+    <rect x="0" y="0" width="170" height="160" rx="10" fill="#ffffff" filter="url(#sh)"/>
+    <rect x="42" y="12" width="86" height="64" rx="14" fill="#2e5ea3"/>
+    <circle cx="66" cy="38" r="10" fill="#ffffff"/>
+    <circle cx="104" cy="38" r="10" fill="#ffffff"/>
+    <circle cx="67" cy="39" r="5" fill="#0f172a"/>
+    <circle cx="105" cy="39" r="5" fill="#0f172a"/>
+    <circle cx="65" cy="37" r="1.5" fill="#ffffff"/>
+    <circle cx="103" cy="37" r="1.5" fill="#ffffff"/>
+    <rect x="68" y="56" width="34" height="5" rx="2.5" fill="#93c5fd"/>
+    <line x1="85" y1="12" x2="85" y2="2" stroke="#2e5ea3" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="85" cy="0" r="4.5" fill="#22d3ee"/>
+    <rect x="30" y="30" width="12" height="20" rx="5" fill="#4da6e8"/>
+    <rect x="128" y="30" width="12" height="20" rx="5" fill="#4da6e8"/>
+    <g transform="translate(10, 88)">
+      <circle cx="18" cy="12" r="13" fill="#d97706"/>
+      <text x="18" y="17" font-size="12" fill="#fff" text-anchor="middle" font-weight="800">C</text>
+      <circle cx="54" cy="12" r="13" fill="#10b981"/>
+      <text x="54" y="17" font-size="10.5" fill="#fff" text-anchor="middle" font-weight="800">GP</text>
+      <circle cx="90" cy="12" r="13" fill="#6366f1"/>
+      <text x="90" y="17" font-size="10.5" fill="#fff" text-anchor="middle" font-weight="800">Ge</text>
+      <circle cx="126" cy="12" r="13" fill="#e11d48"/>
+      <text x="126" y="17" font-size="11" fill="#fff" text-anchor="middle" font-weight="800">S</text>
+    </g>
+    <text x="85" y="122" font-size="9" fill="#64748b" text-anchor="middle">Claude / ChatGPT / Gemini / Slack</text>
+    <text x="85" y="152" font-size="14" font-weight="800" fill="#1e293b" text-anchor="middle">チャット側AIエージェント</text>
+  </g>
+  <g transform="translate(320, 350)">
+    <rect x="0" y="0" width="210" height="28" rx="9" fill="#dbeafe" stroke="#93c5fd" stroke-width="1"/>
+    <text x="12" y="19" font-size="11" fill="#1a3f7a" font-weight="500">🤖 5件の該当通話を検出しました</text>
+    <rect x="0" y="34" width="210" height="28" rx="9" fill="#dbeafe" stroke="#93c5fd" stroke-width="1"/>
+    <text x="12" y="53" font-size="11" fill="#1a3f7a" font-weight="500">🤖 レポートを生成しています…</text>
+    <rect x="0" y="68" width="210" height="28" rx="9" fill="#dbeafe" stroke="#93c5fd" stroke-width="1"/>
+    <text x="12" y="87" font-size="11" fill="#1a3f7a" font-weight="500">🤖 通話傾向を可視化しました</text>
+  </g>
+  <g transform="translate(546, 208)">
+    <text x="40" y="-2" font-size="12.5" font-weight="800" fill="#1e293b" text-anchor="middle">データ取得</text>
+    <text x="40" y="14" font-size="12.5" font-weight="800" fill="#1e293b" text-anchor="middle">リクエスト</text>
+    <line x1="0" y1="34" x2="62" y2="34" stroke="#29a8e0" stroke-width="3.5" stroke-linecap="round"/>
+    <polygon points="62,26 78,34 62,42" fill="#29a8e0"/>
+    <rect x="4" y="52" width="72" height="22" rx="11" fill="#2563eb"/>
+    <text x="40" y="67" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="0.3">MCP接続</text>
+    <rect x="-2" y="76" width="84" height="18" rx="9" fill="#f0f7ff" stroke="#93c5fd" stroke-width="1"/>
+    <text x="40" y="89" font-size="8.5" font-weight="600" fill="#2563eb" text-anchor="middle">🔒 OAuth 2.1 認証</text>
+    <polygon points="18,96 0,104 18,112" fill="#2563eb"/>
+    <line x1="18" y1="104" x2="80" y2="104" stroke="#2563eb" stroke-width="3.5" stroke-linecap="round"/>
+    <text x="40" y="132" font-size="12.5" font-weight="800" fill="#1e293b" text-anchor="middle">検索結果</text>
+    <text x="40" y="148" font-size="12.5" font-weight="800" fill="#1e293b" text-anchor="middle">分析データ</text>
+  </g>
+  <rect x="632" y="124" width="456" height="356" rx="14" fill="#d6e6f5" stroke="#a8c4de" stroke-width="1.2"/>
+  <g transform="translate(760, 133)">
+    <rect x="0" y="0" width="11" height="15" rx="5.5" fill="none" stroke="#1a3f7a" stroke-width="1.6"/>
+    <path d="M-3 10 Q-3 19 5.5 19 Q14 19 14 10" fill="none" stroke="#1a3f7a" stroke-width="1.6" stroke-linecap="round"/>
+    <text x="18" y="15" font-size="15" font-weight="800" fill="#1a3f7a" letter-spacing="0.3">YouWire</text>
+    <text x="95" y="15" font-size="15" font-weight="600" fill="#29a8e0">MCP</text>
+  </g>
+  <g transform="translate(658, 174)">
+    <rect x="0" y="0" width="155" height="170" rx="10" fill="#ffffff" filter="url(#sh)"/>
+    <text x="77" y="20" font-size="11" font-weight="700" fill="#2563eb" text-anchor="middle" letter-spacing="0.3">MCPサーバー</text>
+    <rect x="20" y="32" width="115" height="30" rx="5" fill="#1e3a5f"/>
+    <circle cx="34" cy="47" r="3.5" fill="#22d3ee"/>
+    <text x="44" y="51" font-size="9" font-weight="600" fill="#93c5fd" font-family="'JetBrains Mono', 'Courier New', monospace">searchRecordings</text>
+    <rect x="20" y="68" width="115" height="30" rx="5" fill="#2563eb"/>
+    <circle cx="34" cy="83" r="3.5" fill="#93c5fd"/>
+    <text x="44" y="87" font-size="8.5" font-weight="600" fill="#dbeafe" font-family="'JetBrains Mono', 'Courier New', monospace">getRecordingDetails</text>
+    <rect x="20" y="104" width="115" height="30" rx="5" fill="#4da6e8"/>
+    <circle cx="34" cy="119" r="3.5" fill="#dbeafe"/>
+    <text x="44" y="123" font-size="9" font-weight="600" fill="#ffffff" font-family="'JetBrains Mono', 'Courier New', monospace">getCallStatistics</text>
+    <text x="77" y="152" font-size="9.5" fill="#475569" text-anchor="middle" font-weight="600">通話検索 / 統計取得 / 詳細取得</text>
+    <text x="77" y="165" font-size="14" font-weight="800" fill="#1e293b" text-anchor="middle">処理エンジン</text>
+  </g>
+  <g transform="translate(822, 248)">
+    <line x1="0" y1="10" x2="34" y2="10" stroke="#3b82f6" stroke-width="2.5"/>
+    <polygon points="34,4 44,10 34,16" fill="#3b82f6"/>
+    <line x1="44" y1="34" x2="10" y2="34" stroke="#3b82f6" stroke-width="2.5"/>
+    <polygon points="10,28 0,34 10,40" fill="#3b82f6"/>
+  </g>
+  <g transform="translate(874, 174)">
+    <rect x="0" y="0" width="186" height="170" rx="10" fill="#ffffff" filter="url(#sh)"/>
+    <text x="93" y="22" font-size="11" font-weight="700" fill="#2563eb" text-anchor="middle" letter-spacing="0.3">蓄積された通話資産</text>
+    <ellipse cx="93" cy="52" rx="40" ry="13" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+    <rect x="53" y="52" width="80" height="38" fill="#dbeafe"/>
+    <line x1="53" y1="52" x2="53" y2="90" stroke="#3b82f6" stroke-width="1.5"/>
+    <line x1="133" y1="52" x2="133" y2="90" stroke="#3b82f6" stroke-width="1.5"/>
+    <ellipse cx="93" cy="90" rx="40" ry="13" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+    <path d="M63 70 L70 60 L75 76 L82 64 L88 74 L94 62 L100 77 L106 66 L112 72 L120 68" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="93" y="120" font-size="10" fill="#475569" text-anchor="middle" font-weight="600">録音データ + テキスト化データ</text>
+    <text x="93" y="145" font-size="14" font-weight="800" fill="#1e293b" text-anchor="middle">通話データベース</text>
+  </g>
+  <g transform="translate(874, 352)">
+    <rect x="0" y="0" width="186" height="28" rx="7" fill="#fff" stroke="#c4d9ef" stroke-width="1"/>
+    <text x="16" y="19" font-size="14">📞</text>
+    <text x="36" y="19" font-size="11.5" font-weight="600" fill="#334155">固定電話 / IP電話</text>
+    <rect x="0" y="31" width="186" height="28" rx="7" fill="#fff" stroke="#c4d9ef" stroke-width="1"/>
+    <text x="16" y="50" font-size="14">📱</text>
+    <text x="36" y="50" font-size="11.5" font-weight="600" fill="#334155">携帯電話</text>
+    <rect x="0" y="62" width="186" height="28" rx="7" fill="#fff" stroke="#c4d9ef" stroke-width="1"/>
+    <text x="16" y="81" font-size="14">💻</text>
+    <text x="36" y="81" font-size="11.5" font-weight="600" fill="#334155">Web会議（Teams等）</text>
+    <rect x="0" y="93" width="186" height="28" rx="7" fill="#fff" stroke="#c4d9ef" stroke-width="1"/>
+    <text x="16" y="112" font-size="14">🏢</text>
+    <text x="36" y="112" font-size="11.5" font-weight="600" fill="#334155">対面での会議</text>
+  </g>
+  <rect x="260" y="498" width="600" height="30" rx="8" fill="#edf4fb" stroke="#c4d9ef" stroke-width="1"/>
+  <text x="560" y="518" font-size="12" font-weight="700" fill="#2563eb" text-anchor="middle">✦ 電話環境の入替え不要 ─ 今の通話インフラのまま、AIがすべての通話データにアクセス</text>
+  <text x="560" y="556" font-size="10" fill="#94a3b8" text-anchor="middle">© 2026 GeekFeed Inc. — YouWire MCP</text>
+      </svg>
+    </div>
   </div>
 </section>
 
