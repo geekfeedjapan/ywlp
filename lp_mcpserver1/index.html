@@ -2416,10 +2416,28 @@ mcpForm.addEventListener('submit', function(e) {
   formDataCache.append('_wpcf7_unit_tag', 'wpcf7-f3051-p74-o1');
   formDataCache.append('_wpcf7_container_post', '74');
   formDataCache.append('_wpcf7_posted_data_hash', '');
-  // CF7 Conditional Fields (values must be JSON, not empty string)
+  // CF7 Conditional Fields - compute visible/hidden groups from checkbox-552
+  const groupConditions = [
+    { group: 'group-1', value: '資料請求' },
+    { group: 'group-2', value: 'お見積り依頼' },
+    { group: 'group-3', value: 'トライアル希望' },
+    { group: 'group-4', value: '代理店希望' },
+    { group: 'group-5', value: '詳細説明希望' },
+    { group: 'group-6', value: 'その他' }
+  ];
+  const checkedValues = Array.from(checked).map(cb => cb.value);
+  const visibleGroups = [];
+  const hiddenGroups = [];
+  groupConditions.forEach(function(cond) {
+    if (checkedValues.includes(cond.value)) {
+      visibleGroups.push(cond.group);
+    } else {
+      hiddenGroups.push(cond.group);
+    }
+  });
   formDataCache.append('_wpcf7cf_hidden_group_fields', '[]');
-  formDataCache.append('_wpcf7cf_hidden_groups', '[]');
-  formDataCache.append('_wpcf7cf_visible_groups', '[]');
+  formDataCache.append('_wpcf7cf_hidden_groups', JSON.stringify(hiddenGroups));
+  formDataCache.append('_wpcf7cf_visible_groups', JSON.stringify(visibleGroups));
   formDataCache.append('_wpcf7cf_repeaters', '[]');
   formDataCache.append('_wpcf7cf_steps', '{}');
   formDataCache.append('_wpcf7cf_options', JSON.stringify({"form_id":3051,"conditions":[{"then_field":"group-1","and_rules":[{"if_field":"checkbox-552","operator":"equals","if_value":"資料請求"}]},{"then_field":"group-2","and_rules":[{"if_field":"checkbox-552","operator":"equals","if_value":"お見積り依頼"}]},{"then_field":"group-3","and_rules":[{"if_field":"checkbox-552","operator":"equals","if_value":"トライアル希望"}]},{"then_field":"group-4","and_rules":[{"if_field":"checkbox-552","operator":"equals","if_value":"代理店希望"}]},{"then_field":"group-5","and_rules":[{"if_field":"checkbox-552","operator":"equals","if_value":"詳細説明希望"}]},{"then_field":"group-6","and_rules":[{"if_field":"checkbox-552","operator":"equals","if_value":"その他"}]}],"settings":{"animation":"yes","animation_intime":"200","animation_outtime":"200","conditions_ui":"normal","notice_dismissed":"true"}}));
