@@ -1,0 +1,2318 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouWire MCP Server｜通話録音データをAIの力に変える</title>
+<meta name="description" content="YouWire MCP Serverは、通話録音データをClaude・ChatGPT等のAIアシスタントに接続し、通話内容の検索・分析・活用を自然言語で実現するMCP連携ソリューションです。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue-900: #0a1628;
+  --blue-800: #0f2140;
+  --blue-700: #132d5e;
+  --blue-600: #1a3f7a;
+  --blue-500: #2563eb;
+  --blue-400: #3b82f6;
+  --blue-300: #60a5fa;
+  --blue-200: #93c5fd;
+  --blue-100: #dbeafe;
+  --blue-50: #eff6ff;
+  --cyan-400: #22d3ee;
+  --cyan-300: #67e8f9;
+  --green-500: #22c55e;
+  --green-400: #4ade80;
+  --green-100: #dcfce7;
+  --orange-500: #f97316;
+  --orange-100: #ffedd5;
+  --purple-500: #a855f7;
+  --purple-100: #f3e8ff;
+  --slate-900: #0f172a;
+  --navy-950: #0a0f1e;
+  --slate-800: #1e293b;
+  --slate-700: #334155;
+  --slate-600: #475569;
+  --slate-500: #64748b;
+  --slate-400: #94a3b8;
+  --slate-300: #cbd5e1;
+  --slate-200: #e2e8f0;
+  --slate-100: #f1f5f9;
+  --slate-50: #f8fafc;
+  --white: #ffffff;
+  --font-jp: 'Noto Sans JP', sans-serif;
+  --font-en: 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --radius: 12px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+  --shadow-xl: 0 20px 60px rgba(0,0,0,0.15);
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: var(--font-jp);
+  color: var(--slate-800);
+  background: var(--white);
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.section-padding { padding: 100px 0; }
+.text-center { text-align: center; }
+
+.section-label {
+  font-family: var(--font-en);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--blue-400);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.section-label::before {
+  content: '';
+  width: 24px;
+  height: 2px;
+  background: var(--blue-400);
+  border-radius: 1px;
+}
+.section-title {
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--slate-900);
+  margin-bottom: 20px;
+}
+.section-desc {
+  font-size: 16px;
+  color: var(--slate-600);
+  max-width: 640px;
+  margin: 0 auto;
+  line-height: 1.9;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 32px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: var(--font-jp);
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--blue-500), var(--blue-600));
+  color: var(--white);
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(37, 99, 235, 0.4);
+}
+.btn-secondary {
+  background: var(--white);
+  color: var(--blue-600);
+  border: 2px solid var(--blue-200);
+}
+.btn-secondary:hover {
+  border-color: var(--blue-400);
+  background: var(--blue-50);
+  transform: translateY(-2px);
+}
+.btn-ghost {
+  background: rgba(255,255,255,0.1);
+  color: var(--white);
+  border: 1px solid rgba(255,255,255,0.25);
+  backdrop-filter: blur(4px);
+}
+.btn-ghost:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateY(-2px);
+}
+.btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+/* HEADER */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 0 24px;
+  transition: var(--transition);
+}
+.header.scrolled {
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 1px 12px rgba(0,0,0,0.06);
+}
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-en);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--white);
+  transition: var(--transition);
+}
+.header.scrolled .logo { color: var(--blue-700); }
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--blue-400), var(--cyan-400));
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logo-mcp {
+  font-size: 13px;
+  font-weight: 500;
+  padding: 2px 8px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 4px;
+  color: var(--cyan-300);
+}
+.header.scrolled .logo-mcp {
+  background: var(--blue-50);
+  color: var(--blue-500);
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.8);
+  transition: var(--transition);
+}
+.header.scrolled .nav-links a { color: var(--slate-600); }
+.header.scrolled .nav-links a.nav-cta { color: var(--white); background: var(--blue-500); border-color: var(--blue-500); }
+.header.scrolled .nav-links a.nav-cta:hover { background: var(--blue-600); border-color: var(--blue-600); }
+.nav-links a:hover { color: var(--white); }
+.header.scrolled .nav-links a:hover { color: var(--blue-500); }
+.header.scrolled .nav-links a.nav-cta:hover { color: var(--white); }
+.nav-cta { padding: 10px 24px !important; font-size: 14px !important; border-radius: 8px; }
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--white);
+}
+.header.scrolled .mobile-menu-btn { color: var(--slate-700); }
+
+/* HERO */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(165deg, var(--blue-900) 0%, var(--blue-800) 40%, var(--blue-700) 100%);
+  overflow: hidden;
+  padding: 120px 0 80px;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -20%;
+  width: 80%;
+  height: 120%;
+  background: radial-gradient(ellipse, rgba(34, 211, 238, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -20%;
+  left: -10%;
+  width: 60%;
+  height: 80%;
+  background: radial-gradient(ellipse, rgba(37, 99, 235, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+.hero-text { max-width: 560px; }
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px 6px 6px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 100px;
+  margin-bottom: 28px;
+  animation: fadeInUp 0.8s ease-out;
+}
+.hero-badge-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--green-400);
+  border-radius: 50%;
+  animation: pulse-dot 2s infinite;
+}
+.hero-badge-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.85);
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.hero-title {
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 900;
+  line-height: 1.25;
+  color: var(--white);
+  margin-bottom: 24px;
+  animation: fadeInUp 0.8s ease-out 0.1s both;
+}
+.hero-title-accent {
+  background: linear-gradient(135deg, var(--cyan-300), var(--blue-300));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-subtitle {
+  font-size: 17px;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.9;
+  margin-bottom: 40px;
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+.hero-ctas {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 48px;
+  animation: fadeInUp 0.8s ease-out 0.3s both;
+}
+.hero-stats {
+  display: flex;
+  gap: 40px;
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+.hero-stat-number {
+  font-family: var(--font-en);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--white);
+}
+.hero-stat-label {
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  margin-top: 2px;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-visual {
+  position: relative;
+  animation: fadeInUp 0.8s ease-out 0.3s both;
+}
+.hero-visual-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  backdrop-filter: blur(12px);
+}
+.hero-visual-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.hero-visual-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--purple-500), var(--blue-400));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+.hero-visual-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+}
+.hero-visual-sub {
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
+}
+.chat-messages { display: flex; flex-direction: column; gap: 16px; }
+.chat-msg {
+  display: flex;
+  gap: 10px;
+  animation: chatFadeIn 0.5s ease-out both;
+}
+.chat-msg:nth-child(1) { animation-delay: 0.8s; }
+.chat-msg:nth-child(2) { animation-delay: 1.6s; }
+.chat-msg:nth-child(3) { animation-delay: 2.4s; }
+@keyframes chatFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.chat-msg-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+.chat-msg-icon.user { background: rgba(59, 130, 246, 0.25); }
+.chat-msg-icon.ai { background: rgba(34, 211, 238, 0.2); }
+.chat-msg-bubble {
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  line-height: 1.7;
+  max-width: 380px;
+}
+.chat-msg-bubble.user-bubble {
+  background: rgba(59, 130, 246, 0.15);
+  color: rgba(255,255,255,0.9);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+.chat-msg-bubble.ai-bubble {
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.85);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.chat-msg-bubble code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: rgba(0,0,0,0.2);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+/* TRUST BAR */
+.trust-bar {
+  background: var(--slate-50);
+  border-top: 1px solid var(--slate-200);
+  border-bottom: 1px solid var(--slate-200);
+  padding: 40px 0;
+}
+.trust-items {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--slate-500);
+}
+.trust-item-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+.trust-item-icon.gold { background: #fef3c7; }
+.trust-item-icon.blue { background: var(--blue-100); }
+.trust-item-icon.green { background: var(--green-100); }
+.trust-item-icon.orange { background: #ffedd5; }
+
+/* AWARD DETAIL CARDS */
+.award-details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 28px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.award-card {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+.award-card:hover {
+  border-color: var(--blue-300);
+  box-shadow: var(--shadow-md);
+}
+.award-card-badge {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--slate-900);
+  margin-bottom: 4px;
+}
+.award-card-years {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--orange-500);
+  margin-bottom: 12px;
+}
+.award-card-desc {
+  font-size: 13px;
+  color: var(--slate-600);
+  line-height: 1.7;
+}
+.award-card-desc strong {
+  color: var(--slate-900);
+}
+
+/* PROBLEM */
+.problem { background: var(--white); }
+.problem-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 56px;
+}
+.problem-card {
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  padding: 36px 28px;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.problem-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--orange-500), transparent);
+  opacity: 0;
+  transition: var(--transition);
+}
+.problem-card:hover::before { opacity: 1; }
+.problem-card:hover {
+  border-color: var(--orange-500);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+.problem-card-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--orange-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+.problem-card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--slate-900);
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+.problem-card-desc {
+  font-size: 14.5px;
+  color: var(--slate-600);
+  line-height: 1.8;
+}
+
+/* SOLUTION */
+.solution {
+  background: linear-gradient(180deg, var(--blue-50) 0%, var(--white) 100%);
+}
+.solution-flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-top: 56px;
+  flex-wrap: wrap;
+}
+.solution-step {
+  flex: 1;
+  min-width: 200px;
+  max-width: 280px;
+  text-align: center;
+  padding: 32px 20px;
+}
+.solution-step-num {
+  font-family: var(--font-en);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--blue-400);
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+.solution-step-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+}
+.solution-step-icon.s1 { background: linear-gradient(135deg, #e0f2fe, #bae6fd); }
+.solution-step-icon.s2 { background: linear-gradient(135deg, #dbeafe, #93c5fd); }
+.solution-step-icon.s3 { background: linear-gradient(135deg, #c7d2fe, #a5b4fc); }
+.solution-step-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--slate-900);
+  margin-bottom: 8px;
+}
+.solution-step-desc {
+  font-size: 14px;
+  color: var(--slate-500);
+  line-height: 1.7;
+}
+.solution-arrow {
+  font-size: 28px;
+  color: var(--blue-300);
+  flex-shrink: 0;
+  margin: 0 -8px;
+}
+.solution-mcp-note {
+  margin-top: 48px;
+  padding: 24px 32px;
+  background: var(--white);
+  border: 1px solid var(--blue-200);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.solution-mcp-note-icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--blue-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.solution-mcp-note-text {
+  font-size: 14px;
+  color: var(--slate-600);
+  line-height: 1.8;
+}
+.solution-mcp-note-text strong { color: var(--slate-800); }
+
+/* FEATURES */
+.features { background: var(--white); }
+.feature-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-top: 56px;
+}
+.feature-card {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  padding: 0;
+  overflow: hidden;
+  transition: var(--transition);
+}
+.feature-card:hover {
+  border-color: var(--blue-300);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+.feature-card-visual {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.feature-card-visual.v1 { background: linear-gradient(135deg, #0f172a, #1e3a5f); }
+.feature-card-visual.v2 { background: linear-gradient(135deg, #0f172a, #1a2e4a); }
+.feature-card-visual.v3 { background: linear-gradient(135deg, #0f172a, #1e293b); }
+.feature-demo {
+  width: 88%;
+  padding: 16px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.7);
+}
+.feature-demo .prompt-text { color: var(--cyan-300); }
+.feature-demo .result-text { color: var(--green-400); }
+.feature-demo .dim { color: rgba(255,255,255,0.35); }
+.feature-card-body { padding: 28px; }
+.feature-card-tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+.feature-card-tag.blue { background: var(--blue-100); color: var(--blue-600); }
+.feature-card-tag.green { background: var(--green-100); color: #16a34a; }
+.feature-card-tag.purple { background: var(--purple-100); color: #9333ea; }
+.feature-card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--slate-900);
+  margin-bottom: 10px;
+  line-height: 1.45;
+}
+.feature-card-desc {
+  font-size: 14.5px;
+  color: var(--slate-600);
+  line-height: 1.8;
+}
+
+/* MID CTA */
+.mid-cta {
+  background: linear-gradient(135deg, var(--blue-50), #f0f4ff);
+  border-top: 1px solid var(--blue-100);
+  border-bottom: 1px solid var(--blue-100);
+  padding: 56px 0;
+  text-align: center;
+}
+.mid-cta-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--slate-800);
+  margin-bottom: 24px;
+}
+.mid-cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+/* USE CASES */
+.usecases { background: var(--slate-50); }
+.usecase-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 56px;
+}
+.usecase-card {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  display: flex;
+  gap: 20px;
+  transition: var(--transition);
+}
+.usecase-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.usecase-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  flex-shrink: 0;
+}
+.usecase-icon.uc1 { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+.usecase-icon.uc2 { background: linear-gradient(135deg, #dcfce7, #bbf7d0); }
+.usecase-icon.uc3 { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+.usecase-icon.uc4 { background: linear-gradient(135deg, #f3e8ff, #e9d5ff); }
+.usecase-icon.uc5 { background: linear-gradient(135deg, #ffe4e6, #fecdd3); }
+.usecase-body { flex: 1; }
+.usecase-industry {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--blue-500);
+  margin-bottom: 4px;
+}
+.usecase-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--slate-900);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+.usecase-desc {
+  font-size: 14px;
+  color: var(--slate-600);
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+.usecase-metric {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green-500);
+  background: var(--green-100);
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+
+/* AI TOOLS */
+.ai-tools {
+  background: linear-gradient(165deg, var(--blue-900), var(--blue-800));
+  color: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+.ai-tools::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 60%;
+  height: 150%;
+  background: radial-gradient(ellipse, rgba(34, 211, 238, 0.06) 0%, transparent 60%);
+}
+.ai-tools .section-title { color: var(--white); }
+.ai-tools .section-desc { color: rgba(255,255,255,0.6); }
+.ai-tools .section-label { color: var(--cyan-300); }
+.ai-tools .section-label::before { background: var(--cyan-400); }
+.ai-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 56px;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+.ai-logo-card {
+  width: 180px;
+  padding: 32px 24px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  transition: var(--transition);
+}
+.ai-logo-card:hover {
+  background: rgba(255,255,255,0.08);
+  transform: translateY(-4px);
+}
+.ai-logo-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+}
+.ai-logo-icon.amazonq { background: linear-gradient(135deg, #f59e0b, #f97316); }
+.ai-logo-icon.claude { background: linear-gradient(135deg, #d97706, #ea580c); }
+.ai-logo-icon.chatgpt { background: linear-gradient(135deg, #059669, #10b981); }
+.ai-logo-icon.gemini { background: linear-gradient(135deg, #2563eb, #7c3aed); }
+.ai-logo-icon.slack { background: linear-gradient(135deg, #7c3aed, #db2777); }
+.ai-logo-card.featured {
+  border: 2px solid var(--orange-500);
+  background: rgba(249, 115, 22, 0.1);
+  position: relative;
+}
+.ai-logo-card.featured::after {
+  content: '★ 注力連携';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--orange-500), #f59e0b);
+  color: var(--navy-950);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+.ai-logo-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+.ai-logo-status {
+  font-size: 12px;
+  color: var(--green-400);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.ai-logo-status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green-400);
+}
+.ai-logo-note {
+  font-size: 10px;
+  color: var(--slate-400);
+  margin-top: 4px;
+  line-height: 1.3;
+}
+.ai-note {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 15px;
+  color: rgba(255,255,255,0.55);
+  position: relative;
+  z-index: 1;
+}
+
+/* COMPARISON */
+.comparison { background: var(--slate-50); }
+.comparison-table-wrap {
+  margin-top: 56px;
+  overflow-x: auto;
+}
+.comparison-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  min-width: 640px;
+}
+.comparison-table th, .comparison-table td {
+  padding: 18px 24px;
+  text-align: left;
+  font-size: 14.5px;
+  border-bottom: 1px solid var(--slate-100);
+}
+.comparison-table thead th {
+  background: var(--blue-900);
+  color: var(--white);
+  font-weight: 600;
+  font-size: 14px;
+}
+.comparison-table thead th.highlight {
+  background: linear-gradient(135deg, var(--blue-500), var(--blue-600));
+}
+.comparison-table tbody tr:hover { background: var(--blue-50); }
+.comparison-table td:first-child {
+  font-weight: 600;
+  color: var(--slate-700);
+}
+.comparison-table .check { color: var(--green-500); font-weight: 700; }
+.comparison-table .partial { color: var(--orange-500); font-weight: 700; }
+.comparison-table .cross { color: var(--slate-300); font-weight: 700; }
+
+/* DEVELOPMENT CAPABILITY */
+.dev-capability {
+  background: linear-gradient(165deg, #0a0f1e, #111827);
+  color: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+.dev-capability::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -20%;
+  width: 60%;
+  height: 150%;
+  background: radial-gradient(ellipse, rgba(249, 115, 22, 0.05) 0%, transparent 60%);
+}
+.dev-capability .section-title { color: #ffffff; }
+.dev-capability .section-desc { color: #e2e8f0; }
+.dev-capability .section-label { color: var(--orange-400); border-color: rgba(249, 115, 22, 0.3); }
+.dev-capability .section-label::before { background: var(--orange-400); }
+.dev-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+.dev-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 32px;
+  transition: all 0.3s ease;
+}
+.dev-card:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--orange-500);
+  transform: translateY(-4px);
+}
+.dev-icon { font-size: 36px; margin-bottom: 16px; }
+.dev-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+.dev-desc {
+  font-size: 14px;
+  color: #e2e8f0;
+  line-height: 1.8;
+}
+.dev-bottom {
+  text-align: center;
+  margin-top: 48px;
+}
+.dev-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--orange-500), #f59e0b);
+  color: var(--navy-950);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 6px 20px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+.dev-tagline {
+  font-size: 16px;
+  color: #e2e8f0;
+  line-height: 1.8;
+}
+
+/* STEPS */
+.steps { background: var(--white); }
+.steps-timeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-top: 56px;
+  position: relative;
+}
+.steps-timeline::before {
+  content: '';
+  position: absolute;
+  top: 40px;
+  left: 12.5%;
+  right: 12.5%;
+  height: 3px;
+  background: var(--blue-100);
+  border-radius: 2px;
+  z-index: 0;
+}
+.step-item {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  padding: 0 12px;
+}
+.step-num {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue-500), var(--blue-600));
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-en);
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 auto 20px;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+}
+.step-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--slate-900);
+  margin-bottom: 8px;
+}
+.step-desc {
+  font-size: 14px;
+  color: var(--slate-500);
+  line-height: 1.7;
+}
+.step-duration {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  background: var(--blue-50);
+  color: var(--blue-500);
+  border-radius: 100px;
+}
+
+/* FAQ */
+.faq { background: var(--white); }
+.faq-list {
+  max-width: 800px;
+  margin: 56px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.faq-item {
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: var(--transition);
+}
+.faq-item.active {
+  border-color: var(--blue-300);
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+}
+.faq-question {
+  width: 100%;
+  padding: 20px 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-family: var(--font-jp);
+  font-size: 15.5px;
+  font-weight: 600;
+  color: var(--slate-800);
+  text-align: left;
+  transition: var(--transition);
+}
+.faq-question:hover { color: var(--blue-600); }
+.faq-toggle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--slate-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: var(--transition);
+  font-size: 18px;
+  color: var(--slate-500);
+}
+.faq-item.active .faq-toggle {
+  background: var(--blue-500);
+  color: var(--white);
+  transform: rotate(45deg);
+}
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+.faq-answer-inner {
+  padding: 0 24px 20px;
+  font-size: 14.5px;
+  color: var(--slate-600);
+  line-height: 1.9;
+}
+
+/* CTA FINAL */
+.cta-final {
+  background: linear-gradient(165deg, var(--blue-900), var(--blue-700));
+  color: var(--white);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-final::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.cta-final-content { position: relative; z-index: 1; }
+.cta-final-title {
+  font-size: clamp(26px, 4vw, 40px);
+  font-weight: 900;
+  line-height: 1.35;
+  margin-bottom: 16px;
+}
+.cta-final-desc {
+  font-size: 16px;
+  color: rgba(255,255,255,0.65);
+  margin-bottom: 40px;
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.8;
+}
+.cta-final-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 48px;
+}
+.cta-final-form {
+  max-width: 480px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  backdrop-filter: blur(8px);
+}
+.cta-form-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.cta-form-fields { display: flex; flex-direction: column; gap: 12px; }
+.cta-form-field {
+  width: 100%;
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  color: var(--white);
+  font-family: var(--font-jp);
+  font-size: 14px;
+  transition: var(--transition);
+}
+.cta-form-field::placeholder { color: rgba(255,255,255,0.35); }
+.cta-form-field:focus {
+  outline: none;
+  border-color: var(--cyan-400);
+  background: rgba(255,255,255,0.12);
+}
+.cta-form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.5)' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+.cta-form-select option { color: var(--slate-800); background: var(--white); }
+.cta-form-submit {
+  width: 100%;
+  margin-top: 4px;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--cyan-400), var(--blue-400));
+  color: var(--blue-900);
+  font-weight: 700;
+  font-size: 15px;
+  font-family: var(--font-jp);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.cta-form-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(34, 211, 238, 0.3);
+}
+.cta-form-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+.cta-form-checkbox-group {
+  text-align: left;
+}
+.cta-form-checkbox-label {
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 8px;
+}
+.cta-form-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.cta-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.85);
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.2);
+  transition: var(--transition);
+}
+.cta-checkbox:hover {
+  border-color: rgba(255,255,255,0.4);
+}
+.cta-checkbox input[type="checkbox"] {
+  accent-color: var(--cyan-400);
+  width: 16px;
+  height: 16px;
+}
+.cta-checkbox input[type="checkbox"]:checked + span {
+  color: var(--white);
+}
+.cta-form-textarea {
+  resize: vertical;
+  min-height: 70px;
+  font-family: inherit;
+}
+.cta-form-note {
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+  text-align: center;
+}
+.cta-form-message {
+  font-size: 14px;
+  text-align: center;
+  padding: 8px;
+  border-radius: 8px;
+  display: none;
+}
+.cta-form-message.success {
+  display: block;
+  color: #34d399;
+  background: rgba(52,211,153,0.1);
+}
+.cta-form-message.error {
+  display: block;
+  color: #f87171;
+  background: rgba(248,113,113,0.1);
+}
+
+/* Confirm Screen */
+.cta-form-confirm { padding: 10px 0; }
+.confirm-title { font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 20px; text-align: center; }
+.confirm-body { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+.confirm-row { display: flex; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.08); gap: 12px; }
+.confirm-row:last-child { border-bottom: none; }
+.confirm-label { font-size: 13px; color: rgba(255,255,255,0.5); min-width: 120px; flex-shrink: 0; }
+.confirm-value { font-size: 14px; color: var(--white); word-break: break-all; white-space: pre-wrap; }
+.confirm-buttons { display: flex; gap: 12px; justify-content: center; margin-top: 20px; }
+.confirm-btn-back { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: var(--white); padding: 14px 28px; border-radius: 8px; font-size: 15px; cursor: pointer; transition: 0.2s; }
+.confirm-btn-back:hover { background: rgba(255,255,255,0.1); }
+.confirm-btn-send { background: linear-gradient(135deg, var(--cyan-400), var(--blue-400)); color: var(--blue-900); padding: 14px 36px; border-radius: 8px; font-size: 15px; font-weight: 700; border: none; cursor: pointer; transition: 0.2s; }
+.confirm-btn-send:hover { opacity: 0.9; }
+.confirm-btn-send:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Done Screen */
+.cta-form-done { text-align: center; padding: 40px 20px; }
+.done-icon { font-size: 48px; margin-bottom: 16px; }
+.done-title { font-size: 22px; font-weight: 700; color: var(--white); margin-bottom: 12px; }
+.done-desc { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.8; }
+
+/* Fallback for non-production hosts */
+.cta-final-fallback { text-align: center; padding: 30px 20px; }
+.fallback-desc { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.8; margin-bottom: 24px; }
+.fallback-btn { display: inline-block; background: linear-gradient(135deg, var(--cyan-400), var(--blue-400)); color: var(--blue-900) !important; font-weight: 700; padding: 16px 36px; border-radius: 8px; font-size: 16px; }
+
+@media (max-width: 640px) {
+.confirm-row { flex-direction: column; gap: 4px; }
+.confirm-label { min-width: auto; }
+.confirm-buttons { flex-direction: column; }
+}
+
+/* FOOTER */
+.footer {
+  background: var(--slate-900);
+  padding: 48px 0;
+  text-align: center;
+}
+.footer-logo {
+  font-family: var(--font-en);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 12px;
+}
+.footer-company {
+  font-size: 14px;
+  color: var(--slate-400);
+  margin-bottom: 8px;
+}
+.footer-links {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.footer-links a {
+  font-size: 13px;
+  color: var(--slate-400);
+  transition: var(--transition);
+}
+.footer-links a:hover { color: var(--white); }
+.footer-copy {
+  font-size: 12px;
+  color: var(--slate-500);
+}
+
+/* STICKY CTA (mobile) */
+.sticky-cta {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+  border-top: 1px solid var(--slate-200);
+}
+.sticky-cta .btn { width: 100%; font-size: 15px; }
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .hero-content { grid-template-columns: 1fr; gap: 48px; }
+  .hero-visual { max-width: 520px; }
+  .feature-cards { grid-template-columns: 1fr; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .steps-timeline { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+  .steps-timeline::before { display: none; }
+  .dev-grid { grid-template-columns: 1fr; max-width: 520px; margin-left: auto; margin-right: auto; }
+}
+@media (max-width: 768px) {
+  .section-padding { padding: 72px 0; }
+  .nav-links { display: none; }
+  .mobile-menu-btn { display: block; }
+  .hero { padding: 100px 0 60px; min-height: auto; }
+  .hero-stats { gap: 24px; }
+  .hero-stat-number { font-size: 24px; }
+  .trust-items { gap: 24px; }
+  .award-details { grid-template-columns: 1fr; }
+  .problem-cards { grid-template-columns: 1fr; max-width: 440px; margin-left: auto; margin-right: auto; }
+  .solution-flow { flex-direction: column; }
+  .solution-arrow { transform: rotate(90deg); }
+  .usecase-grid { grid-template-columns: 1fr; }
+  .usecase-card { flex-direction: column; }
+  .ai-logos { gap: 16px; }
+  .ai-logo-card { width: 140px; padding: 24px 16px; }
+  .steps-timeline { grid-template-columns: 1fr; max-width: 360px; margin-left: auto; margin-right: auto; }
+  .sticky-cta { display: block; }
+  .cta-final { padding-bottom: 120px; }
+  .comparison-table { font-size: 13px; }
+  .comparison-table th, .comparison-table td { padding: 14px 16px; }
+}
+
+/* SCROLL REVEAL */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="header" id="header">
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <span class="logo-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+      </span>
+      YouWire <span class="logo-mcp">MCP Server</span>
+    </a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#problem">課題</a></li>
+        <li><a href="#features">機能</a></li>
+        <li><a href="#usecases">活用事例</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact" class="btn btn-primary nav-cta">お問い合わせ</a></li>
+      </ul>
+    </nav>
+    <button class="mobile-menu-btn" aria-label="メニュー">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          <span class="hero-badge-text">NEW — MCP連携ソリューション</span>
+        </div>
+        <h1 class="hero-title">
+          通話録音データを、<br><span class="hero-title-accent">AIの力に変える。</span>
+        </h1>
+        <p class="hero-subtitle">
+          YouWire MCP Serverは、蓄積された通話録音データをClaude・ChatGPT等のAIアシスタントに安全に接続。通話内容の検索・分析・レポート生成を、自然言語で実現します。
+        </p>
+        <div class="hero-ctas">
+          <a href="#contact" class="btn btn-primary">
+            お問い合わせ
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div>
+            <div class="hero-stat-number">350<span style="font-size:20px">+</span></div>
+            <div class="hero-stat-label">導入企業数</div>
+          </div>
+          <div>
+            <div class="hero-stat-number">700<span style="font-size:20px">+</span></div>
+            <div class="hero-stat-label">稼働拠点数</div>
+          </div>
+          <div>
+            <div class="hero-stat-number">2<span style="font-size:20px">回</span></div>
+            <div class="hero-stat-label">ASPIC総合GP</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-visual-card">
+          <div class="hero-visual-header">
+            <div class="hero-visual-avatar">🤖</div>
+            <div>
+              <div class="hero-visual-name">Claude × YouWire MCP Server</div>
+              <div class="hero-visual-sub">AI通話データアシスタント</div>
+            </div>
+          </div>
+          <div class="chat-messages">
+            <div class="chat-msg">
+              <div class="chat-msg-icon user">👤</div>
+              <div class="chat-msg-bubble user-bubble">先週の株式会社ABCとのクレーム対応通話を探して</div>
+            </div>
+            <div class="chat-msg">
+              <div class="chat-msg-icon ai">✨</div>
+              <div class="chat-msg-bubble ai-bubble">3件の該当通話が見つかりました。最も長い通話（<code>18分32秒</code>）では、納期遅延に関する苦情が確認され、担当者が代替案を提示しています。要約と改善提案をお出ししましょうか？</div>
+            </div>
+            <div class="chat-msg">
+              <div class="chat-msg-icon user">👤</div>
+              <div class="chat-msg-bubble user-bubble">お願い。あと今月の通話統計レポートも作成して</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="container">
+    <div class="trust-items">
+      <div class="trust-item">
+        <div class="trust-item-icon gold">🏆</div>
+        <div>
+          <div style="font-size:12px;color:var(--slate-400)">ASPIC Cloud Award</div>
+          <div style="font-weight:700;color:var(--slate-800)">総合グランプリ 2回受賞</div>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-item-icon blue">☁️</div>
+        <div>
+          <div style="font-size:12px;color:var(--slate-400)">AWS Partner Award 2023・2024</div>
+          <div style="font-weight:700;color:var(--slate-800)">APJ Partner of the Year 2年連続</div>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-item-icon orange">📱</div>
+        <div>
+          <div style="font-size:12px;color:var(--slate-400)">通話録音対応キャリア</div>
+          <div style="font-weight:700;color:var(--slate-800)">4大キャリア全対応</div>
+        </div>
+      </div>
+    </div>
+    <!-- Award Detail Cards -->
+    <div class="award-details">
+      <div class="award-card">
+        <div class="award-card-badge">🏆 ASPIC Cloud Award 総合グランプリ</div>
+        <div class="award-card-years">2021年・2023年 ― 異なる部門で2度受賞</div>
+        <div class="award-card-desc">総務省後援のもと日本クラウド産業協会（ASPIC）が主催する、国内最大級のクラウドサービス表彰制度です。総合グランプリは各部門で最も優秀なサービスに授与される最高賞。YouWireは<strong>データ活用系（2021年）と支援業務系（2023年）の異なる2部門で総合グランプリを獲得</strong>した唯一のサービスです。</div>
+      </div>
+      <div class="award-card">
+        <div class="award-card-badge">☁️ AWS Partner Award 2024</div>
+        <div class="award-card-years">Design Partner of the Year — APJ（アジア太平洋・日本）</div>
+        <div class="award-card-desc">AWS re:Inventで発表されるGeo and Global AWS Partner Awardsは、第三者機関Canalys社の審査を経て選出されるグローバルアワードです。APJ（アジア太平洋・日本）は日本だけでなく<strong>オーストラリア・インド・東南アジアを含む広域が対象</strong>。GeekFeedは2年連続でAPJ地域の年間パートナー賞を受賞し、2024年は<strong>YouWireのAWSアーキテクチャが評価され、基盤設計力の最高評価であるDesign Partner of the Yearに選出</strong>されました。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="problem section-padding" id="problem">
+  <div class="container">
+    <div class="text-center reveal">
+      <div class="section-label">Problem</div>
+      <h2 class="section-title">こんな「もったいない」<br>ありませんか？</h2>
+      <p class="section-desc">通話録音データは企業の貴重な資産です。しかし多くの企業で、そのデータは「録って終わり」になっています。</p>
+    </div>
+    <div class="problem-cards">
+      <div class="problem-card reveal">
+        <div class="problem-card-icon">📦</div>
+        <div class="problem-card-title">蓄積されるだけの<br>通話録音データ</div>
+        <div class="problem-card-desc">録音はしているものの、聞き返す以外に活用方法がない。VOCデータが眠ったままで、顧客対応の改善につながっていない。</div>
+      </div>
+      <div class="problem-card reveal">
+        <div class="problem-card-icon">🔌</div>
+        <div class="problem-card-title">AIツールを入れたのに<br>通話データだけ連携できない</div>
+        <div class="problem-card-desc">ChatGPTやClaudeを業務で使い始めたが、通話録音データだけがAIに繋がらない。個別のAPI開発はコストも時間もかかりすぎる。</div>
+      </div>
+      <div class="problem-card reveal">
+        <div class="problem-card-icon">⏱️</div>
+        <div class="problem-card-title">通話レビューに<br>膨大な工数がかかる</div>
+        <div class="problem-card-desc">品質管理やコンプライアンスチェックのために、スーパーバイザーが録音を手動で確認。1件あたり数十分、月に数百件の確認作業が発生。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section class="solution section-padding" id="solution">
+  <div class="container">
+    <div class="text-center reveal">
+      <div class="section-label">Solution</div>
+      <h2 class="section-title">YouWire MCP Serverが、<br>通話データとAIを繋ぐ</h2>
+      <p class="section-desc">既存のYouWire環境にMCP連携を追加するだけ。<br>電話システムの変更は不要です。</p>
+    </div>
+    <div class="solution-flow reveal">
+      <div class="solution-step">
+        <div class="solution-step-num">STEP 01</div>
+        <div class="solution-step-icon s1">📞</div>
+        <div class="solution-step-title">YouWireが自動録音<br>&amp; テキスト化</div>
+        <div class="solution-step-desc">携帯・固定・Web会議、あらゆるチャネルの通話を録音し、AIが自動で文字起こし</div>
+      </div>
+      <div class="solution-arrow">→</div>
+      <div class="solution-step">
+        <div class="solution-step-num">STEP 02</div>
+        <div class="solution-step-icon s2">🔗</div>
+        <div class="solution-step-title">MCPが安全に<br>データを公開</div>
+        <div class="solution-step-desc">MCP（Model Context Protocol）がAIとの接続を標準化。OAuth 2.1による安全な認証</div>
+      </div>
+      <div class="solution-arrow">→</div>
+      <div class="solution-step">
+        <div class="solution-step-num">STEP 03</div>
+        <div class="solution-step-icon s3">🤖</div>
+        <div class="solution-step-title">AIが自然言語で<br>検索・分析・生成</div>
+        <div class="solution-step-desc">Claude / ChatGPT等で、通話の検索・要約・統計レポート生成を対話形式で実行</div>
+      </div>
+    </div>
+    <div class="solution-mcp-note reveal">
+      <div class="solution-mcp-note-icon">💡</div>
+      <div class="solution-mcp-note-text">
+        <strong>MCPとは？</strong> —
+        Anthropic社が開発し、OpenAI・Google・Microsoftが採用する<strong>AIツール連携のオープン標準プロトコル</strong>です。2025年にLinux Foundation傘下のAgentic AI Foundationに寄贈され、月間SDKダウンロード数9,700万以上。業界標準として急速に普及しています。YouWire MCP Serverはこの標準に準拠し、特定のAIベンダーにロックインされない柔軟な連携を実現します。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features section-padding" id="features">
+  <div class="container">
+    <div class="text-center reveal">
+      <div class="section-label">Features</div>
+      <h2 class="section-title">AIへの指示だけで、<br>通話データが動き出す</h2>
+      <p class="section-desc">自然言語で通話データを検索・分析。定型業務は「スキル」として保存し、何度でも再利用できます。</p>
+    </div>
+    <div class="feature-cards">
+      <div class="feature-card reveal">
+        <div class="feature-card-visual v1">
+          <div class="feature-demo">
+            <div class="prompt-text">▶ 「先月の〇〇社との通話を探して」</div>
+            <div style="margin-top:8px">
+              <span class="dim">─── 検索結果 ───</span><br>
+              <span class="result-text">✓ 5件の通話を発見</span><br>
+              <span class="dim">  2/1 着信 12:03 (8m32s)</span><br>
+              <span class="dim">  2/3 発信 15:21 (4m15s)</span><br>
+              <span class="dim">  ...</span>
+            </div>
+          </div>
+        </div>
+        <div class="feature-card-body">
+          <span class="feature-card-tag blue">スマート検索</span>
+          <div class="feature-card-title">自然言語で<br>通話データ検索</div>
+          <div class="feature-card-desc">日付・相手先・キーワードなど、複合条件の検索も「AIに聞く」だけ。該当通話の特定から内容要約まで一気通貫で実行します。</div>
+        </div>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-card-visual v2">
+          <div class="feature-demo">
+            <div class="prompt-text">▶ 「今週の通話統計レポートを作成」</div>
+            <div style="margin-top:8px">
+              <span class="dim">─── 統計レポート ───</span><br>
+              <span class="result-text">📊 総通話数: 342件</span><br>
+              <span class="dim">  着信: 198 / 発信: 144</span><br>
+              <span class="dim">  平均通話時間: 6m24s</span><br>
+              <span class="result-text">📈 前週比 +12%</span>
+            </div>
+          </div>
+        </div>
+        <div class="feature-card-body">
+          <span class="feature-card-tag green">自動レポート</span>
+          <div class="feature-card-title">統計レポートを<br>自動生成</div>
+          <div class="feature-card-desc">日次・週次・月次の統計レポートを「スキル」として保存。同じフォーマットで何度でも自動生成。定型業務の工数を大幅に削減します。</div>
+        </div>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-card-visual v3">
+          <div class="feature-demo">
+            <div class="prompt-text">▶ 対応AIツール一覧</div>
+            <div style="margin-top:8px">
+              <span class="result-text">✓ Claude Desktop / Web</span><br>
+              <span class="result-text">✓ ChatGPT</span><br>
+              <span class="result-text">✓ Gemini</span><br>
+              <span class="result-text">✓ Slack (Claude App)</span><br>
+              <span class="dim">+ その他MCP対応ツール</span>
+            </div>
+          </div>
+        </div>
+        <div class="feature-card-body">
+          <span class="feature-card-tag purple">マルチAI</span>
+          <div class="feature-card-title">お使いのAIツールで<br>すぐに利用開始</div>
+          <div class="feature-card-desc">特定のAIベンダーにロックインされません。Claude、ChatGPT、Gemini、Slack。お客様が使いたいAIツールで、すぐに利用を開始できます。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MID CTA -->
+<div class="mid-cta">
+  <div class="container">
+    <div class="mid-cta-text">AIが通話データを活用する世界を、まずはご相談から</div>
+    <div class="mid-cta-buttons">
+      <a href="#contact" class="btn btn-primary">お問い合わせ →</a>
+    </div>
+  </div>
+</div>
+
+<!-- USE CASES -->
+<section class="usecases section-padding" id="usecases">
+  <div class="container">
+    <div class="text-center reveal">
+      <div class="section-label">Use Cases</div>
+      <h2 class="section-title">あらゆる業種で、<br>通話データが「働く」</h2>
+    </div>
+    <div class="usecase-grid">
+      <div class="usecase-card reveal">
+        <div class="usecase-icon uc1">🏦</div>
+        <div class="usecase-body">
+          <div class="usecase-industry">金融機関</div>
+          <div class="usecase-title">コンプライアンス監査の通話確認時間を大幅削減</div>
+          <div class="usecase-desc">AIが通話内容を自動チェックし、コンプライアンスワードを検出。監査対象の通話を自動抽出し、手作業による確認工数を削減します。</div>
+          <div class="usecase-metric">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
+            確認時間 最大80%削減
+          </div>
+        </div>
+      </div>
+      <div class="usecase-card reveal">
+        <div class="usecase-icon uc2">🎧</div>
+        <div class="usecase-body">
+          <div class="usecase-industry">コールセンター</div>
+          <div class="usecase-title">後処理時間を大幅短縮、通話要約をSlackに自動通知</div>
+          <div class="usecase-desc">通話終了後、AIが要約を自動生成してSlackに通知。オペレーターの後処理時間を削減し、スーパーバイザーの品質確認を効率化します。</div>
+          <div class="usecase-metric">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
+            後処理時間 1/10に短縮
+          </div>
+        </div>
+      </div>
+      <div class="usecase-card reveal">
+        <div class="usecase-icon uc3">🏢</div>
+        <div class="usecase-body">
+          <div class="usecase-industry">営業部門</div>
+          <div class="usecase-title">成約につながる通話パターンをAIが分析</div>
+          <div class="usecase-desc">成約・失注パターンの通話データをAIが横断分析。成功する営業トークの特徴を可視化し、チーム全体のスキル向上に活用できます。</div>
+          <div class="usecase-metric">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
+            成約率 20%向上
+          </div>
+        </div>
+      </div>
+      <div class="usecase-card reveal">
+        <div class="usecase-icon uc4">🏛️</div>
+        <div class="usecase-body">
+          <div class="usecase-industry">自治体・公共機関</div>
+          <div class="usecase-title">市民からの電話内容を自動分類・業務仕分け</div>
+          <div class="usecase-desc">住民からの問い合わせ通話をAIがタグ付け・分類。部署横断的な問い合わせ傾向の把握と、業務改善のための分析基盤を構築します。</div>
+          <div class="usecase-metric">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
+            分類作業の自動化
+          </div>
+        </div>
+      </div>
+      <div class="usecase-card reveal">
+        <div class="usecase-icon uc5">🛡️</div>
+        <div class="usecase-body">
+          <div class="usecase-industry">人事・リスク管理</div>
+          <div class="usecase-title">カスハラ・パワハラをAIが自動検出・アラート</div>
+          <div class="usecase-desc">通話内容からハラスメントに該当する表現・パターンをAIが自動検出。カスタマーハラスメントや社内パワハラの早期発見と、エビデンスに基づく対応を支援します。</div>
+          <div class="usecase-metric">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
+            ハラスメント早期検出
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI TOOLS -->
+<section class="ai-tools section-padding">
+  <div class="container">
+    <div class="text-center reveal">
+      <div class="section-label">Multi-AI Support</div>
+      <h2 class="section-title">主要AIツールすべてに対応</h2>
+      <p class="section-desc">特定ベンダーへのロックインなし。<br>お客様の環境に合わせた柔軟な構成が可能です。</p>
+    </div>
+    <div class="ai-logos reveal">
+      <div class="ai-logo-card featured">
+        <div class="ai-logo-icon amazonq">🟡</div>
+        <div class="ai-logo-name">Amazon<br>Quick Suite</div>
+        <div class="ai-logo-status">動作確認済</div>
+      </div>
+      <div class="ai-logo-card">
+        <div class="ai-logo-icon claude">🟠</div>
+        <div class="ai-logo-name">Claude</div>
+        <div class="ai-logo-status">動作確認済</div>
+      </div>
+      <div class="ai-logo-card">
+        <div class="ai-logo-icon chatgpt">🟢</div>
+        <div class="ai-logo-name">ChatGPT</div>
+        <div class="ai-logo-status">動作確認済</div>
+      </div>
+      <div class="ai-logo-card">
+        <div class="ai-logo-icon gemini">🔵</div>
+        <div class="ai-logo-name">Gemini</div>
+        <div class="ai-logo-status">動作確認済</div>
+      </div>
+      <div class="ai-logo-card">
+        <div class="ai-logo-icon slack">💬</div>
+        <div class="ai-logo-name">Slack連携</div>
+        <div class="ai-logo-status">動作確認済</div>
+        <div class="ai-logo-note">Claude / ChatGPT<br>App on Slack</div>
+      </div>
+    </div>
+    <div class="ai-note reveal">MCP対応のAIツールであれば、今後も順次対応を拡大していきます。</div>
+  </div>
+</section>
+
+<!-- WHY YouWire MCP Server -->
+<section class="comparison section-padding" id="comparison">
+  <div class="container">
+    <div class="text-center reveal">
+      <div class="section-label">Why YouWire MCP Server</div>
+      <h2 class="section-title">YouWire MCP Serverが選ばれる理由</h2>
+      <p class="section-desc">通話録音データをAIエージェントに接続するMCPサービスは、<br>世界的にもYouWire MCP Serverが唯一の存在です。</p>
+    </div>
+    <div class="why-grid reveal">
+      <div class="why-card">
+        <div class="why-icon">🌐</div>
+        <div class="why-title">全通話チャネル統合</div>
+        <div class="why-desc">固定電話・携帯電話・IP電話・Web会議・対面会議。通話環境を問わず、すべての音声データを1つのMCPサーバーに統合。既存の電話システムの変更は不要です。</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🤖</div>
+        <div class="why-title">マルチAI対応</div>
+        <div class="why-desc">Claude・ChatGPT・Gemini・Amazon Quick Suite・Slackなど主要AIツールすべてに対応。特定ベンダーへのロックインがなく、お客様の環境に合わせて自由に選択できます。</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🔒</div>
+        <div class="why-title">エンタープライズセキュリティ</div>
+        <div class="why-desc">OAuth 2.1 + PKCE準拠（6つのRFC準拠）、TLS 1.3暗号化、読み取り専用API設計でデータ改変・削除リスクがゼロ。生成AIエージェントのIPアドレス制限による接続元制御にも対応。暗号学的256bitセッションID・1時間セッションタイムアウト・SQLインジェクション対策（パラメータバインディング）・レート制限も標準実装。</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🛡️</div>
+        <div class="why-title">4段階アクセス制御</div>
+        <div class="why-desc">「自分のみ → グループ → グループ配下 → 全社」の4段階権限制御。既存YouWireの権限設定がそのまま継承され、情報漏洩リスクを最小化します。</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">⚙️</div>
+        <div class="why-title">高信頼性アーキテクチャ</div>
+        <div class="why-desc">Circuit Breaker・Exponential Backoff with Jitter・コネクションプーリングを実装し、障害時も自動復旧。エンタープライズ品質の安定稼働を実現します。</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🏢</div>
+        <div class="why-title">350社超の導入実績</div>
+        <div class="why-desc">金融機関を含む350社以上・700拠点以上の稼働実績を持つYouWire基盤。ASPIC IoT・AI・クラウドアワードグランプリ2度受賞の信頼性が土台です。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEVELOPMENT CAPABILITY -->
+<section class="dev-capability section-padding">
+  <div class="container">
+    <div class="text-center reveal">
+      <div class="section-label">Development</div>
+      <h2 class="section-title">MCP導入だけでなく、<br>その先の開発もワンストップで</h2>
+      <p class="section-desc">GeekFeedはYouWireの自社開発チームです。<br>MCP接続の構築から、御社独自AIエージェント開発まで一気通貫で対応します。</p>
+    </div>
+    <div class="dev-grid reveal">
+      <div class="dev-card">
+        <div class="dev-icon">🤖</div>
+        <div class="dev-title">カスタムAIエージェント開発</div>
+        <div class="dev-desc">お客様の業務フローに最適化した独自AIエージェントを開発。YouWire MCP Serverをデータソースとして、Salesforce・CRM・社内システムとの連携も含めた統合ソリューションを構築します。</div>
+      </div>
+      <div class="dev-card">
+        <div class="dev-icon">💬</div>
+        <div class="dev-title">Slack Bot・社内ツール開発</div>
+        <div class="dev-desc">Slack上で通話データを活用できるカスタムBotや、社内ポータル向けのAI分析ダッシュボードなど、日常業務に溶け込む形でのAI活用をご提案・開発します。</div>
+      </div>
+      <div class="dev-card">
+        <div class="dev-icon">☁️</div>
+        <div class="dev-title">AWS基盤の設計・構築</div>
+        <div class="dev-desc">AWSパートナーとしての豊富な実績を活かし、セキュアで可用性の高いクラウド基盤をご提供。Amazon Quick Suiteとの連携構築もお任せください。</div>
+      </div>
+      <div class="dev-card">
+        <div class="dev-icon">🔗</div>
+        <div class="dev-title">AIエージェント開発ベンダー向け接続検証</div>
+        <div class="dev-desc">MCPサーバーを通じてビジネス音声蓄積データを活用したい、各業界のAIエージェント開発ベンダーからの接続検証のご相談も受け付けています。御社のAIエージェントとYouWire MCP Serverの技術検証を共同で実施します。</div>
+      </div>
+    </div>
+    <div class="dev-bottom reveal">
+      <div class="dev-badge">自社開発だからできること</div>
+      <p class="dev-tagline">「こんなことできる？」から始まるご相談を歓迎します。<br>通話データ × AIの可能性を、開発力で形にします。</p>
+    </div>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section class="steps section-padding" id="steps">
+  <div class="container">
+    <div class="text-center reveal">
+      <div class="section-label">Getting Started</div>
+      <h2 class="section-title">ご導入の流れ</h2>
+      <p class="section-desc">自社開発だからこそのスピード導入。<br>最短2週間で運用開始が可能です。</p>
+    </div>
+    <div class="steps-timeline reveal">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div class="step-title">お問い合わせ・<br>ヒアリング</div>
+        <div class="step-desc">現在の通話環境やAI利用状況を確認</div>
+        <div class="step-duration">1〜3営業日</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-title">MCPサーバー<br>構築</div>
+        <div class="step-desc">既存YouWire環境にMCP接続を追加構築</div>
+        <div class="step-duration">3〜7営業日</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div class="step-title">AIツール<br>接続設定</div>
+        <div class="step-desc">Claude / ChatGPT等との連携を設定</div>
+        <div class="step-duration">1〜3営業日</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div class="step-title">運用開始・<br>スキル設定</div>
+        <div class="step-desc">業務に合わせたスキルを設定し運用開始</div>
+        <div class="step-duration">継続サポート</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq section-padding" id="faq">
+  <div class="container">
+    <div class="text-center reveal">
+      <div class="section-label">FAQ</div>
+      <h2 class="section-title">よくあるご質問</h2>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          既存のYouWire環境がなくても利用できますか？
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">YouWire MCP Serverは、YouWireの通話録音基盤と組み合わせてご利用いただくサービスです。YouWireを未導入の場合は、録音環境の構築とMCP連携をセットでご提案いたします。現在の通話環境に応じた最適なプランをお見積もりいたしますので、まずはお気軽にお問い合わせください。</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          利用にはどのAIツールの契約が必要ですか？
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Claude、ChatGPT、Gemini、Amazon Quick Suite（Amazon Q Business / Amazon Q Developer）など、MCP対応のAIツールのアカウントが別途必要です。AIツールの利用料はお客様のアカウントでの直接契約となります。どのAIツールを選べばよいかのご相談も承っておりますので、お気軽にお問い合わせください。</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          通話データのセキュリティはどう担保されますか？
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">YouWireはISMS（ISO 27001）認証を取得しており、通話データの暗号化、改ざん防止機能を標準搭載しています。MCP接続にはOAuth 2.1による認証を採用し、許可されたAIツールのみがデータにアクセスできる設計です。さらに、生成AIエージェントのIPアドレスによる接続元制限にも対応しています。メガバンクグループや地方銀行、証券会社への導入実績があり、金融業界のセキュリティ要件にも対応しています。</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          「スキル」とは何ですか？
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">スキルとは、よく使う操作をプロンプトテンプレートとして保存する機能です。例えば「週次の通話統計レポートを特定のフォーマットで生成する」「通話内容から特定のカテゴリでタグ付けする」といった定型業務をスキルとして登録しておけば、毎回プロンプトを書く必要がなく、ワンクリックで同じ品質のアウトプットを得られます。</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          既存の電話システムを変更する必要がありますか？
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">いいえ、不要です。YouWire MCP Serverは、既存のYouWire録音環境にMCP接続を追加するだけで利用を開始できます。固定電話、携帯電話、IP電話、Web会議ツール（Teams、Zoom等）など、現在お使いの通話環境をそのまま活かせることがYouWire MCP Serverの大きな特長です。</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          料金体系はどうなっていますか？
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">YouWire MCP Serverの料金は、ご利用規模やYouWireの既存ご契約状況に応じて個別にお見積もりいたします。なお、AIツール（Claude、ChatGPT等）の利用料は別途お客様のアカウントでの直接契約となります。詳しくはお問い合わせフォームよりご相談ください。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final section-padding" id="contact">
+  <div class="container">
+    <div class="cta-final-content reveal">
+      <h2 class="cta-final-title">通話録音データが、<br>はじめて本当に"使える"データに。</h2>
+      <p class="cta-final-desc">まずはお気軽にご相談ください。AIが通話データを活用する世界をご紹介します。</p>
+      <div class="cta-final-form" id="ctaFormArea">
+        <div class="cta-form-title">📩 お問い合わせ・無料デモのお申し込み</div>
+        <!-- STEP 1: 入力フォーム -->
+        <form class="cta-form-fields" id="mcpContactForm">
+          <input type="hidden" name="checkbox-981[]" value="MCP Server">
+          <input type="text" name="company-name" class="cta-form-field" placeholder="会社名 *" required>
+          <input type="text" name="your-name" class="cta-form-field" placeholder="お名前 *" required>
+          <input type="tel" name="your-tel" class="cta-form-field" placeholder="電話番号 *" required>
+          <input type="email" name="your-email" class="cta-form-field" placeholder="メールアドレス *" required>
+          <input type="email" name="your-email_confirm" class="cta-form-field" placeholder="メールアドレス（確認） *" required>
+          <div class="cta-form-checkbox-group">
+            <div class="cta-form-checkbox-label">ご要望（複数可）*</div>
+            <div class="cta-form-checkboxes">
+              <label class="cta-checkbox"><input type="checkbox" name="checkbox-552[]" value="資料請求"><span>資料請求</span></label>
+              <label class="cta-checkbox"><input type="checkbox" name="checkbox-552[]" value="詳細説明希望" checked><span>詳細説明希望</span></label>
+              <label class="cta-checkbox"><input type="checkbox" name="checkbox-552[]" value="トライアル希望"><span>トライアル希望</span></label>
+              <label class="cta-checkbox"><input type="checkbox" name="checkbox-552[]" value="お見積り依頼"><span>お見積り依頼</span></label>
+              <label class="cta-checkbox"><input type="checkbox" name="checkbox-552[]" value="代理店希望"><span>代理店希望</span></label>
+              <label class="cta-checkbox"><input type="checkbox" name="checkbox-552[]" value="その他"><span>その他</span></label>
+            </div>
+          </div>
+          <textarea name="your-message" class="cta-form-field cta-form-textarea" placeholder="ご要望・ご質問など（任意）" rows="3"></textarea>
+          <input type="hidden" name="your-subject" value="【YouWire MCP Server LP】お問い合わせ">
+          <div class="cta-form-note">※ 送信内容はYouWireお問い合わせ窓口に届きます</div>
+          <label class="cta-checkbox cta-form-acceptance">
+            <input type="checkbox" name="acceptance-253" id="acceptanceCheck" required>
+            <span>個人情報の取り扱いに同意する（<a href="https://www.geekfeed.co.jp/%e3%83%97%e3%83%a9%e3%82%a4%e3%83%90%e3%82%b7%e3%83%bc%e3%83%9d%e3%83%aa%e3%82%b7%e3%83%bc/" target="_blank" rel="noopener" style="color:var(--cyan-300);text-decoration:underline;">ポリシー</a>）*</span>
+          </label>
+          <button type="submit" class="cta-form-submit">入力内容を確認 →</button>
+          <div class="cta-form-message" id="mcpFormMessage"></div>
+        </form>
+        <!-- STEP 2: 確認画面 -->
+        <div class="cta-form-confirm" id="mcpConfirm" style="display:none;">
+          <div class="confirm-title">📋 入力内容のご確認</div>
+          <div class="confirm-body" id="confirmBody"></div>
+          <div class="confirm-buttons">
+            <button type="button" class="confirm-btn-back" id="confirmBack">← 修正する</button>
+            <button type="button" class="confirm-btn-send" id="confirmSend">送信する →</button>
+          </div>
+          <div class="cta-form-message" id="mcpConfirmMessage"></div>
+        </div>
+        <!-- STEP 3: 送信完了 -->
+        <div class="cta-form-done" id="mcpDone" style="display:none;">
+          <div class="done-icon">✅</div>
+          <div class="done-title">送信が完了しました</div>
+          <div class="done-desc">お問い合わせありがとうございます。<br>担当者より折り返しご連絡いたします。<br>通常1〜2営業日以内にご返信いたします。</div>
+        </div>
+      </div>
+      <!-- FALLBACK: GitHub Pages等、外部ホスト用 -->
+      <div class="cta-final-fallback" id="ctaFallbackArea" style="display:none;">
+        <div class="cta-form-title">📩 お問い合わせ</div>
+        <p class="fallback-desc">YouWire MCP Serverに関するご質問・デモのお申し込みは<br>下記よりお問い合わせください。</p>
+        <a id="fallbackLink" href="https://www.youwire.jp/contact/" class="btn btn-primary fallback-btn">YouWire お問い合わせページへ →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-logo">YouWire MCP Server</div>
+    <div class="footer-company">開発・提供：株式会社ギークフィード</div>
+    <div class="footer-links">
+      <a href="https://www.youwire.jp/">YouWire トップ</a>
+      <a href="https://www.youwire.jp/about/">YouWireの紹介</a>
+      <a href="https://www.youwire.jp/company/">会社概要</a>
+      <a href="https://www.youwire.jp/contact/">お問い合わせ</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 GeekFeed Inc. All rights reserved.</div>
+  </div>
+</footer>
+
+<!-- STICKY CTA (mobile) -->
+<div class="sticky-cta" id="stickyCta">
+  <a href="#contact" class="btn btn-primary">お問い合わせ →</a>
+</div>
+
+<script>
+const header = document.getElementById('header');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+function toggleFaq(btn) {
+  const item = btn.parentElement;
+  const answer = item.querySelector('.faq-answer');
+  const isActive = item.classList.contains('active');
+  document.querySelectorAll('.faq-item').forEach(i => {
+    i.classList.remove('active');
+    i.querySelector('.faq-answer').style.maxHeight = '0';
+  });
+  if (!isActive) {
+    item.classList.add('active');
+    answer.style.maxHeight = answer.scrollHeight + 'px';
+  }
+}
+
+const revealElements = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+revealElements.forEach(el => revealObserver.observe(el));
+
+const stickyCta = document.getElementById('stickyCta');
+const contactSection = document.getElementById('contact');
+window.addEventListener('scroll', () => {
+  if (window.innerWidth > 768) return;
+  const contactRect = contactSection.getBoundingClientRect();
+  stickyCta.style.transform = contactRect.top < window.innerHeight ? 'translateY(100%)' : 'translateY(0)';
+  stickyCta.style.transition = '0.3s ease';
+});
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// Host Detection & Form/Fallback Switch
+const isProduction = window.location.hostname === 'www.youwire.jp';
+const ctaFormArea = document.getElementById('ctaFormArea');
+const ctaFallbackArea = document.getElementById('ctaFallbackArea');
+
+if (isProduction) {
+  ctaFormArea.style.display = '';
+  ctaFallbackArea.style.display = 'none';
+} else {
+  ctaFormArea.style.display = 'none';
+  ctaFallbackArea.style.display = '';
+  // Add UTM params to fallback link
+  const fallbackLink = document.getElementById('fallbackLink');
+  const params = new URLSearchParams(window.location.search);
+  params.set('fromlp', 'lp_mcpserver1');
+  fallbackLink.href = 'https://www.youwire.jp/contact/?' + params.toString();
+}
+
+// CF7 Form: Confirm → Send → Done
+const mcpForm = document.getElementById('mcpContactForm');
+const mcpMsg = document.getElementById('mcpFormMessage');
+const mcpConfirm = document.getElementById('mcpConfirm');
+const confirmBody = document.getElementById('confirmBody');
+const confirmBack = document.getElementById('confirmBack');
+const confirmSend = document.getElementById('confirmSend');
+const confirmMsg = document.getElementById('mcpConfirmMessage');
+const mcpDone = document.getElementById('mcpDone');
+
+let formDataCache = null;
+
+// STEP 1: Validate → Show Confirm
+mcpForm.addEventListener('submit', function(e) {
+  e.preventDefault();
+  mcpMsg.className = 'cta-form-message';
+  mcpMsg.style.display = 'none';
+
+  const em = mcpForm.querySelector('[name="your-email"]').value;
+  const emC = mcpForm.querySelector('[name="your-email_confirm"]').value;
+  if (em !== emC) {
+    mcpMsg.textContent = 'メールアドレスが一致しません。再度ご確認ください。';
+    mcpMsg.className = 'cta-form-message error';
+    return;
+  }
+
+  const checked = mcpForm.querySelectorAll('[name="checkbox-552[]"]:checked');
+  if (checked.length === 0) {
+    mcpMsg.textContent = 'ご要望を1つ以上選択してください。';
+    mcpMsg.className = 'cta-form-message error';
+    return;
+  }
+  if (!document.getElementById('acceptanceCheck').checked) {
+    mcpMsg.textContent = '個人情報の取り扱いへの同意が必要です。';
+    mcpMsg.className = 'cta-form-message error';
+    return;
+  }
+
+  // Build confirm display
+  const vals = {
+    '会社名': mcpForm.querySelector('[name="company-name"]').value,
+    'お名前': mcpForm.querySelector('[name="your-name"]').value,
+    '電話番号': mcpForm.querySelector('[name="your-tel"]').value,
+    'メールアドレス': em,
+    'ご要望': Array.from(checked).map(cb => cb.value).join('、'),
+    'メッセージ': mcpForm.querySelector('[name="your-message"]').value || '（なし）'
+  };
+
+  confirmBody.innerHTML = Object.entries(vals).map(([k, v]) =>
+    '<div class="confirm-row"><div class="confirm-label">' + k + '</div><div class="confirm-value">' + v.replace(/</g, '&lt;') + '</div></div>'
+  ).join('');
+
+  // Cache FormData
+  formDataCache = new FormData();
+  formDataCache.append('company-name', vals['会社名']);
+  formDataCache.append('your-name', vals['お名前']);
+  formDataCache.append('your-tel', vals['電話番号']);
+  formDataCache.append('your-email', em);
+  formDataCache.append('your-email_confirm', emC);
+  formDataCache.append('checkbox-981[]', 'MCP Server');
+  checked.forEach(cb => formDataCache.append('checkbox-552[]', cb.value));
+  formDataCache.append('your-subject', '【YouWire MCP Server LP】お問い合わせ');
+  const msg = mcpForm.querySelector('[name="your-message"]').value;
+  const pageUrl = window.location.href;
+  const sep = pageUrl.includes('?') ? '&' : '?';
+  formDataCache.append('your-message', (msg || '') + '\n\nフォーム表示URL: ' + pageUrl + sep + 'fromlp=lp_mcpserver1');
+  formDataCache.append('acceptance-253', '1');
+  formDataCache.append('your-current-url', pageUrl + sep + 'fromlp=lp_mcpserver1');
+
+  // Show confirm, hide form
+  mcpForm.style.display = 'none';
+  mcpConfirm.style.display = '';
+  mcpConfirm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+// STEP 2a: Back to form
+confirmBack.addEventListener('click', function() {
+  mcpConfirm.style.display = 'none';
+  mcpForm.style.display = '';
+  confirmMsg.className = 'cta-form-message';
+  confirmMsg.style.display = 'none';
+});
+
+// STEP 2b: Send
+confirmSend.addEventListener('click', async function() {
+  confirmSend.disabled = true;
+  confirmSend.textContent = '送信中...';
+  confirmMsg.className = 'cta-form-message';
+  confirmMsg.style.display = 'none';
+
+  try {
+    const res = await fetch('/wp-json/contact-form-7/v1/contact-forms/e03d747/feedback', {
+      method: 'POST',
+      body: formDataCache
+    });
+    const data = await res.json();
+
+    if (data.status === 'mail_sent') {
+      // STEP 3: Show Done
+      mcpConfirm.style.display = 'none';
+      mcpDone.style.display = '';
+      mcpDone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      mcpForm.reset();
+    } else {
+      confirmMsg.textContent = '送信に失敗しました: ' + (data.message || 'もう一度お試しください。');
+      confirmMsg.className = 'cta-form-message error';
+      confirmSend.disabled = false;
+      confirmSend.textContent = '送信する →';
+    }
+  } catch (err) {
+    confirmMsg.textContent = '通信エラーが発生しました。時間を置いて再度お試しください。';
+    confirmMsg.className = 'cta-form-message error';
+    confirmSend.disabled = false;
+    confirmSend.textContent = '送信する →';
+  }
+});
+</script>
+</body>
+</html>
