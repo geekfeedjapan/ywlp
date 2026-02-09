@@ -2409,12 +2409,20 @@ mcpForm.addEventListener('submit', function(e) {
 
   // Cache FormData
   formDataCache = new FormData();
-  formDataCache.append('_wpcf7_unit_tag', 'wpcf7-f3051-o1');
-  formDataCache.append('_wpcf7cf_hidden_group_fields', '');
-  formDataCache.append('_wpcf7cf_hidden_groups', '');
-  formDataCache.append('_wpcf7cf_visible_groups', '');
-  formDataCache.append('_wpcf7cf_repeaters', '');
-  formDataCache.append('_wpcf7cf_steps', '');
+  // CF7 core hidden fields (must match WordPress form)
+  formDataCache.append('_wpcf7', '3051');
+  formDataCache.append('_wpcf7_version', '6.0.6');
+  formDataCache.append('_wpcf7_locale', 'ja');
+  formDataCache.append('_wpcf7_unit_tag', 'wpcf7-f3051-p74-o1');
+  formDataCache.append('_wpcf7_container_post', '74');
+  formDataCache.append('_wpcf7_posted_data_hash', '');
+  // CF7 Conditional Fields (values must be JSON, not empty string)
+  formDataCache.append('_wpcf7cf_hidden_group_fields', '[]');
+  formDataCache.append('_wpcf7cf_hidden_groups', '[]');
+  formDataCache.append('_wpcf7cf_visible_groups', '[]');
+  formDataCache.append('_wpcf7cf_repeaters', '[]');
+  formDataCache.append('_wpcf7cf_steps', '{}');
+  formDataCache.append('_wpcf7cf_options', JSON.stringify({"form_id":3051,"conditions":[{"then_field":"group-1","and_rules":[{"if_field":"checkbox-552","operator":"equals","if_value":"資料請求"}]},{"then_field":"group-2","and_rules":[{"if_field":"checkbox-552","operator":"equals","if_value":"お見積り依頼"}]},{"then_field":"group-3","and_rules":[{"if_field":"checkbox-552","operator":"equals","if_value":"トライアル希望"}]},{"then_field":"group-4","and_rules":[{"if_field":"checkbox-552","operator":"equals","if_value":"代理店希望"}]},{"then_field":"group-5","and_rules":[{"if_field":"checkbox-552","operator":"equals","if_value":"詳細説明希望"}]},{"then_field":"group-6","and_rules":[{"if_field":"checkbox-552","operator":"equals","if_value":"その他"}]}],"settings":{"animation":"yes","animation_intime":"200","animation_outtime":"200","conditions_ui":"normal","notice_dismissed":"true"}}));
   formDataCache.append('company-name', vals['会社名']);
   formDataCache.append('your-name', vals['お名前']);
   formDataCache.append('your-tel', vals['電話番号']);
@@ -2453,7 +2461,7 @@ confirmSend.addEventListener('click', async function() {
 
   try {
     // Get reCAPTCHA v3 token
-    const recaptchaToken = await grecaptcha.execute('6Lfn_QYsAAAAANjV1mJqtERXBaHZix8LyQQiiK3_', { action: 'wpcf7_submit' });
+    const recaptchaToken = await grecaptcha.execute('6Lfn_QYsAAAAANjV1mJqtERXBaHZix8LyQQiiK3_', { action: 'contactform' });
     formDataCache.append('_wpcf7_recaptcha_response', recaptchaToken);
 
     const res = await fetch('/wp-json/contact-form-7/v1/contact-forms/3051/feedback', {
@@ -2471,12 +2479,14 @@ confirmSend.addEventListener('click', async function() {
     } else {
       confirmMsg.textContent = '送信に失敗しました: ' + (data.message || 'もう一度お試しください。');
       confirmMsg.className = 'cta-form-message error';
+      confirmMsg.style.display = '';
       confirmSend.disabled = false;
       confirmSend.textContent = '送信する →';
     }
   } catch (err) {
     confirmMsg.textContent = '通信エラーが発生しました。時間を置いて再度お試しください。';
     confirmMsg.className = 'cta-form-message error';
+    confirmMsg.style.display = '';
     confirmSend.disabled = false;
     confirmSend.textContent = '送信する →';
   }
