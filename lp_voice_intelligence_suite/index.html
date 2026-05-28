@@ -1,0 +1,751 @@
+<style>
+.vis-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 48px;
+  height: 80px;
+  background: rgba(255,255,255,.95);
+  border-bottom: 1px solid #dde3ec;
+  box-shadow: 0 1px 12px rgba(0,0,0,.06);
+}
+.vis-nav .nav-menu {
+  display: flex;
+  gap: 60px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.vis-nav .nav-menu a {
+  color: #5a6e88;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+}
+.vis-nav .nav-menu a:hover { color: #00bdb2; }
+.vis-nav .nav-btn {
+  padding: 9px 22px;
+  border-radius: 6px;
+  background: #00bdb2;
+  color: #fff;
+  font-weight: 700;
+  font-size: .82rem;
+  text-decoration: none;
+  letter-spacing: .04em;
+}
+</style>
+
+<div class="vis-wrap">
+<nav class="vis-nav">
+  <ul class="nav-menu">
+    <li><a href="#problems">課題</a></li>
+    <li><a href="#solution">ユースケース</a></li>
+    <li><a href="#platform">プラットフォーム</a></li>
+    <li><a href="#mcp">MCP連携</a></li>
+    <li><a href="#howto">導入の流れ</a></li>
+  </ul>
+</nav>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+  --bg:#ffffff;
+  --bg2:#f5f7fa;
+  --bg3:#edf0f5;
+  --navy:#0d1a2e;
+  --cyan:#00bdb2;
+  --cyan-light:#e6faf9;
+  --blue:#2563eb;
+  --gold:#d97706;
+  --red:#dc2626;
+  --text:#1a2332;
+  --muted:#5a6e88;
+  --border:#dde3ec;
+  --border2:#00bdb2;
+}
+.vis-wrap *,
+.vis-wrap *::before,
+.vis-wrap *::after{box-sizing:border-box;margin:0;padding:0}
+.vis-wrap {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 1rem;
+}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 24px 80px;position:relative;overflow:hidden;background:linear-gradient(160deg,#f0f7ff 0%,#e8faf9 40%,#fff 100%)}
+.hero-grid{position:absolute;inset:0;opacity:.035;background-image:linear-gradient(var(--cyan) 1px,transparent 1px),linear-gradient(90deg,var(--cyan) 1px,transparent 1px);background-size:52px 52px}
+.hero-glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(37,99,235,.1),transparent 65%),radial-gradient(ellipse 50% 40% at 85% 85%,rgba(0,189,178,.12),transparent 55%)}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:100px;border:1px solid rgba(0,189,178,.4);background:rgba(0,189,178,.08);font-size:.75rem;letter-spacing:.13em;font-weight:600;color:var(--cyan);margin-bottom:26px;position:relative;z-index:1;animation:fadeUp .7s ease both}
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--cyan);animation:blink 2s ease infinite}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.hero-title{font-size:clamp(2.6rem,5.5vw,5rem);font-weight:900;line-height:1.1;letter-spacing:-.02em;color:var(--navy);position:relative;z-index:1;animation:fadeUp .7s ease .1s both}
+.hero-title .grad{background:linear-gradient(120deg,var(--cyan) 0%,var(--blue) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-en{font-family:'Syne',sans-serif;font-size:clamp(.9rem,1.5vw,1.05rem);font-weight:700;letter-spacing:.22em;color:var(--muted);margin-top:8px;position:relative;z-index:1;animation:fadeUp .7s ease .15s both}
+.hero-desc{margin-top:20px;max-width:none;font-size:clamp(.9rem,1.2vw,1rem);color:var(--muted);line-height:1.85;position:relative;z-index:1;animation:fadeUp .7s ease .2s both}
+.hero-tags{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-top:20px;position:relative;z-index:1;animation:fadeUp .7s ease .25s both}
+.tag{padding:5px 13px;border-radius:4px;background:rgba(37,99,235,.07);border:1px solid rgba(37,99,235,.18);font-size:.78rem;color:var(--blue);font-weight:500}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:36px;position:relative;z-index:1;animation:fadeUp .7s ease .3s both}
+.btn-main{padding:15px 36px;border-radius:8px;background:linear-gradient(135deg,var(--cyan),var(--blue));color:#fff;font-weight:800;font-size:.95rem;text-decoration:none;letter-spacing:.04em;box-shadow:0 6px 24px rgba(0,189,178,.28);transition:transform .2s,box-shadow .2s}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(0,189,178,.38)}
+.btn-ghost{padding:15px 36px;border-radius:8px;border:1px solid var(--border);color:var(--text);font-weight:600;font-size:.95rem;text-decoration:none;background:#fff;transition:border-color .2s,box-shadow .2s}
+.btn-ghost:hover{border-color:var(--cyan);box-shadow:0 4px 16px rgba(0,189,178,.12)}
+.hero-kpi{display:flex;gap:48px;margin-top:64px;flex-wrap:wrap;justify-content:center;position:relative;z-index:1;animation:fadeUp .7s ease .4s both}
+.kpi-num{font-family:'Syne',sans-serif;font-size:2.8rem;font-weight:800;color:var(--cyan)}
+.kpi-label{font-size:.88rem;color:var(--muted);margin-top:3px}
+.powered{display:flex;align-items:center;gap:12px;margin-top:28px;position:relative;z-index:1;animation:fadeUp .7s ease .45s both}
+.powered-txt{font-size:.72rem;letter-spacing:.12em;color:var(--muted)}
+.powered-chip{padding:5px 14px;border-radius:5px;border:1px solid var(--border);background:#fff;font-size:.78rem;font-weight:700;color:var(--navy)}
+
+/* AWARDS */
+.award-bar{display:flex;align-items:center;justify-content:space-evenly;gap:16px;flex-wrap:wrap;padding:32px 48px;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.award-item{display:flex;align-items:center;gap:9px}
+.award-icon{font-size:1.2rem}
+.award-text{font-size:.85rem;color:var(--muted);line-height:1.4}
+.award-text strong{color:var(--navy);display:block;font-size:.9rem;font-weight:700}
+
+/* SECTIONS */
+#hero,#problems,#platform,#mcp,#workflow,#howto,#cta{padding:80px 0}
+#solution{padding:0}
+.container{max-width:1560px;margin:0 auto;padding:0 24px}
+.sec-label{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.2em;color:var(--cyan);text-transform:uppercase;margin-bottom:14px}
+.sec-title{font-size:clamp(1.7rem,3.2vw,2.5rem);font-weight:900;line-height:1.22;color:var(--navy)}
+.sec-title .g{background:linear-gradient(120deg,var(--cyan),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-sub{margin-top:10px;color:var(--muted);font-size:1.05rem;max-width:none}
+
+/* PROBLEMS */
+#problems{background:var(--bg2);padding-bottom:80px}
+.prob-grid{display:flex;justify-content:center;gap:28px;margin-top:52px}
+.prob-grid .prob-card{flex:0 0 calc(33.333% - 19px)}
+.prob-card{padding:32px;border-radius:12px;background:#fff;border:1px solid var(--border);transition:border-color .3s,transform .3s,box-shadow .3s}
+.prob-card:hover{border-color:var(--cyan);transform:translateY(-4px);box-shadow:0 8px 28px rgba(0,189,178,.1)}
+.prob-icon{font-size:1.8rem;margin-bottom:14px}
+.prob-title{font-size:1.05rem;font-weight:700;margin-bottom:8px;line-height:1.4;color:var(--navy)}
+.prob-desc{font-size:.92rem;color:var(--muted);line-height:1.75}
+.prob-grid-bottom{display:flex;justify-content:center;gap:28px;margin-top:28px}
+.prob-grid-bottom .prob-card{flex:0 0 calc(33.333% - 19px)}
+
+/* SOLUTION TABS */
+#solution{background: var(--navy);}
+.sol-head{text-align:center;margin-bottom:48px}
+.sol-head .sec-sub{margin:10px auto 0}
+
+#solution .sec-sub {
+  color: #fff;
+}
+
+.tabs-wrap{display:flex;justify-content:center;margin-bottom:36px}
+.tabs{display:inline-flex;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--bg2)}
+.tab-btn{padding:13px 28px;background:transparent;border:none;cursor:pointer;font-size:.88rem;font-weight:600;color:var(--muted);font-family:'Noto Sans JP',sans-serif;transition:background .2s,color .2s;border-right:1px solid var(--border);white-space:nowrap}
+.tab-btn:last-child{border-right:none}
+.tab-btn.active{background:#fff;color:var(--cyan);box-shadow:0 2px 8px rgba(0,189,178,.15)}
+
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+.sol-card{background:#fff;border-radius:16px;border:1px solid var(--border);overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.05)}
+.sol-top {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+  border-bottom: 1px solid var(--border);
+}
+.sol-left {
+  padding: 44px;
+  border-right: 1px solid var(--border);
+  border-bottom: none;
+}
+@media (max-width: 768px) {
+  .sol-left {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}
+.sol-right{padding:44px;background:var(--bg2)}
+.sol-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:4px;font-size:.73rem;font-weight:700;letter-spacing:.06em;margin-bottom:18px}
+.badge-warn{background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.22);color:var(--red)}
+.badge-gold{background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.22);color:var(--gold)}
+.badge-cyan{background:var(--cyan-light);border:1px solid rgba(0,189,178,.3);color:var(--cyan)}
+.sol-card-title{font-size:1.6rem;font-weight:800;margin-bottom:7px;line-height:1.3;color:var(--navy)}
+.sol-card-sub{font-size:.92rem;color:var(--muted);margin-bottom:20px;line-height:1.7}
+.sol-target{display:inline-block;padding:4px 11px;border-radius:4px;background:rgba(37,99,235,.07);font-size:.85rem;color:var(--blue);margin-bottom:24px;font-weight:500}
+.sol-quote{padding:18px;border-radius:8px;background:var(--cyan-light);border-left:3px solid var(--cyan);font-size:.95rem;color:var(--cyan);font-style:italic;font-weight:600;line-height:1.6}
+.feat-list{list-style:none}
+.feat-list li{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:1px solid var(--border);font-size:.95rem;color:var(--text)}
+.feat-list li:last-child{border-bottom:none}
+.feat-list li::before{content:'✓';color:var(--cyan);font-weight:800;flex-shrink:0;margin-top:1px}
+.ba-table{width:100%;border-collapse:collapse;font-size:.79rem;margin-top:12px}
+.ba-table th{padding:9px 12px;text-align:left;background:var(--cyan-light);color:var(--cyan);font-weight:700;font-size:.72rem;letter-spacing:.07em}
+.ba-table td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.6}
+.ba-table td:first-child{color:var(--muted);font-weight:600;font-size:.78rem}
+.ba-table td:nth-child(2){color:var(--red);font-size:.78rem}
+.ba-table td:nth-child(3){color:var(--cyan);font-size:.78rem}
+.sol-screen{padding:28px 44px;border-top:1px solid var(--border);background:var(--bg2)}
+.screen-label{font-size:.72rem;font-weight:700;letter-spacing:.13em;color:var(--muted);text-transform:uppercase;margin-bottom:14px}
+.screen-wrap{border-radius:10px;overflow:hidden;border:1px solid var(--border);box-shadow:0 12px 40px rgba(0,0,0,.1);position:relative}
+.screen-wrap img{width:100%;display:block}
+.screen-badge{position:absolute;top:12px;left:12px;padding:4px 10px;border-radius:4px;background:rgba(255,255,255,.92);border:1px solid var(--border);font-size:.7rem;font-weight:700;color:var(--navy);letter-spacing:.08em}
+
+.case-b {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+  padding: 200px 24px 40px;
+  max-width: 1560px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+.b-big {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1.2;
+  color: #fff;
+  margin-bottom: 12px;
+}
+.b-big span {
+  background: linear-gradient(120deg,#00e5d8,#38bdf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.b-sub {
+  font-size: .95rem;
+  color: rgba(255,255,255,.6);
+  line-height: 1.8;
+}
+.b-pills {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.b-pill {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,189,178,.25);
+  background: rgba(0,189,178,.07);
+  font-size: .95rem;
+  color: rgba(255,255,255,.8);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: background .2s, border-color .2s;
+}
+.b-pill:hover {
+  background: rgba(0,189,178,.15);
+  border-color: rgba(0,189,178,.5);
+}
+.b-pill.active {
+  background: rgba(0,189,178,.18);
+  border-color: #00bdb2;
+  color: #fff;
+}
+.b-pill .dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #00bdb2;
+  flex-shrink: 0;
+}
+
+.sol-wrap {
+  max-width: 1560px;
+  margin: 0 auto;
+  padding: 10px 24px 48px;
+}
+
+/* PLATFORM */
+#platform{background:var(--bg2)}
+.plat-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:28px;
+  margin-top:56px;
+  align-items:stretch;
+}
+.plat-box{
+  border-radius:16px;
+  padding:40px;
+  border:1px solid var(--border);
+  background:#fff;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 4px 20px rgba(0,0,0,.04);
+  display:flex;
+  flex-direction:column;
+}
+.plat-name{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:6px}
+.yw .plat-name{color:var(--cyan)}
+.aq .plat-name{color:var(--gold)}
+.plat-tagline{font-size:1rem;color:var(--muted);margin-bottom:24px;line-height:1.7}
+.val-list{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  flex:1;
+}
+.val-item{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:8px;background:var(--bg2)}
+.val-ico{width:34px;height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.yw .val-ico{background:var(--cyan-light)}
+.aq .val-ico{background:rgba(217,119,6,.08)}
+.val-title{font-size:.95rem;font-weight:700;margin-bottom:3px;color:var(--navy)}
+.val-desc{font-size:.88rem;color:var(--muted);line-height:1.6}
+.ch-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:18px;margin-left:-8px;margin-right:-8px}
+.ch-pill{padding:5px 10px;border-radius:100px;background:var(--cyan-light);border:1px solid rgba(0,189,178,.2);font-size:.68rem;color:var(--cyan);white-space:nowrap}
+.plat-screen{
+  margin-top:24px;
+  border-radius:10px;
+  overflow:hidden;
+  border:1px solid var(--border);
+  box-shadow:0 8px 28px rgba(0,0,0,.08);
+  flex-shrink:0;
+}
+.plat-screen img{width:100%;display:block}
+
+/* MCP */
+#mcp{background:#fff}
+.mcp-box{background:var(--bg2);border-radius:20px;border:1px solid var(--border);padding:72px;margin-top:52px}
+.mcp-inner{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:start}
+.mcp-lbl{font-size:.7rem;font-weight:700;letter-spacing:.2em;color:var(--cyan);text-transform:uppercase;margin-bottom:10px}
+.mcp-title{font-size:1.5rem;font-weight:800;line-height:1.25;margin-bottom:14px;color:var(--navy)}
+.mcp-desc{font-size:.95rem;color:var(--muted);line-height:1.82;margin-bottom:28px}
+.mcp-cases{display:flex;flex-direction:column;gap:10px}
+.mcp-case{padding:15px 18px;border-radius:8px;background:#fff;border:1px solid var(--border)}
+.mcp-case-t{font-size:.77rem;font-weight:700;color:var(--cyan);margin-bottom:5px}
+.mcp-case-d{font-size:.90rem;color:var(--muted);line-height:1.6}
+.mcp-term{background:var(--navy);border-radius:12px;border:1px solid #1e3a5f;padding:24px;font-family:'Courier New',monospace;font-size:.8rem}
+.mcp-line{padding:5px 0;display:flex;align-items:baseline;gap:10px;line-height:1.5}
+.lu{color:#93c5fd}.la{color:#5eead4}.lm{color:#4a6080}
+.mcp-screen{margin-top:20px;border-radius:10px;overflow:hidden;border:1px solid var(--border);box-shadow:0 8px 28px rgba(0,0,0,.08)}
+.mcp-screen img{width:100%;display:block}
+
+/* WORKFLOW */
+#workflow{background:var(--bg2)}
+.wf-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:52px;align-items:start}
+.wf-title{font-size:1.15rem;font-weight:800;margin-bottom:12px;color:var(--navy)}
+.wf-desc{font-size:.87rem;color:var(--muted);line-height:1.8;margin-bottom:24px}
+.wf-steps{list-style:none;display:flex;flex-direction:column;gap:10px}
+.wf-step{display:flex;align-items:flex-start;gap:12px;padding:14px;border-radius:8px;background:#fff;border:1px solid var(--border)}
+.wf-step-n{width:26px;height:26px;border-radius:50%;background:var(--cyan);color:#fff;font-size:.78rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.wf-step-t{font-size:.85rem;font-weight:700;margin-bottom:3px;color:var(--navy)}
+.wf-step-d{font-size:.78rem;color:var(--muted);line-height:1.6}
+.wf-screen-wrap{border-radius:12px;overflow:hidden;border:1px solid var(--border);box-shadow:0 12px 36px rgba(0,0,0,.08)}
+.wf-screen-wrap img{width:100%;display:block}
+
+/* HOWTO */
+#howto{background:#fff}
+.steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:52px;position:relative;padding:0}
+.steps-row::before{content:'';position:absolute;top:30px;left:0%;right:0%;height:2px;background:linear-gradient(90deg,var(--cyan),var(--blue))}
+.step{padding:0 40px;text-align:center;position:relative;z-index:1}
+.step:first-child{padding:0;width:260px;justify-self:start}
+.step:last-child{padding:0;width:260px;justify-self:end}
+.step-n{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;border:2px solid var(--cyan);background:#fff;color:var(--cyan);position:relative;z-index:2}
+.step:first-child .step-n{margin-left:auto;margin-right:auto}
+.step:last-child .step-n{margin-left:auto;margin-right:auto}
+.step-t{font-weight:700;font-size:1.05rem;margin-bottom:6px;color:var(--navy)}
+.step-sub{font-size:.77rem;color:var(--cyan);font-weight:600;margin-bottom:5px}
+.step-d{font-size:0.85rem;color:var(--muted);line-height:1.7}
+
+/* CTA */
+#cta{background:var(--bg2)}
+.cta-box{background:#fff;border-radius:22px;border:1px solid var(--border);padding:100px 52px;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.06)}
+.cta-badge{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border-radius:100px;background:var(--cyan-light);border:1px solid rgba(0,189,178,.3);font-size:.8rem;font-weight:700;color:var(--cyan);letter-spacing:.08em;margin-bottom:24px}
+.cta-title{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;line-height:1.2;margin-bottom:14px;color:var(--navy)}
+.cta-sub{color:var(--muted);font-size:.95rem;margin-bottom:36px;line-height:1.7}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-xl{padding:17px 42px;border-radius:10px;background:linear-gradient(135deg,var(--cyan),var(--blue));color:#fff;font-weight:800;font-size:1rem;text-decoration:none;letter-spacing:.04em;box-shadow:0 8px 28px rgba(0,189,178,.28);transition:transform .2s,box-shadow .2s}
+.btn-xl:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(0,189,178,.38)}
+.btn-ol{padding:17px 42px;border-radius:10px;border:1px solid var(--border);color:var(--text);font-weight:700;font-size:1rem;text-decoration:none;background:#fff;transition:border-color .2s}
+.btn-ol:hover{border-color:var(--cyan)}
+
+/* FOOTER */
+.footer-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.7rem;color:#fff;margin-bottom:6px}
+.footer-logo span{color:var(--cyan)}
+.footer-sub{font-size:.77rem;color:#8899bb;margin-bottom:18px}
+.footer-links{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.footer-links a{font-size:.77rem;color:#8899bb;text-decoration:none}
+.footer-links a:hover{color:var(--cyan)}
+.footer-copy{font-size:.85rem;color:#445566}
+
+/* REVEAL */
+.rev{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.rev.vis{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+@media(max-width:768px){
+  nav{padding:0 16px}
+  .nav-menu{display:none}
+  .sol-top{grid-template-columns:1fr}
+  .sol-left{border-right:none;border-bottom:1px solid var(--border)}
+  .plat-grid{grid-template-columns:1fr}
+  .mcp-inner{grid-template-columns:1fr}
+  .wf-grid{grid-template-columns:1fr}
+  .steps-row{grid-template-columns:1fr;gap:40px}
+  .steps-row::before{display:none}
+  .cta-box{padding:40px 20px}
+  .tabs{flex-direction:column;width:100%;max-width:none}
+  .tab-btn{border-right:none;border-bottom:1px solid var(--border)}
+  .tab-btn:last-child{border-bottom:none}
+  .prob-grid,
+  .prob-grid-bottom{flex-direction:column}
+  .prob-grid .prob-card,
+  .prob-grid-bottom .prob-card{flex:none;width:100%}
+  .step,
+  .step:first-child,
+  .step:last-child{width:auto;justify-self:center;padding:0 16px}
+  .vis-nav{padding:0 16px;height:auto;flex-wrap:wrap;justify-content:center}
+  .vis-nav .nav-menu{display:flex;flex-wrap:wrap;justify-content:center;gap:0;width:100%;padding:8px 0}
+  .vis-nav .nav-menu li{flex:0 0 50%;text-align:center;padding:8px 0}
+  .vis-nav .nav-menu a{font-size:.85rem}
+}
+</style>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-eyebrow"><span class="pulse"></span> YouWire × Amazon Quick 連携ソリューション</div>
+  <h1 class="hero-title">ビジネス音声を<br><span class="grad">経営資産</span>に変える。</h1>
+  <p class="hero-en">Voice Intelligence Suite</p>
+  <p class="hero-desc">全チャネルの音声データを「録る」から「活かす」まで全てまとめて。<br>コンプライアンス対策・セールス強化・問い合わせ最適化を、<br>ひとつのプラットフォームで実現します。</p>
+  <div class="hero-tags">
+    <span class="tag">🛡️ コンプライアンス対策</span>
+    <span class="tag">📈 セールス強化</span>
+    <span class="tag">🎧 CS最適化</span>
+    <span class="tag">🤖 AIエージェント連携</span>
+  </div>
+  <div class="hero-cta">
+    <a href="https://www.youwire.jp/contact/" class="btn-main">▶ お問い合わせ・デモ申し込み</a>
+    <a href="#solution" class="btn-ghost">ソリューションを見る →</a>
+  </div>
+  <div class="hero-kpi">
+    <div><div class="kpi-num">350<span style="font-size:1.1rem">+</span></div><div class="kpi-label">導入企業数</div></div>
+    <div><div class="kpi-num">700<span style="font-size:1.1rem">+</span></div><div class="kpi-label">稼働拠点数</div></div>
+    <div><div class="kpi-num">90<span style="font-size:1.1rem">%+</span></div><div class="kpi-label">文字起こし精度（日本語）</div></div>
+    <div><div class="kpi-num">2<span style="font-size:1.1rem">回</span></div><div class="kpi-label">ASPIC 総合グランプリ</div></div>
+  </div>
+  <div class="powered">
+    <span class="powered-txt">Powered by</span>
+    <span class="powered-chip">YouWire</span>
+    <span style="color:#ccc">×</span>
+    <span class="powered-chip">Amazon Quick</span>
+  </div>
+</section>
+
+<!-- AWARDS -->
+<div class="award-bar rev">
+  <div class="award-item"><span class="award-icon">🏆</span><div class="award-text"><strong>ASPIC Cloud Award 総合グランプリ</strong>2021年・2023年 2回受賞</div></div>
+  <div class="award-item"><span class="award-icon">☁️</span><div class="award-text"><strong>AWS Partner Award APJ</strong>2023年・2024年 2年連続受賞</div></div>
+  <div class="award-item"><span class="award-icon">📱</span><div class="award-text"><strong>4大キャリア対応</strong>固定・携帯・Web会議・対面</div></div>
+  <div class="award-item"><span class="award-icon">🔒</span><div class="award-text"><strong>ISMS認証取得</strong>金融業界導入実績</div></div>
+</div>
+
+<!-- PROBLEMS -->
+<section id="problems">
+  <div class="container">
+    <div class="rev">
+      <span class="sec-label">Problem</span>
+      <h2 class="sec-title">こんな課題、<span class="g">ありませんか？</span></h2>
+      <p class="sec-sub">音声データは毎日生まれているのに、ほとんどの企業で活用されずに眠っています。</p>
+    </div>
+    <div class="prob-grid">
+      <div class="prob-card rev d1"><div class="prob-icon">📁</div><div class="prob-title">通話・商談データが眠ったまま</div><div class="prob-desc">録音・議事録はあるのに活用されず、貴重な情報が蓄積されないまま埋もれている。</div></div>
+      <div class="prob-card rev d2"><div class="prob-icon">🧠</div><div class="prob-title">ノウハウが属人化し、退職で失われる</div><div class="prob-desc">トップ営業のトーク・判断基準が共有されず、組織の財産として残せていない。</div></div>
+      <div class="prob-card rev d3"><div class="prob-icon">⚠️</div><div class="prob-title">問題が起きても即座に気づけない</div><div class="prob-desc">クレームや異変のサインを見逃し、対応が後手に回ることでリスクが拡大する。</div></div>
+    </div>
+    <div class="prob-grid-bottom">
+      <div class="prob-card rev d1"><div class="prob-icon">🔗</div><div class="prob-title">現場の声が経営層に届いていない</div><div class="prob-desc">営業やサポートが日々つかんでいる顧客の声が、部門の中で止まってしまう。経営の判断材料になっていない。</div></div>
+      <div class="prob-card rev d2"><div class="prob-icon">⏱️</div><div class="prob-title">記録・報告・分析を手作業でこなす</div><div class="prob-desc">議事録作成やレポートまとめに時間を奪われ、本来業務に集中できていない。</div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- SOLUTION / USE CASES -->
+<section id="solution">
+  <div class="case-b">
+    <div>
+      <div class="b-big">すべての課題を、<br><span>まとめて解決。</span></div>
+      <div class="b-sub">YouWire × Amazon Quick の連携で、音声データを経営資産として最大活用。<br/>代表的な3つのユースケースをご紹介します。</div>
+    </div>
+    <div class="b-pills">
+      <div class="b-pill active" onclick="switchTab(this,0)">
+        <span class="dot"></span>🛡️ コンプライアンス対策
+      
+      </div>
+      <div class="b-pill" onclick="switchTab(this,1)">
+        <span class="dot"></span>📈 セールス強化
+       
+      </div>
+      <div class="b-pill" onclick="switchTab(this,2)">
+        <span class="dot"></span>🎧 カスタマーサポート
+       
+      </div>
+    </div>
+   </div>
+  <div class="sol-wrap">
+    <!-- TAB 0: COMPLIANCE -->
+    <div class="tab-panel active" id="panel-0">
+      <div class="sol-card">
+        <div class="sol-top">
+          <div class="sol-left">
+            <div class="sol-badge badge-warn">⚠️ 2026年10月 条例化対応</div>
+            <div class="sol-card-title">会社と従業員を守る<br>カスハラ対策ソリューション</div>
+            <div class="sol-card-sub">2026年10月 カスタマーハラスメント対策の条例化が迫っています。「対応した」記録が企業のリスク管理に必須です。</div>
+            <div class="sol-target">対象：BtoC全般・コンプライアンス部門</div>
+            <div class="sol-quote">「従業員を守ることが、<br>会社を守ることになる」</div>
+          </div>
+          <div class="sol-right">
+            <p style="font-size:.77rem;font-weight:700;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:16px">主な機能</p>
+            <ul class="feat-list">
+              <li>カスハラ疑い会話の統計分析・ダッシュボード</li>
+              <li>カスハラワード検知時のリアルタイム通知</li>
+              <li>チャットエージェントによる詳細深掘り</li>
+              <li>法改正・対策情報の定期レポーティング</li>
+              <li>外部リスク（顧客被害の記録・可視化）</li>
+              <li>内部リスク（対応証拠の保全）</li>
+            </ul>
+          </div>
+        </div>
+        <div class="sol-screen">
+  <div class="screen-label" style="margin-bottom:3px">実際のワークフロー画面 — 当日ハラスメント検知・通知システム</div>
+  <div class="screen-badge" style="position:relative;top:auto;left:auto;margin-bottom:8px;display:inline-block">Amazon Quick — Workflow</div>
+  <div class="screen-wrap">
+    <img src="images/vis_image_1.png" alt="ハラスメント検知ワークフロー">
+  </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 1: SALES -->
+    <div class="tab-panel" id="panel-1">
+      <div class="sol-card">
+        <div class="sol-top">
+          <div class="sol-left">
+            <div class="sol-badge badge-gold">🏆 最大の差別化：全チャネル対応</div>
+            <div class="sol-card-title">営業ノウハウの属人化を排除<br>組織の資産として蓄積</div>
+            <div class="sol-card-sub">固定電話・携帯・Web会議・対面商談すべてを録音・分析。トップ営業のノウハウを全員のものに。</div>
+            <div class="sol-target">対象：BtoB企業・営業マネージャー</div>
+            <div class="sol-quote">「属人化を排除し、<br>トップ営業のノウハウを全員のものに」</div>
+          </div>
+          <div class="sol-right">
+            <p style="font-size:.77rem;font-weight:700;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:16px">自動生成アウトプット</p>
+            <ul class="feat-list">
+              <li>競合・価格への切り返し集</li>
+              <li>商談トークの標準化フロー</li>
+              <li>FAQ・よくある懸念と回答集</li>
+              <li>上司向けフィードバックサマリー</li>
+            </ul>
+            <table class="ba-table" style="margin-top:20px">
+              <tr><th></th><th>Before</th><th>After</th></tr>
+              <tr><td>ノウハウ継承</td><td>退職でノウハウが消える</td><td>録音から自動抽出・蓄積</td></tr>
+              <tr><td>育成期間</td><td>独り立ちまで2〜3年</td><td>切り返し集で期間短縮</td></tr>
+              <tr><td>フィードバック</td><td>同席しないと指導不可</td><td>全商談から具体的助言</td></tr>
+            </table>
+          </div>
+        </div>
+        <div class="sol-screen">
+          <div class="screen-label" style="margin-bottom:-30px">実際の検索・録音一覧画面 — YouWire 通話管理</div>
+　　　　　<div class="screen-badge" style="position:relative;top:3px !important;left:auto;margin-bottom:8px;display:block;width:fit-content">YouWire — 通話録音・検索</div>
+          <div class="screen-wrap">
+            <img src="images/vis_image_2.jpg" alt="YouWire通話検索画面">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: CONTACT -->
+    <div class="tab-panel" id="panel-2">
+      <div class="sol-card">
+        <div class="sol-top">
+          <div class="sol-left">
+            <div class="sol-badge badge-cyan">💡 CSの音声を売上資産に</div>
+            <div class="sol-card-title">CSの音声を、<br>売上を生む資産に変える</div>
+            <div class="sol-card-sub">CSの音声は「会社の中で最も生のニーズが集まっている場所」。マーケ・開発部門の資産として活用する発想の転換が鍵。</div>
+            <div class="sol-target">対象：SaaS・IT系・CS部門</div>
+            <div class="sol-quote">「CSの音声を、売上を生む資産に変える」</div>
+          </div>
+          <div class="sol-right">
+            <p style="font-size:.77rem;font-weight:700;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:16px">主な機能</p>
+            <ul class="feat-list">
+              <li>実際の音声をマーケが直接聴ける<br/>（温度感・感情把握）</li>
+              <li>チャットエージェントで自然言語による深掘り分析</li>
+              <li>ウィークリーレポートをSlack/メールで自動配信</li>
+              <li>頻出ワードをWeb広告・訴求文言に即反映</li>
+              <li>CRM入力漏れをAIが自動チェック・フラグ付け</li>
+            </ul>
+            <table class="ba-table" style="margin-top:20px">
+              <tr><th></th><th>Before</th><th>After</th></tr>
+              <tr><td>情報連携</td><td>CS→マーケ情報が分断</td><td>週次レポートで自動連携</td></tr>
+              <tr><td>マーケ活用</td><td>顧客の声が届かない</td><td>頻出ワードを即反映</td></tr>
+              <tr><td>CRM品質</td><td>入力漏れに気づかない</td><td>AIが自動チェック</td></tr>
+            </table>
+          </div>
+        </div>
+        <div class="sol-screen">
+          <div class="screen-label" style="margin-bottom:3px">実際のAI深掘り分析画面 — Amazon Quick チャットエージェント</div>
+          <div class="screen-badge" style="position:relative;top:auto;left:auto;margin-bottom:8px;display:block;width:fit-content">Amazon Quick — AI Agent</div>
+          <div class="screen-wrap">
+            <img src="images/vis_image_3.png" alt="Amazon Quick AIチャット">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PLATFORM -->
+<section id="platform">
+  <div class="container">
+    <div style="text-align:center" class="rev">
+      <span class="sec-label">Platform</span>
+      <h2 class="sec-title">2つのプラットフォームが<span class="g">一体化</span></h2>
+      <p class="sec-sub" style="margin:10px auto 0">YouWireで「録る・見える化」、Amazon Quickで「分析・自動化」。<br/>音声データの価値を最大化するワンストップソリューション。</p>
+    </div>
+    <div class="plat-grid">
+      <div class="plat-box yw rev d1">
+        <div class="plat-name">YouWire</div>
+        <div class="plat-tagline">ビジネス音声DXプラットフォーム。日々のビジネス音声を「経営資産」に変える3つのアプローチ。</div>
+        <ul class="val-list">
+          <li class="val-item"><div class="val-ico">🎙️</div><div><div class="val-title">録る</div><div class="val-desc">様々なチャネルの音声を自動録音・保存。<br>全チャネル完全対応。</div></div></li>
+          <li class="val-item"><div class="val-ico">📝</div><div><div class="val-title">見える化する</div><div class="val-desc">AI文字起こし＋要約で全通話を検索・閲覧可能に。<br>精度80〜90%+。</div></div></li>
+          <li class="val-item"><div class="val-ico">📊</div><div><div class="val-title">活かす</div><div class="val-desc">分析・連携・共有で音声を経営判断の材料に。<br>Salesforce・Slack連携。</div></div></li>
+        </ul>
+        <div class="plat-screen"><img src="images/vis_image_4.jpg" alt="YouWire検索画面"></div>
+      </div>
+      <div class="plat-box aq rev d2">
+        <div class="plat-name">Amazon Quick</div>
+        <div class="plat-tagline">業務課題の把握から次のアクションまでを一貫支援する、エージェンティックAI搭載のデジタルワークスペース。</div>
+        <ul class="val-list">
+          <li class="val-item"><div class="val-ico">📊</div><div><div class="val-title">データ分析（BI機能）</div><div class="val-desc">ダッシュボードで問題を可視化。直感的に現状を把握。</div></div></li>
+          <li class="val-item"><div class="val-ico">🤖</div><div><div class="val-title">生成AI活用</div><div class="val-desc">「なぜそうなっているか」をチャットで深掘り分析。</div></div></li>
+          <li class="val-item"><div class="val-ico">📚</div><div><div class="val-title">ナレッジ管理</div><div class="val-desc">通話ログ・CRM・社内文書をいつでも自由に引き出し統合。</div></div></li>
+          <li class="val-item"><div class="val-ico">⚡</div><div><div class="val-title">業務自動化（ワークフロー）</div><div class="val-desc">特定条件での検知通知・週次レポートを自動配信。<br>ノーコード設計。</div></div></li>
+        </ul>
+        <div class="plat-screen"><img src="images/vis_image_5.png" alt="Amazon Quickホーム画面"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MCP -->
+<section id="mcp">
+  <div class="container">
+    <div class="rev" style="text-align:center">
+      <span class="sec-label">MCP Integration</span>
+      <h2 class="sec-title">YouWire MCP Serverが<span class="g">AIエージェントを解放する</span></h2>
+      <p class="sec-sub" style="margin:10px auto 0">AIエージェントがYouWireに蓄積された会話データに直接アクセス。<br/>Claude・ChatGPT等から通話情報を自律的に取得・分析できます。</p>
+    </div>
+    <div class="mcp-box rev">
+      <div class="mcp-inner">
+        <div>
+          <div class="mcp-lbl">対話型アクセスフロー</div>
+          <div class="mcp-title">AIに話しかけるだけで<br>通話データが動き出す</div>
+          <div class="mcp-desc">MCP（Model Context Protocol）により、Claude・ChatGPT等のAIクライアントからYouWireの通話録音データに安全にアクセス。<br>CRM連携・FAQ更新・タスク生成・コンプライアンスチェックを対話形式で自動化します。</div>
+          <div class="mcp-cases">
+            <div class="mcp-case"><div class="mcp-case-t">CRM/SFA連携</div><div class="mcp-case-d">「今日の商談で顧客の予算感について話した部分を抽出して、Salesforceに入力して」</div></div>
+            <div class="mcp-case"><div class="mcp-case-t">FAQ自動更新</div><div class="mcp-case-d">「最近の問い合わせで増えている質問を分析し、FAQに追加すべき項目をリストアップして」</div></div>
+            <div class="mcp-case"><div class="mcp-case-t">タスク管理連携</div><div class="mcp-case-d">「佐藤さんとの通話から来週までにやるべきタスクを洗い出してTodoリストに追加して」</div></div>
+            <div class="mcp-case"><div class="mcp-case-t">Webhook × 全通話自動評価</div><div class="mcp-case-d">通話終了をトリガーにAIが自動起動し、コンプライアンスチェックを行い管理者に通知。</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="mcp-term">
+            <div class="mcp-line"><span class="lm">👤</span><span class="lu">「今日の商談で価格交渉の部分を要約して」</span></div>
+            <div class="mcp-line"><span class="lm">┊</span></div>
+            <div class="mcp-line"><span class="lm">🤖</span><span class="la">YouWire MCP Serverに接続中...</span></div>
+            <div class="mcp-line"><span class="lm">✓</span><span style="color:#4ade80;font-size:.75rem">searchRecordings({ date: "today", keyword: "価格" })</span></div>
+            <div class="mcp-line"><span class="lm">✓</span><span style="color:#4ade80;font-size:.75rem">getRecordingDetails({ id: "2024-0405-001" })</span></div>
+            <div class="mcp-line"><span class="lm">┊</span></div>
+            <div class="mcp-line"><span class="lm">🤖</span><span class="la">本日14:32の商談（42分）から価格交渉部分を抽出しました。顧客は初期費用について懸念を示しており、月額プランへの変更を検討中です。</span></div>
+          </div>
+          <div style="margin-top:10px;font-size:.73rem;color:var(--muted);font-style:italic;text-align:center">対応AIクライアント：Claude Desktop / claude.ai / ChatGPT</div>
+          <div class="mcp-screen">
+            <img src="images/vis_image_6.png" alt="YouWire MCP連携画面">
+          </div>
+          <div style="margin-top:7px;font-size:.7rem;color:var(--muted);text-align:center">Amazon Quick インテグレーション画面 — YouWire MCP Server が利用可能</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOWTO / FLOW -->
+<section id="howto">
+  <div class="container">
+    <div class="rev" style="text-align:center">
+      <span class="sec-label">How It Works</span>
+      <h2 class="sec-title"><span class="g">導入の流れ</span></h2>
+      <p class="sec-sub" style="margin:10px auto 0">お問い合わせから運用開始まで、スムーズに進められるようサポートします。</p>
+    </div>
+    <div class="steps-row rev" style="margin-top:60px">
+      <div class="step">
+        <div class="step-n">01</div>
+        <div class="step-t">YouWire 導入・設定</div>
+        <div class="step-sub">〜 1週間</div>
+        <div class="step-d">既存の電話環境にYouWireを接続。<br>固定・携帯・Web会議・対面<br/>すべての通話録音を開始。</div>
+      </div>
+      <div class="step">
+        <div class="step-n">02</div>
+        <div class="step-t">Amazon Quick 接続・設定</div>
+        <div class="step-sub">〜 2週間</div>
+        <div class="step-d">YouWire MCP Serverを通じて<br/>Amazon Quickと接続。<br>ダッシュボード・ワークフロー・AI分析環境を構築。</div>
+      </div>
+      <div class="step">
+        <div class="step-n">03</div>
+        <div class="step-t">運用開始・効果測定</div>
+        <div class="step-sub">継続的な改善</div>
+        <div class="step-d">音声データが経営資産として<br/>積み上がり始めます。<br>定期レポートで効果を可視化し、<br/>継続的に改善。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="container">
+    <div class="cta-box rev">
+      <div class="cta-badge">📩 まずはお気軽にご相談ください</div>
+      <div class="cta-title">デモで実際の<br>画面をご確認ください</div>
+      <div class="cta-sub">実際の通話分析・AIチャット・ダッシュボードをデモ環境でご体験いただけます。<br>御社の課題に合わせたご提案をいたします。</div>
+      <div class="cta-btns" style="justify-content:center">
+      <a href="https://www.youwire.jp/contact/" class="btn-xl">▶ お問い合わせ・デモ申し込み</a>
+      </div>      
+      <div style="margin-top:24px;font-size:.78rem;color:var(--muted)">株式会社ギークフィード | Powered by YouWire × Amazon Quick</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:#0d1a2e;border-top:1px solid #1e3a5f;padding:50px 24px 50px;;text-align:center;">
+  <div class="footer-logo">Voice Intelligence <span>Suite</span></div>
+  <div class="footer-sub">Powered by YouWire × Amazon Quick | 株式会社ギークフィード</div>
+  <div class="footer-links">
+    <a href="#">プライバシーポリシー</a>
+    <a href="#">利用規約</a>
+    <a href="#">お問い合わせ</a>
+    <a href="https://www.youwire.jp/">YouWire公式サイト</a>
+  </div>
+  <div class="footer-copy">© 2026 GeekFeed Inc. All rights reserved.</div>
+</footer>
+
+<script>
+function switchTab(btn, idx) {
+  var btns = document.querySelectorAll('.b-pill');
+  for (var i = 0; i < btns.length; i++) { btns[i].classList.remove('active'); }
+  btn.classList.add('active');
+  var panels = document.querySelectorAll('.tab-panel');
+  for (var j = 0; j < panels.length; j++) { panels[j].classList.remove('active'); }
+  document.getElementById('panel-' + idx).classList.add('active');
+}
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('vis'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.rev').forEach(function(el) { observer.observe(el); });
+var solveBar = document.querySelector('.solve-bar');
+</script>
+</div>
