@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouWire for Zoom Phone Recording — Setup &amp; User Guide</title>
+<meta name="description" content="Installation, usage and removal guide for the YouWire for Zoom Phone Recording app on the Zoom App Marketplace. Automated compliance recording for Zoom Phone.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0B2D45; --navy2:#06405F; --deep:#04243A;
+    --cyan:#16A6D8; --blue:#1184B8; --teal:#23B6A3; --green:#7AC34B;
+    --ink:#16344A; --mute:#5C7689; --line:#E1ECF3; --bg:#F4F9FC; --card:#fff;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:"Inter","Noto Sans JP",-apple-system,"Segoe UI",sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.7;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px;}
+  a{color:var(--blue);}
+  /* header */
+  header{background:linear-gradient(135deg,var(--navy2),var(--deep));color:#fff;}
+  .bar{display:flex;align-items:center;justify-content:space-between;padding:18px 0;}
+  .brand{display:flex;align-items:center;gap:12px;}
+  .brand img{height:30px;}
+  .brand b{font-weight:800;font-size:18px;letter-spacing:.3px;}
+  .lang{display:flex;gap:6px;}
+  .lang button{font:inherit;font-weight:600;font-size:13px;cursor:pointer;border:1px solid rgba(255,255,255,.35);
+    background:transparent;color:#cfe7f4;padding:6px 12px;border-radius:20px;}
+  .lang button.active{background:#fff;color:var(--navy);border-color:#fff;}
+  .hero{padding:34px 0 46px;}
+  .tag{color:var(--cyan);font-weight:700;letter-spacing:1px;font-size:13px;text-transform:uppercase;}
+  .hero h1{font-size:32px;line-height:1.25;margin:10px 0 12px;font-weight:800;}
+  .hero p{color:#C9E3F2;font-size:17px;max-width:680px;margin:0;}
+  /* toc */
+  .toc{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;}
+  .toc a{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#eaf6fc;
+    text-decoration:none;font-size:14px;font-weight:600;padding:8px 14px;border-radius:10px;}
+  /* main */
+  main{padding:48px 0 20px;}
+  section{margin-bottom:46px;scroll-margin-top:20px;}
+  h2{font-size:24px;font-weight:800;margin:0 0 6px;display:flex;align-items:center;gap:12px;}
+  h2 .n{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;
+    background:var(--blue);color:#fff;font-size:16px;font-weight:800;flex:none;}
+  .sub{color:var(--mute);margin:0 0 18px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 26px;
+    box-shadow:0 4px 18px rgba(8,40,62,.05);}
+  ol{margin:0;padding-left:22px;}
+  ol li{margin:0 0 12px;}
+  ul.plain{list-style:none;padding:0;margin:14px 0 0;}
+  ul.plain li{padding-left:26px;position:relative;margin-bottom:8px;}
+  ul.plain li::before{content:"";position:absolute;left:0;top:10px;width:10px;height:10px;border-radius:50%;
+    background:var(--teal);}
+  code,.kbd{background:#EAF4FB;border:1px solid #d6e7f2;border-radius:6px;padding:1px 7px;font-size:.92em;
+    font-family:ui-monospace,Menlo,Consolas,monospace;color:#0d4f72;}
+  .note{border-left:4px solid var(--cyan);background:#EAF6FC;border-radius:0 10px 10px 0;padding:14px 18px;margin-top:16px;color:#0d4a68;font-size:15px;}
+  .req{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .req .item{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;}
+  .req .item b{display:block;color:var(--ink);}
+  .req .item span{color:var(--mute);font-size:14px;}
+  footer{background:var(--navy);color:#bcdcec;padding:30px 0;font-size:14px;}
+  footer a{color:#eaf6fc;text-decoration:none;margin-right:18px;}
+  .muted{color:#7FA8C2;margin-top:10px;font-size:13px;}
+  [data-jp]{display:none;}
+  html[lang="ja"] [data-en]{display:none;}
+  html[lang="ja"] [data-jp]{display:inline;}
+  html[lang="ja"] li[data-jp],html[lang="ja"] p[data-jp],html[lang="ja"] div[data-jp],html[lang="ja"] span.block[data-jp]{display:block;}
+  @media(max-width:640px){.req{grid-template-columns:1fr;}.hero h1{font-size:26px;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="bar">
+      <div class="brand"><img src="data:image/png;base64,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" alt="YouWire"><b>YouWire</b></div>
+      <div class="lang">
+        <button id="btn-en" class="active" onclick="setLang('en')">EN</button>
+        <button id="btn-ja" onclick="setLang('ja')">日本語</button>
+      </div>
+    </div>
+    <div class="hero">
+      <div class="tag">Zoom App Documentation</div>
+      <h1><span data-en>YouWire for Zoom Phone Recording</span><span data-jp>YouWire for Zoom Phone Recording 設定・利用ガイド</span></h1>
+      <p>
+        <span data-en>How to add, use, and remove the YouWire app for automated, compliant recording of your Zoom Phone calls.</span>
+        <span data-jp>Zoom Phone の通話を自動でコンプライアンス録音する YouWire アプリの「追加・利用・削除」手順をご案内します。</span>
+      </p>
+      <div class="toc">
+        <a href="#overview"><span data-en>Overview</span><span data-jp>概要</span></a>
+        <a href="#requirements"><span data-en>Requirements</span><span data-jp>前提条件</span></a>
+        <a href="#adding"><span data-en>Adding the app</span><span data-jp>アプリの追加</span></a>
+        <a href="#using"><span data-en>Using the app</span><span data-jp>アプリの利用</span></a>
+        <a href="#removing"><span data-en>Removing the app</span><span data-jp>アプリの削除</span></a>
+        <a href="#support"><span data-en>Support</span><span data-jp>サポート</span></a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section id="overview">
+    <h2><span data-en>Overview</span><span data-jp>概要</span></h2>
+    <div class="card">
+      <p style="margin:0">
+        <span data-en>YouWire for Zoom Phone Recording is an admin-managed app that automatically retrieves your Zoom Phone call recordings through the Zoom API and archives them to your designated, encrypted storage. Recordings are made searchable with AI transcription, summaries and tagging — helping regulated teams meet compliance and audit requirements.</span>
+        <span data-jp>YouWire for Zoom Phone Recording は、Zoom API を通じて Zoom Phone の通話録音を自動取得し、貴社指定の暗号化ストレージへ保管する Admin-managed アプリです。AI による文字起こし・要約・タグ付けで録音を検索可能にし、規制業種のコンプライアンス・監査対応を支援します。</span>
+      </p>
+      <div class="note">
+        <span data-en><b>App type:</b> Admin-managed OAuth app. Scopes used: <code>phone:read:call_recording:admin</code> (read call recordings) and <code>phone:read:call_log:admin</code> (read call logs for metadata). YouWire requests read-only access only.</span>
+        <span data-jp><b>アプリ種別：</b>Admin-managed OAuth アプリ。使用スコープは <code>phone:read:call_recording:admin</code>（録音の読み取り）と <code>phone:read:call_log:admin</code>（メタデータ用の通話ログ読み取り）。YouWire は読み取り専用のアクセスのみを要求します。</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="requirements">
+    <h2><span data-en>Requirements</span><span data-jp>前提条件</span></h2>
+    <p class="sub"><span data-en>Before you begin, please confirm the following.</span><span data-jp>開始前に以下をご確認ください。</span></p>
+    <div class="req">
+      <div class="item"><b><span data-en>Zoom account admin</span><span data-jp>Zoom アカウント管理者</span></b><span data-en>Adding the app requires an account owner/admin, because it is admin-managed.</span><span data-jp>本アプリは Admin-managed のため、追加にはアカウントの Owner/Admin 権限が必要です。</span></div>
+      <div class="item"><b><span data-en>Zoom Phone license</span><span data-jp>Zoom Phone ライセンス</span></b><span data-en>Target users must have a Zoom Phone license assigned.</span><span data-jp>録音対象ユーザーに Zoom Phone ライセンスが割り当てられていること。</span></div>
+      <div class="item"><b><span data-en>Call recording enabled</span><span data-jp>通話録音の有効化</span></b><span data-en>Automatic call recording must be turned on for the users/groups you want to record.</span><span data-jp>録音したいユーザー／グループで自動通話録音が有効になっていること。</span></div>
+      <div class="item"><b><span data-en>YouWire account</span><span data-jp>YouWire アカウント</span></b><span data-en>A YouWire tenant provisioned by GeekFeed (arranged during onboarding).</span><span data-jp>GeekFeed が払い出す YouWire テナント（オンボーディング時に手配）。</span></div>
+    </div>
+  </section>
+
+  <section id="adding">
+    <h2><span class="n">1</span><span data-en>Adding the app</span><span data-jp>アプリの追加</span></h2>
+    <p class="sub"><span data-en>Install and authorize the app from the Zoom App Marketplace.</span><span data-jp>Zoom App Marketplace からアプリをインストールし、認可します。</span></p>
+    <div class="card">
+      <ol>
+        <li><span data-en>Open the app from the Zoom App Marketplace. Search for <b>“YouWire for Zoom Phone Recording”</b> and click <b>Add</b>, or open the authorization URL provided by GeekFeed.</span><span data-jp>Zoom App Marketplace でアプリを開きます。<b>「YouWire for Zoom Phone Recording」</b>を検索して <b>Add</b> を押すか、GeekFeed からお送りした認可URLを開きます。</span></li>
+        <li><span data-en>Review the requested permissions (<code>phone:read:call_recording:admin</code>, <code>phone:read:call_log:admin</code>) and the privacy policy.</span><span data-jp>要求される権限（<code>phone:read:call_recording:admin</code> / <code>phone:read:call_log:admin</code>）とプライバシーポリシーを確認します。</span></li>
+        <li><span data-en>Click <b>Authorize</b> (sign in as a Zoom account admin if prompted). You will see a confirmation screen when the app is added.</span><span data-jp>（求められたらアカウント管理者でサインインのうえ）<b>Authorize</b> を押します。追加が完了すると確認画面が表示されます。</span></li>
+        <li><span data-en>Notify GeekFeed that authorization is complete. We finalize the connection by provisioning your YouWire storage endpoint and enabling the tenant.</span><span data-jp>認可完了を GeekFeed までご連絡ください。弊社にて YouWire 側の接続先（ストレージ）を払い出し、テナントを有効化して連携を完了します。</span></li>
+        <li><span data-en>In the Zoom admin portal (<code>admin.zoom.us</code> → Phone System Management), enable <b>automatic cloud recording</b> for the target users or groups.</span><span data-jp>Zoom 管理ポータル（<code>admin.zoom.us</code> → 電話 → 設定 → 録音）で、対象ユーザー／グループの<b>自動クラウド録音</b>を有効化します。</span></li>
+      </ol>
+      <div class="note"><span data-en>For compliance, we recommend enabling Zoom’s recording notification/consent prompts for the recorded users.</span><span data-jp>コンプライアンス対応として、録音対象ユーザーに対し Zoom の録音通知・同意アナウンスを有効にすることを推奨します。</span></div>
+    </div>
+  </section>
+
+  <section id="using">
+    <h2><span class="n">2</span><span data-en>Using the app</span><span data-jp>アプリの利用</span></h2>
+    <p class="sub"><span data-en>Once connected, recording capture is fully automatic.</span><span data-jp>連携後は、録音の取得は全自動で行われます。</span></p>
+    <div class="card">
+      <ul class="plain">
+        <li><span data-en>When a Zoom Phone call ends, YouWire automatically retrieves the recording via the Zoom API and stores it in your designated, encrypted storage.</span><span data-jp>Zoom Phone の通話が終了すると、YouWire が Zoom API 経由で録音を自動取得し、貴社指定の暗号化ストレージへ保管します。</span></li>
+        <li><span data-en>Sign in to YouWire to search recordings by date, phone number, direction, group, tag or keyword, and play them back in the browser.</span><span data-jp>YouWire にサインインし、通話日時・電話番号・方向・グループ・タグ・キーワードで録音を検索し、ブラウザ上で再生できます。</span></li>
+        <li><span data-en>AI transcription, summaries and automatic tags are generated for each call, and recordings/transcripts can be downloaded or exported (CSV) based on your permissions.</span><span data-jp>各通話に対し AI 文字起こし・要約・自動タグが生成され、権限に応じて録音・テキストのダウンロードや CSV 出力が可能です。</span></li>
+        <li><span data-en>Access is governed by per-user permissions, IP restriction and multi-factor authentication; all playback, download and delete actions are logged.</span><span data-jp>アクセスはユーザー単位の権限・IP制限・多要素認証で制御され、再生・ダウンロード・削除の操作はすべてログに記録されます。</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="removing">
+    <h2><span class="n">3</span><span data-en>Removing the app</span><span data-jp>アプリの削除</span></h2>
+    <p class="sub"><span data-en>You can disconnect the app at any time from Zoom.</span><span data-jp>アプリはいつでも Zoom 側から解除できます。</span></p>
+    <div class="card">
+      <ol>
+        <li><span data-en>Sign in to the Zoom App Marketplace as an account admin. Go to <b>Manage → Added Apps</b> (or <code>admin.zoom.us</code> → Advanced → App Marketplace).</span><span data-jp>アカウント管理者で Zoom App Marketplace にサインインし、<b>Manage → Added Apps</b>（または <code>admin.zoom.us</code> → 詳細 → App Marketplace）を開きます。</span></li>
+        <li><span data-en>Find <b>YouWire for Zoom Phone Recording</b>, click <b>Remove</b>, and confirm.</span><span data-jp><b>YouWire for Zoom Phone Recording</b> を見つけ、<b>Remove</b> を押して確認します。</span></li>
+        <li><span data-en>On removal, Zoom revokes access. YouWire receives a deauthorization notification, immediately stops accessing your Zoom data, and deletes the stored OAuth tokens for your account.</span><span data-jp>削除すると Zoom 側のアクセスが取り消されます。YouWire は認可解除通知を受け取り、貴社の Zoom データへのアクセスを直ちに停止し、保管していた OAuth トークンを削除します。</span></li>
+        <li><span data-en>To stop recordings from being generated, also disable automatic recording in your Zoom Phone settings.</span><span data-jp>録音自体を停止するには、Zoom Phone 側の自動録音設定も無効化してください。</span></li>
+        <li><span data-en>Recordings already archived in your designated storage remain under your control. To request deletion of any data held by YouWire, contact support (see below).</span><span data-jp>すでに貴社指定ストレージへ保管済みの録音は貴社の管理下に残ります。YouWire 側が保持するデータの削除をご希望の場合は、下記サポートまでご連絡ください。</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="support">
+    <h2><span data-en>Support</span><span data-jp>サポート</span></h2>
+    <div class="card">
+      <p style="margin:0 0 6px">
+        <span data-en>For setup assistance, data deletion requests, or any questions about this app, please contact us:</span>
+        <span data-jp>導入のご相談、データ削除のご依頼、本アプリに関するお問い合わせは下記までご連絡ください。</span>
+      </p>
+      <ul class="plain">
+        <li><span data-en>Contact form: </span><span data-jp>お問い合わせフォーム：</span><a href="https://www.youwire.jp/contact/">https://www.youwire.jp/contact/</a></li>
+        <li><span data-en>Provider: GeekFeed Inc. — </span><span data-jp>提供：株式会社ギークフィード — </span><a href="https://www.youwire.jp/">YouWire</a></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <a href="https://www.youwire.jp/">YouWire Top</a>
+    <a href="https://www.youwire.jp/about/"><span data-en>About</span><span data-jp>YouWireの紹介</span></a>
+    <a href="https://www.youwire.jp/company/"><span data-en>Company</span><span data-jp>会社概要</span></a>
+    <a href="https://www.youwire.jp/contact/"><span data-en>Contact</span><span data-jp>お問い合わせ</span></a>
+    <div class="muted">© 2026 GeekFeed Inc. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+  function setLang(l){
+    document.documentElement.lang = l;
+    document.getElementById('btn-en').classList.toggle('active', l==='en');
+    document.getElementById('btn-ja').classList.toggle('active', l==='ja');
+  }
+  // default to Japanese if the browser prefers it
+  if((navigator.language||'').toLowerCase().startsWith('ja')){ setLang('ja'); }
+</script>
+</body>
+</html>
