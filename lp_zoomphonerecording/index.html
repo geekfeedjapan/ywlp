@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YouWire for Zoom Phone Recording — Setup &amp; User Guide</title>
-<meta name="description" content="Installation, usage and removal guide for the YouWire for Zoom Phone Recording app on the Zoom App Marketplace. Automated compliance recording for Zoom Phone.">
+<title>YouWire for Zoom — Setup &amp; User Guide</title>
+<meta name="description" content="Installation, usage and removal guide for the YouWire for Zoom app on the Zoom App Marketplace. Automated compliance recording and archiving for Zoom Phone calls and Zoom Meetings.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
@@ -82,10 +82,10 @@
     </div>
     <div class="hero">
       <div class="tag">Zoom App Documentation</div>
-      <h1><span data-en>YouWire for Zoom Phone Recording</span><span data-jp>YouWire for Zoom Phone Recording 設定・利用ガイド</span></h1>
+      <h1><span data-en>YouWire for Zoom</span><span data-jp>YouWire for Zoom 設定・利用ガイド</span></h1>
       <p>
-        <span data-en>How to add, use, and remove the YouWire app for automated, compliant recording of your Zoom Phone calls.</span>
-        <span data-jp>Zoom Phone の通話を自動でコンプライアンス録音する YouWire アプリの「追加・利用・削除」手順をご案内します。</span>
+        <span data-en>How to add, use, and remove the YouWire app for automated, compliant recording of your Zoom Phone calls and Zoom Meetings.</span>
+        <span data-jp>Zoom Phone の通話と Zoom Meetings の会議録画を自動でコンプライアンス録音する YouWire アプリの「追加・利用・削除」手順をご案内します。</span>
       </p>
       <div class="toc">
         <a href="#overview"><span data-en>Overview</span><span data-jp>概要</span></a>
@@ -105,12 +105,16 @@
     <h2><span data-en>Overview</span><span data-jp>概要</span></h2>
     <div class="card">
       <p style="margin:0">
-        <span data-en>YouWire for Zoom Phone Recording is an admin-managed app that automatically retrieves your Zoom Phone call recordings through the Zoom API and archives them to your designated, encrypted storage. Recordings are made searchable with AI transcription, summaries and tagging — helping regulated teams meet compliance and audit requirements.</span>
-        <span data-jp>YouWire for Zoom Phone Recording は、Zoom API を通じて Zoom Phone の通話録音を自動取得し、貴社指定の暗号化ストレージへ保管する Admin-managed アプリです。AI による文字起こし・要約・タグ付けで録音を検索可能にし、規制業種のコンプライアンス・監査対応を支援します。</span>
+        <span data-en>YouWire for Zoom is an admin-managed app that automatically retrieves your Zoom Phone call recordings and your cloud-recorded Zoom Meetings through Zoom webhooks, and archives them to your designated, encrypted storage — so calls and meetings can be retained, searched and audited together in one archive. Recordings are made searchable with AI transcription, summaries and tagging — helping regulated teams meet compliance and audit requirements.</span>
+        <span data-jp>YouWire for Zoom は、Zoom Phone の通話録音と Zoom Meetings のクラウド録画を Zoom の webhook 経由で自動取得し、貴社指定の暗号化ストレージへ保管する Admin-managed アプリです。通話と会議を1つのアーカイブにまとめて保管・検索・監査できます。AI による文字起こし・要約・タグ付けで録音を検索可能にし、規制業種のコンプライアンス・監査対応を支援します。</span>
       </p>
       <div class="note">
-        <span data-en><b>App type:</b> Admin-managed OAuth app. Scopes used: <code>phone:read:call_recording:admin</code> (read call recordings) and <code>phone:read:call_log:admin</code> (read call logs for metadata). YouWire requests read-only access only.</span>
-        <span data-jp><b>アプリ種別：</b>Admin-managed OAuth アプリ。使用スコープは <code>phone:read:call_recording:admin</code>（録音の読み取り）と <code>phone:read:call_log:admin</code>（メタデータ用の通話ログ読み取り）。YouWire は読み取り専用のアクセスのみを要求します。</span>
+        <span data-en><b>App type:</b> Admin-managed OAuth app. Scopes used: <code>phone:read:call_recording:admin</code> (download call recordings), <code>user:read:user:admin</code> (read the installing administrator's name and email, once, as a support contact), and — when meeting archiving is enabled — <code>cloud_recording:read:recording:admin</code> (subscribe to the meeting recording event) and <code>meeting:read:list_past_participants:admin</code> (identify which of your own users attended). YouWire requests read-only access only and never changes any Zoom setting.</span>
+        <span data-jp><b>アプリ種別：</b>Admin-managed OAuth アプリ。使用スコープは <code>phone:read:call_recording:admin</code>（通話録音のダウンロード）、<code>user:read:user:admin</code>（認可した管理者の氏名・メールを1回のみ取得。サポート窓口の把握用）、および<b>会議録画をご利用の場合のみ</b> <code>cloud_recording:read:recording:admin</code>（会議録画の完了イベントの購読）と <code>meeting:read:list_past_participants:admin</code>（貴社アカウントの参加者の特定）。YouWire は読み取り専用のアクセスのみを要求し、Zoom 側の設定を変更することはありません。</span>
+      </div>
+      <div class="note">
+        <span data-en><b>About meeting recordings:</b> Meeting archiving is optional and enabled per customer. Only <b>cloud recordings</b> can be archived — local recordings saved to a PC are not made available to apps by Zoom. The meeting host must have a <b>Licensed</b> (paid) Zoom plan, because Zoom Basic cannot record to the cloud. Only the <b>audio</b> is ingested; video, in-meeting chat, captions, Zoom-generated transcripts or summaries, and webinars are not.</span>
+        <span data-jp><b>会議録画についての注意：</b>会議の取り込みは任意で、お客さまごとに有効化します。取り込めるのは<b>クラウド録画</b>のみです（PC に保存されるローカル録画は Zoom がアプリへ提供しないため取り込めません）。Zoom Basic（無料）はクラウド録画が使えないため、<b>会議のホストは Licensed（有償）プラン</b>である必要があります。取り込むのは<b>音声のみ</b>で、動画・会議中チャット・字幕・Zoom が生成する文字起こしや要約・ウェビナーは対象外です。</span>
       </div>
     </div>
   </section>
@@ -122,6 +126,8 @@
       <div class="item"><b><span data-en>Zoom account admin</span><span data-jp>Zoom アカウント管理者</span></b><span data-en>Adding the app requires an account owner/admin, because it is admin-managed.</span><span data-jp>本アプリは Admin-managed のため、追加にはアカウントの Owner/Admin 権限が必要です。</span></div>
       <div class="item"><b><span data-en>Zoom Phone license</span><span data-jp>Zoom Phone ライセンス</span></b><span data-en>Target users must have a Zoom Phone license assigned.</span><span data-jp>録音対象ユーザーに Zoom Phone ライセンスが割り当てられていること。</span></div>
       <div class="item"><b><span data-en>Call recording enabled</span><span data-jp>通話録音の有効化</span></b><span data-en>Automatic call recording must be turned on for the users/groups you want to record.</span><span data-jp>録音したいユーザー／グループで自動通話録音が有効になっていること。</span></div>
+      <div class="item"><b><span data-en>Cloud recording enabled (for meetings)</span><span data-jp>クラウド記録の有効化（会議をご利用の場合）</span></b><span data-en>To archive meetings, Cloud recording must be enabled in your Zoom account settings, and the meeting host must have a Licensed (paid) plan. We recommend also enabling Automatic recording → Record in the cloud so that meetings are not missed.</span><span data-jp>会議を取り込むには、Zoom のアカウント設定で「クラウド記録」が有効で、会議のホストが Licensed（有償）プランである必要があります。取りこぼしを防ぐため「自動記録 → クラウドに記録」も有効化することを推奨します。</span></div>
+      <div class="item"><b><span data-en>Signed in when joining (for meetings)</span><span data-jp>会議へはサインインして参加（会議をご利用の場合）</span></b><span data-en>Zoom only provides participant email addresses for users in your own Zoom account. Participants who join without signing in — and participants from outside your account — are recorded as attendees but are not linked to a user for per-user search.</span><span data-jp>Zoom は自社アカウントに属する参加者のメールアドレスのみをアプリへ提供します。未サインインで参加された方や社外の参加者は「同席した記録」として残りますが、ユーザー単位の検索対象には紐づきません。</span></div>
       <div class="item"><b><span data-en>YouWire account</span><span data-jp>YouWire アカウント</span></b><span data-en>A YouWire tenant provisioned by GeekFeed (arranged during onboarding).</span><span data-jp>GeekFeed が払い出す YouWire テナント（オンボーディング時に手配）。</span></div>
     </div>
   </section>
@@ -131,11 +137,12 @@
     <p class="sub"><span data-en>Install and authorize the app from the Zoom App Marketplace.</span><span data-jp>Zoom App Marketplace からアプリをインストールし、認可します。</span></p>
     <div class="card">
       <ol>
-        <li><span data-en>Open the app from the Zoom App Marketplace. Search for <b>“YouWire for Zoom Phone Recording”</b> and click <b>Add</b>, or open the authorization URL provided by GeekFeed.</span><span data-jp>Zoom App Marketplace でアプリを開きます。<b>「YouWire for Zoom Phone Recording」</b>を検索して <b>Add</b> を押すか、GeekFeed からお送りした認可URLを開きます。</span></li>
-        <li><span data-en>Review the requested permissions (<code>phone:read:call_recording:admin</code>, <code>phone:read:call_log:admin</code>) and the privacy policy.</span><span data-jp>要求される権限（<code>phone:read:call_recording:admin</code> / <code>phone:read:call_log:admin</code>）とプライバシーポリシーを確認します。</span></li>
+        <li><span data-en>Open the app from the Zoom App Marketplace. Search for <b>“YouWire for Zoom”</b> and click <b>Add</b>, or open the authorization URL provided by GeekFeed.</span><span data-jp>Zoom App Marketplace でアプリを開きます。<b>「YouWire for Zoom」</b>を検索して <b>Add</b> を押すか、GeekFeed からお送りした認可URLを開きます。</span></li>
+        <li><span data-en>Review the requested permissions (see “App type” above) and the privacy policy.</span><span data-jp>要求される権限（上記「アプリ種別」を参照）とプライバシーポリシーを確認します。</span></li>
         <li><span data-en>Click <b>Authorize</b> (sign in as a Zoom account admin if prompted). You will see a confirmation screen when the app is added.</span><span data-jp>（求められたらアカウント管理者でサインインのうえ）<b>Authorize</b> を押します。追加が完了すると確認画面が表示されます。</span></li>
         <li><span data-en>Notify GeekFeed that authorization is complete. We finalize the connection by provisioning your YouWire storage endpoint and enabling the tenant.</span><span data-jp>認可完了を GeekFeed までご連絡ください。弊社にて YouWire 側の接続先（ストレージ）を払い出し、テナントを有効化して連携を完了します。</span></li>
         <li><span data-en>In the Zoom admin portal (<code>admin.zoom.us</code> → Phone System Management), enable <b>automatic cloud recording</b> for the target users or groups.</span><span data-jp>Zoom 管理ポータル（<code>admin.zoom.us</code> → 電話 → 設定 → 録音）で、対象ユーザー／グループの<b>自動クラウド録音</b>を有効化します。</span></li>
+        <li><span data-en><b>For meetings only:</b> meetings are controlled by a separate setting. Go to <code>admin.zoom.us</code> → Account Management → Account Settings → <b>Recording</b>, and enable <b>Cloud recording</b>. To avoid missing meetings, also enable <b>Automatic recording → Record in the cloud</b>. Enabling call recording does not enable meeting recording.</span><span data-jp><b>会議をご利用の場合のみ：</b>会議は<b>電話とは別の設定</b>で制御します。<code>admin.zoom.us</code> → アカウント管理 → アカウント設定 → <b>記録</b>で<b>クラウド記録</b>を有効化してください。取りこぼしを防ぐため<b>自動記録 → クラウドに記録</b>も有効化することを推奨します。<b>通話録音を有効にしても会議は録画されません。</b></span></li>
       </ol>
       <div class="note"><span data-en>For compliance, we recommend enabling Zoom’s recording notification/consent prompts for the recorded users.</span><span data-jp>コンプライアンス対応として、録音対象ユーザーに対し Zoom の録音通知・同意アナウンスを有効にすることを推奨します。</span></div>
     </div>
@@ -146,7 +153,8 @@
     <p class="sub"><span data-en>Once connected, recording capture is fully automatic.</span><span data-jp>連携後は、録音の取得は全自動で行われます。</span></p>
     <div class="card">
       <ul class="plain">
-        <li><span data-en>When a Zoom Phone call ends, YouWire automatically retrieves the recording via the Zoom API and stores it in your designated, encrypted storage.</span><span data-jp>Zoom Phone の通話が終了すると、YouWire が Zoom API 経由で録音を自動取得し、貴社指定の暗号化ストレージへ保管します。</span></li>
+        <li><span data-en>When a Zoom Phone call ends, YouWire automatically retrieves the recording and stores it in your designated, encrypted storage.</span><span data-jp>Zoom Phone の通話が終了すると、YouWire が録音を自動取得し、貴社指定の暗号化ストレージへ保管します。</span></li>
+        <li><span data-en>When a cloud-recorded Zoom Meeting finishes processing, the meeting audio is retrieved the same way, so calls and meetings end up in the same archive. YouWire also records which of your own users attended the meeting.</span><span data-jp>Zoom Meetings のクラウド録画は、Zoom 側の処理が完了した時点で同じ流れで音声を取得します。通話と会議が同一のアーカイブに入るため、まとめて検索・監査できます。あわせて、その会議に参加された貴社ユーザーも記録します。</span></li>
         <li><span data-en>Sign in to YouWire to search recordings by date, phone number, direction, group, tag or keyword, and play them back in the browser.</span><span data-jp>YouWire にサインインし、通話日時・電話番号・方向・グループ・タグ・キーワードで録音を検索し、ブラウザ上で再生できます。</span></li>
         <li><span data-en>AI transcription, summaries and automatic tags are generated for each call, and recordings/transcripts can be downloaded or exported (CSV) based on your permissions.</span><span data-jp>各通話に対し AI 文字起こし・要約・自動タグが生成され、権限に応じて録音・テキストのダウンロードや CSV 出力が可能です。</span></li>
         <li><span data-en>Access is governed by per-user permissions, IP restriction and multi-factor authentication; all playback, download and delete actions are logged.</span><span data-jp>アクセスはユーザー単位の権限・IP制限・多要素認証で制御され、再生・ダウンロード・削除の操作はすべてログに記録されます。</span></li>
@@ -160,9 +168,9 @@
     <div class="card">
       <ol>
         <li><span data-en>Sign in to the Zoom App Marketplace as an account admin. Go to <b>Manage → Added Apps</b> (or <code>admin.zoom.us</code> → Advanced → App Marketplace).</span><span data-jp>アカウント管理者で Zoom App Marketplace にサインインし、<b>Manage → Added Apps</b>（または <code>admin.zoom.us</code> → 詳細 → App Marketplace）を開きます。</span></li>
-        <li><span data-en>Find <b>YouWire for Zoom Phone Recording</b>, click <b>Remove</b>, and confirm.</span><span data-jp><b>YouWire for Zoom Phone Recording</b> を見つけ、<b>Remove</b> を押して確認します。</span></li>
+        <li><span data-en>Find <b>YouWire for Zoom</b>, click <b>Remove</b>, and confirm.</span><span data-jp><b>YouWire for Zoom</b> を見つけ、<b>Remove</b> を押して確認します。</span></li>
         <li><span data-en>On removal, Zoom revokes access. YouWire receives a deauthorization notification, immediately stops accessing your Zoom data, and deletes the stored OAuth tokens for your account.</span><span data-jp>削除すると Zoom 側のアクセスが取り消されます。YouWire は認可解除通知を受け取り、貴社の Zoom データへのアクセスを直ちに停止し、保管していた OAuth トークンを削除します。</span></li>
-        <li><span data-en>To stop recordings from being generated, also disable automatic recording in your Zoom Phone settings.</span><span data-jp>録音自体を停止するには、Zoom Phone 側の自動録音設定も無効化してください。</span></li>
+        <li><span data-en>To stop recordings from being generated, also disable automatic recording in your Zoom Phone settings and, if you were archiving meetings, in your Zoom Recording settings.</span><span data-jp>録音・録画自体を停止するには、Zoom Phone 側の自動録音設定と、会議を取り込んでいた場合は Zoom の「記録」設定も無効化してください。</span></li>
         <li><span data-en>Recordings already archived in your designated storage remain under your control. To request deletion of any data held by YouWire, contact support (see below).</span><span data-jp>すでに貴社指定ストレージへ保管済みの録音は貴社の管理下に残ります。YouWire 側が保持するデータの削除をご希望の場合は、下記サポートまでご連絡ください。</span></li>
       </ol>
     </div>
