@@ -105,8 +105,8 @@
     <h2><span data-en>Overview</span><span data-jp>概要</span></h2>
     <div class="card">
       <p style="margin:0">
-        <span data-en>YouWire for Zoom is an admin-managed app that automatically retrieves your Zoom Phone call recordings and your cloud-recorded Zoom Meetings through Zoom webhooks, and archives them to your designated, encrypted storage — so calls and meetings can be retained, searched and audited together in one archive. Recordings are made searchable with AI transcription, summaries and tagging — helping regulated teams meet compliance and audit requirements.</span>
-        <span data-jp>YouWire for Zoom は、Zoom Phone の通話録音と Zoom Meetings のクラウド録画を Zoom の webhook 経由で自動取得し、貴社指定の暗号化ストレージへ保管する Admin-managed アプリです。通話と会議を1つのアーカイブにまとめて保管・検索・監査できます。AI による文字起こし・要約・タグ付けで録音を検索可能にし、規制業種のコンプライアンス・監査対応を支援します。</span>
+        <span data-en>YouWire for Zoom is an admin-managed app that automatically retrieves your Zoom Phone call recordings and your cloud-recorded Zoom Meetings through Zoom webhooks, and archives them to the encrypted storage GeekFeed provides for your tenant — so calls and meetings can be retained, searched and audited together in one archive. Recordings are made searchable with AI transcription, summaries and tagging — helping regulated teams meet compliance and audit requirements.</span>
+        <span data-jp>YouWire for Zoom は、Zoom Phone の通話録音と Zoom Meetings のクラウド録画を Zoom の webhook 経由で自動取得し、ギークフィードが提供する貴社専用の暗号化ストレージへ保管する Admin-managed アプリです。通話と会議を1つのアーカイブにまとめて保管・検索・監査できます。AI による文字起こし・要約・タグ付けで録音を検索可能にし、規制業種のコンプライアンス・監査対応を支援します。</span>
       </p>
       <div class="note">
         <span data-en><b>App type:</b> Admin-managed OAuth app. Scopes used: <code>phone:read:call_recording:admin</code> (download call recordings), <code>user:read:user:admin</code> (read the installing administrator's name and email, once, as a support contact), and — when meeting archiving is enabled — <code>cloud_recording:read:recording:admin</code> (subscribe to the meeting recording event) and <code>meeting:read:list_past_participants:admin</code> (identify which of your own users attended). YouWire requests read-only access only and never changes any Zoom setting.</span>
@@ -153,7 +153,7 @@
     <p class="sub"><span data-en>Once connected, recording capture is fully automatic.</span><span data-jp>連携後は、録音の取得は全自動で行われます。</span></p>
     <div class="card">
       <ul class="plain">
-        <li><span data-en>When a Zoom Phone call ends, YouWire automatically retrieves the recording and stores it in your designated, encrypted storage.</span><span data-jp>Zoom Phone の通話が終了すると、YouWire が録音を自動取得し、貴社指定の暗号化ストレージへ保管します。</span></li>
+        <li><span data-en>When a Zoom Phone call ends, YouWire automatically retrieves the recording and stores it in the encrypted storage GeekFeed provides for your tenant (typically Amazon S3).</span><span data-jp>Zoom Phone の通話が終了すると、YouWire が録音を自動取得し、ギークフィードが提供する貴社専用の暗号化ストレージ（多くは Amazon S3）へ保管します。</span></li>
         <li><span data-en>When a cloud-recorded Zoom Meeting finishes processing, the meeting audio is retrieved the same way, so calls and meetings end up in the same archive. YouWire also records which of your own users attended the meeting.</span><span data-jp>Zoom Meetings のクラウド録画は、Zoom 側の処理が完了した時点で同じ流れで音声を取得します。通話と会議が同一のアーカイブに入るため、まとめて検索・監査できます。あわせて、その会議に参加された貴社ユーザーも記録します。</span></li>
         <li><span data-en>Sign in to YouWire to search recordings by date, phone number, direction, group, tag or keyword, and play them back in the browser.</span><span data-jp>YouWire にサインインし、通話日時・電話番号・方向・グループ・タグ・キーワードで録音を検索し、ブラウザ上で再生できます。</span></li>
         <li><span data-en>AI transcription, summaries and automatic tags are generated for each call, and recordings/transcripts can be downloaded or exported (CSV) based on your permissions.</span><span data-jp>各通話に対し AI 文字起こし・要約・自動タグが生成され、権限に応じて録音・テキストのダウンロードや CSV 出力が可能です。</span></li>
@@ -171,7 +171,7 @@
         <li><span data-en>Find <b>YouWire for Zoom</b>, click <b>Remove</b>, and confirm.</span><span data-jp><b>YouWire for Zoom</b> を見つけ、<b>Remove</b> を押して確認します。</span></li>
         <li><span data-en>On removal, Zoom revokes access. YouWire receives a deauthorization notification, immediately stops accessing your Zoom data, and deletes the stored OAuth tokens for your account.</span><span data-jp>削除すると Zoom 側のアクセスが取り消されます。YouWire は認可解除通知を受け取り、貴社の Zoom データへのアクセスを直ちに停止し、保管していた OAuth トークンを削除します。</span></li>
         <li><span data-en>To stop recordings from being generated, also disable automatic recording in your Zoom Phone settings and, if you were archiving meetings, in your Zoom Recording settings.</span><span data-jp>録音・録画自体を停止するには、Zoom Phone 側の自動録音設定と、会議を取り込んでいた場合は Zoom の「記録」設定も無効化してください。</span></li>
-        <li><span data-en>Recordings already archived in your designated storage remain under your control. To request deletion of any data held by YouWire, contact support (see below).</span><span data-jp>すでに貴社指定ストレージへ保管済みの録音は貴社の管理下に残ります。YouWire 側が保持するデータの削除をご希望の場合は、下記サポートまでご連絡ください。</span></li>
+        <li><span data-en>Recordings already archived remain available to you in YouWire, in the encrypted storage GeekFeed provides for your tenant. To request deletion of any data held by YouWire, contact support (see below).</span><span data-jp>すでに保管済みの録音は、ギークフィードが提供する貴社専用の暗号化ストレージに残り、YouWire から引き続きご利用いただけます。データの削除をご希望の場合は、下記サポートまでご連絡ください。</span></li>
       </ol>
     </div>
   </section>
