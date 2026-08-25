@@ -31,12 +31,6 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .scrub::-moz-range-thumb{width:15px;height:15px;border:0;border-radius:50%;background:#fff;cursor:pointer}
 .scrub:focus-visible{box-shadow:0 0 0 3px rgba(37,99,235,.6)}
 .tc{font-size:13px;color:#94A3B8;flex:none}
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
-.chip{font-size:11.5px;padding:6px 12px;border-radius:99px;background:#1E293B;color:#94A3B8;transition:.15s}
-.chip:hover{background:#334155;color:#fff}
-.chip.on{background:#fff;color:#0F172A;font-weight:700}
-.legend{font-size:11.5px;color:#64748B;margin-top:14px;line-height:1.8}
-.legend b{color:#CBD5E1;font-weight:500}
 
 /* ---- app chrome ---- */
 .side{position:absolute;left:0;top:0;bottom:0;width:190px;background:var(--side);
@@ -228,7 +222,6 @@ body.fs{overflow:hidden}
   background:#000;z-index:50;box-shadow:none}
 .shell.fs .ctrl{position:fixed;z-index:60;left:10px;right:10px;bottom:10px;margin:0;
   background:rgba(8,14,26,.86);padding:9px 13px;border-radius:13px;backdrop-filter:blur(8px)}
-.shell.fs .chips,.shell.fs .legend{display:none}
 /* ネイティブ全画面（Fullscreen API） */
 .shell:fullscreen,.shell:-webkit-full-screen{background:#000;padding:0;max-width:none;
   display:flex;align-items:center;justify-content:center}
@@ -237,8 +230,6 @@ body.fs{overflow:hidden}
 .shell:fullscreen .ctrl,.shell:-webkit-full-screen .ctrl{position:fixed;z-index:60;
   left:10px;right:10px;bottom:10px;margin:0;background:rgba(8,14,26,.86);
   padding:9px 13px;border-radius:13px;backdrop-filter:blur(8px)}
-.shell:fullscreen .chips,.shell:-webkit-full-screen .chips,
-.shell:fullscreen .legend,.shell:-webkit-full-screen .legend{display:none}
 .shell.fs .frame{aspect-ratio:auto}
 
 /* ---------- narrow screens ---------- */
@@ -250,11 +241,6 @@ body.fs{overflow:hidden}
   .pp{width:38px;height:38px;font-size:13px}
   .tc{font-size:11px}
   .fsb{padding:8px 11px;font-size:11.5px}
-  .chips{margin-top:11px;padding:0 12px 4px;flex-wrap:nowrap;overflow-x:auto;
-    -webkit-overflow-scrolling:touch;scrollbar-width:none}
-  .chips::-webkit-scrollbar{display:none}
-  .chip{flex:none}
-  .legend{padding:0 12px;margin-top:12px;font-size:10.5px}
 }
 @media (max-width:460px){
   .tc{display:none}
@@ -448,9 +434,6 @@ body.fs{overflow:hidden}
   <span class="tc mono" id="tc">00.0 / 60.0</span>
   <button class="fsb" id="fsb" aria-label="全画面表示">⤢ <span id="fsl">全画面</span></button>
 </div>
-<div class="chips" id="chips"></div>
-<div class="legend" id="legend"><b>Space</b> 再生／停止　<b>←→</b> 0.5秒送り　─　
-  録音データ・氏名・電話番号・ファイルパスはすべてダミーです。</div>
 </div>
 
 <script>
@@ -570,9 +553,6 @@ const CAPS=[[4.5,13,'すべての録音データを、クラウドで一括管�
  [37,44.5,'検知結果は、指定のツールへ通知'],
  [44.5,52,'BI ツール連携で、傾向を統計的に把握'],
  [52,57.5,'AI エージェントに、チャットで直接問い合わせ']];
-const MK=[['タイトル',0],['一括管理',4.5],['再生・文字起こし',13],['条件定義',22],
- ['判断基準',29],['通知',37],['統計',44.5],['AI 問合せ',52],['締め',57.5]];
-$('chips').innerHTML=MK.map((m,i)=>`<button class="chip" data-t="${m[1]}" id="ch${i}">${m[0]}</button>`).join('');
 
 const LN1=$('ln1'), LN2=$('ln2');
 const L1L=LN1.getTotalLength(), L2L=LN2.getTotalLength();
@@ -700,10 +680,6 @@ function render(t){
 
   $('scrub').value=t;
   $('tc').textContent=t.toFixed(1).padStart(4,'0')+' / 60.0';
-  MK.forEach((m,i)=>{
-    const nx=MK[i+1]?MK[i+1][1]:61;
-    $('ch'+i).classList.toggle('on',t>=m[1]&&t<nx);
-  });
   applyView(t);
 }
 
@@ -722,7 +698,6 @@ function play(){ if(t>=DUR)t=0; playing=true; last=0; $('pp').textContent='❚�
 function pause(){ playing=false; $('pp').textContent='▶'; }
 $('pp').onclick=()=>playing?pause():play();
 $('scrub').oninput=e=>{pause();t=+e.target.value;render(t);};
-$('chips').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;t=+b.dataset.t;render(t);play();};
 addEventListener('keydown',e=>{
   if(e.code==='Space'){e.preventDefault();playing?pause():play();}
   if(e.code==='ArrowRight'){pause();t=Math.min(DUR,t+.5);render(t);}
@@ -754,7 +729,7 @@ function layout(){
     f.style.width=v.w+'px'; f.style.height=v.h+'px'; return;
   }
   f.style.width='';
-  const below=$('ctrl').offsetHeight+$('chips').offsetHeight+$('legend').offsetHeight+58;
+  const below=$('ctrl').offsetHeight+34;
   const avail=Math.max(200, Math.round(v.h-below));
   const w=f.clientWidth;
   /* 幅の狭い端末では縦の余白を使い切る。広い画面は 16:9 を保つ */
@@ -768,13 +743,16 @@ function applyView(t){
   layout();
   const f=$('frame'), st=$('stage');
   const fw=f.clientWidth, fh=f.clientHeight;
+  /* 全画面では再生バーが下に重なるので、テロップをその上へ逃がす */
+  const bo=(nfs()||fs) ? $('ctrl').offsetHeight+20 : 0;
+  $('cap').style.bottom=bo+'px';
   const capH=$('cap').offsetHeight||56;
-  const availH=Math.max(80, fh-capH);
+  const availH=Math.max(80, fh-capH-bo);
 
   const sFull=Math.min(fw/1280, fh/720);
   if(sFull>=FITSCALE){                         /* 全体を表示できる */
     st.style.transform='translate('+((fw-1280*sFull)/2)+'px,'
-      +((fh-720*sFull)/2)+'px) scale('+sFull+')';
+      +Math.max(0,(fh-bo-720*sFull)/2)+'px) scale('+sFull+')';
     return;
   }
 
