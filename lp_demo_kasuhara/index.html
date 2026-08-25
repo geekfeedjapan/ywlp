@@ -229,13 +229,23 @@ body.fs{overflow:hidden}
 .shell.fs .ctrl{position:fixed;z-index:60;left:10px;right:10px;bottom:10px;margin:0;
   background:rgba(8,14,26,.86);padding:9px 13px;border-radius:13px;backdrop-filter:blur(8px)}
 .shell.fs .chips,.shell.fs .legend{display:none}
+/* ネイティブ全画面（Fullscreen API） */
+.shell:fullscreen,.shell:-webkit-full-screen{background:#000;padding:0;max-width:none;
+  display:flex;align-items:center;justify-content:center}
+.shell:fullscreen .frame,.shell:-webkit-full-screen .frame{
+  width:100vw;height:100vh;aspect-ratio:auto;border-radius:0;box-shadow:none;background:#000}
+.shell:fullscreen .ctrl,.shell:-webkit-full-screen .ctrl{position:fixed;z-index:60;
+  left:10px;right:10px;bottom:10px;margin:0;background:rgba(8,14,26,.86);
+  padding:9px 13px;border-radius:13px;backdrop-filter:blur(8px)}
+.shell:fullscreen .chips,.shell:-webkit-full-screen .chips,
+.shell:fullscreen .legend,.shell:-webkit-full-screen .legend{display:none}
 .shell.fs .frame{aspect-ratio:auto}
 
 /* ---------- narrow screens ---------- */
 @media (max-width:760px){
   body{padding:10px 0 18px;justify-content:flex-start}
   .shell{max-width:100%}
-  .frame{border-radius:0;aspect-ratio:3/4}
+  .frame{border-radius:0;aspect-ratio:auto}
   .ctrl{padding:0 12px;gap:9px;margin-top:11px}
   .pp{width:38px;height:38px;font-size:13px}
   .tc{font-size:11px}
@@ -432,14 +442,14 @@ body.fs{overflow:hidden}
   <div class="cap" id="cap" style="opacity:0"><span id="captext"></span></div>
 </div>
 
-<div class="ctrl">
+<div class="ctrl" id="ctrl">
   <button class="pp" id="pp" aria-label="再生／一時停止">▶</button>
   <input class="scrub" id="scrub" type="range" min="0" max="60" step="0.01" value="0" aria-label="シーク">
   <span class="tc mono" id="tc">00.0 / 60.0</span>
   <button class="fsb" id="fsb" aria-label="全画面表示">⤢ <span id="fsl">全画面</span></button>
 </div>
 <div class="chips" id="chips"></div>
-<div class="legend"><b>Space</b> 再生／停止　<b>←→</b> 0.5秒送り　─　
+<div class="legend" id="legend"><b>Space</b> 再生／停止　<b>←→</b> 0.5秒送り　─　
   録音データ・氏名・電話番号・ファイルパスはすべてダミーです。</div>
 </div>
 
@@ -732,12 +742,27 @@ const FOCUS=[
  [52  , 252, 16, 476,620],   /* AI チャット   */
  [57.5, 268,110, 744,470]    /* 締め          */
 ];
-let fs=false;
+let fs=false;                                  /* 疑似全画面（iPhone Safari 用の代替） */
 const narrow=()=>innerWidth<=760;
+const nfs=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
+
+/* 見えている高さから逆算してフレームの高さを決める（アドレスバー分を差し引く） */
+function sizeFrame(){
+  const f=$('frame');
+  if(!narrow()||fs||nfs()){ f.style.height=''; return; }
+  const vh=(window.visualViewport?visualViewport.height:innerHeight);
+  const below=$('ctrl').offsetHeight+$('chips').offsetHeight+$('legend').offsetHeight+58;
+  f.style.height=Math.max(240,Math.round(vh-below))+'px';
+}
 function applyView(t){
+  sizeFrame();
   const f=$('frame'), st=$('stage');
   const fw=f.clientWidth, fh=f.clientHeight;
-  if(!narrow()&&!fs){ st.style.transform='scale('+(fw/1280)+')'; return; }
+  if(!narrow()&&!fs){                          /* 広い画面：全体を収める */
+    const s=Math.min(fw/1280, fh/720);
+    st.style.transform='translate('+((fw-1280*s)/2)+'px,'+((fh-720*s)/2)+'px) scale('+s+')';
+    return;
+  }
   let i=0;
   for(let k=0;k<FOCUS.length;k++) if(t>=FOCUS[k][0]) i=k;
   const r=FOCUS[i], pv=i>0?FOCUS[i-1]:FOCUS[i];
@@ -750,17 +775,37 @@ function applyView(t){
   st.style.transform='translate('+((fw-rw*s)/2-rx*s)+'px,'
     +((availH-rh*s)/2-ry*s)+'px) scale('+s+')';
 }
-function setFs(v){
+const shell=$('frame').parentElement;
+function pseudoFs(v){                          /* Fullscreen API が使えない端末向け */
   fs=v;
   document.body.classList.toggle('fs',v);
-  $('frame').parentElement.classList.toggle('fs',v);
-  $('fsl').textContent=v?'閉じる':'全画面';
-  render(t);
+  shell.classList.toggle('fs',v);
+  syncFsLabel(); render(t);
 }
-$('fsb').onclick=()=>setFs(!fs);
+function syncFsLabel(){ $('fsl').textContent=(fs||nfs())?'閉じる':'全画面'; }
+async function toggleFs(){
+  if(fs||nfs()){                               /* 解除 */
+    if(nfs()){
+      try{ await (document.exitFullscreen||document.webkitExitFullscreen).call(document); }
+      catch(e){}
+    }
+    if(fs) pseudoFs(false);
+    return;
+  }
+  try{                                         /* まずは本物の全画面を試す */
+    if(shell.requestFullscreen) await shell.requestFullscreen({navigationUI:'hide'});
+    else if(shell.webkitRequestFullscreen) shell.webkitRequestFullscreen();
+    else throw new Error('unsupported');
+  }catch(e){ pseudoFs(true); }                 /* 非対応なら疑似全画面に切り替え */
+}
+$('fsb').onclick=toggleFs;
+['fullscreenchange','webkitfullscreenchange'].forEach(ev=>
+  document.addEventListener(ev,()=>{ syncFsLabel(); render(t); }));
 addEventListener('resize',()=>render(t));
 addEventListener('orientationchange',()=>setTimeout(()=>render(t),150));
+if(window.visualViewport) visualViewport.addEventListener('resize',()=>render(t));
 new ResizeObserver(()=>render(t)).observe($('frame'));
+syncFsLabel();
 render(0); requestAnimationFrame(loop);
 if(!matchMedia('(prefers-reduced-motion: reduce)').matches) setTimeout(play,600);
 })();
