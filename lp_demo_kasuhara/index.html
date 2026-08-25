@@ -742,38 +742,59 @@ const FOCUS=[
  [52  , 252, 16, 476,620],   /* AI チャット   */
  [57.5, 268,110, 744,470]    /* 締め          */
 ];
-let fs=false;                                  /* 疑似全画面（iPhone Safari 用の代替） */
-const narrow=()=>innerWidth<=760;
+let fs=false;                                  /* 疑似全画面（Fullscreen API 非対応端末用） */
 const nfs=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
+const vv=()=>({w:(window.visualViewport?visualViewport.width:innerWidth),
+               h:(window.visualViewport?visualViewport.height:innerHeight)});
 
-/* 見えている高さから逆算してフレームの高さを決める（アドレスバー分を差し引く） */
-function sizeFrame(){
-  const f=$('frame');
-  if(!narrow()||fs||nfs()){ f.style.height=''; return; }
-  const vh=(window.visualViewport?visualViewport.height:innerHeight);
+/* ---------- 枠の大きさを、実際に見えている領域から決める ---------- */
+function layout(){
+  const f=$('frame'), v=vv();
+  if(nfs()||fs){                               /* 全画面：画面ぴったり */
+    f.style.width=v.w+'px'; f.style.height=v.h+'px'; return;
+  }
+  f.style.width='';
   const below=$('ctrl').offsetHeight+$('chips').offsetHeight+$('legend').offsetHeight+58;
-  f.style.height=Math.max(240,Math.round(vh-below))+'px';
+  const avail=Math.max(200, Math.round(v.h-below));
+  const w=f.clientWidth;
+  /* 幅の狭い端末では縦の余白を使い切る。広い画面は 16:9 を保つ */
+  f.style.height=(w<760 ? avail : Math.min(Math.round(w*9/16), avail))+'px';
 }
+
+/* ---------- 表示：全体が読める大きさで収まるならそのまま、無理なら要点に寄る ---------- */
+const MINSCALE=.82;                            /* 文字が読める最小倍率 */
+const FITSCALE=.75;                            /* これ以上縮むなら寄せに切り替える */
 function applyView(t){
-  sizeFrame();
+  layout();
   const f=$('frame'), st=$('stage');
   const fw=f.clientWidth, fh=f.clientHeight;
-  if(!narrow()&&!fs){                          /* 広い画面：全体を収める */
-    const s=Math.min(fw/1280, fh/720);
-    st.style.transform='translate('+((fw-1280*s)/2)+'px,'+((fh-720*s)/2)+'px) scale('+s+')';
+  const capH=$('cap').offsetHeight||56;
+  const availH=Math.max(80, fh-capH);
+
+  const sFull=Math.min(fw/1280, fh/720);
+  if(sFull>=FITSCALE){                         /* 全体を表示できる */
+    st.style.transform='translate('+((fw-1280*sFull)/2)+'px,'
+      +((fh-720*sFull)/2)+'px) scale('+sFull+')';
     return;
   }
+
   let i=0;
   for(let k=0;k<FOCUS.length;k++) if(t>=FOCUS[k][0]) i=k;
   const r=FOCUS[i], pv=i>0?FOCUS[i-1]:FOCUS[i];
-  const g=eo(p(t,r[0],r[0]+.35));            /* 切替時になめらかに寄せ替える */
-  const rx=lp(pv[1],r[1],g), ry=lp(pv[2],r[2],g);
+  const g=eo(p(t,r[0],r[0]+.35));              /* シーン切替でなめらかに寄せ替える */
   const rw=lp(pv[3],r[3],g), rh=lp(pv[4],r[4],g);
-  const capH=$('cap').offsetHeight||56;
-  const availH=Math.max(80,fh-capH);         /* 字幕帯に隠れないよう高さを確保 */
-  const s=Math.min(fw/rw, availH/rh);
-  st.style.transform='translate('+((fw-rw*s)/2-rx*s)+'px,'
-    +((availH-rh*s)/2-ry*s)+'px) scale('+s+')';
+  const cx=lp(pv[1],r[1],g)+rw/2, cy=lp(pv[2],r[2],g)+rh/2;
+
+  /* 収めようとして小さくなりすぎる場合は、はみ出しを許して倍率を確保する */
+  let s=Math.min(fw/rw, availH/rh);
+  s=Math.min(1.15, Math.max(s, MINSCALE));
+
+  let tx=fw/2-cx*s, ty=availH/2-cy*s;
+  if(1280*s>=fw)     tx=Math.min(0, Math.max(fw-1280*s, tx));   /* 端に余白を出さない */
+  else               tx=(fw-1280*s)/2;
+  if(720*s>=availH)  ty=Math.min(0, Math.max(availH-720*s, ty));
+  else               ty=(availH-720*s)/2;
+  st.style.transform='translate('+tx+'px,'+ty+'px) scale('+s+')';
 }
 const shell=$('frame').parentElement;
 function pseudoFs(v){                          /* Fullscreen API が使えない端末向け */
