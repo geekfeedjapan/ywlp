@@ -710,18 +710,24 @@ addEventListener('keydown',e=>{
   if(e.code==='Escape'&&fs){setFs(false);}
 });
 /* ---------- pan & scan: 狭い画面では各シーンの要点に寄せて見せる ---------- */
-/* [シーン開始秒, x, y, w, h, 収める] 6番目=1 なら切らずに全体を収める */
+/* [シーン開始秒, x, y, w, h, 収める, 背景色]
+   6番目=1 なら切らずに全体を収める / 7番目は余白に使う色（黒帯を出さないため） */
 const FOCUS=[
- [0   , 170,175, 940,420, 1],  /* タイトル      */
- [4.5 , 190,  0, 480,700, 0],  /* 一覧          */
- [13  , 278,  0, 480,700, 0],  /* 文字起こし    */
- [22  , 190,  0, 480,700, 0],  /* 分析項目定義  */
- [29  , 806,  0, 474,700, 0],  /* alert_tags    */
- [37  , 664,  0, 496,700, 0],  /* Slack 通知    */
- [44.5,  22,  0, 504,700, 0],  /* BI            */
- [52  , 252,  0, 476,700, 0],  /* AI チャット   */
- [57.5, 268,110, 744,470, 1]   /* 締め          */
+ [0   , 170,175, 940,420, 1, '#0F172A'],  /* タイトル      */
+ [4.5 , 190,  0, 480,700, 0, '#ffffff'],  /* 一覧          */
+ [13  , 278,  0, 480,700, 0, '#ffffff'],  /* 文字起こし    */
+ [22  , 190,  0, 480,700, 0, '#ffffff'],  /* 分析項目定義  */
+ [29  , 806,  0, 474,700, 0, '#ffffff'],  /* alert_tags    */
+ [37  , 664,  0, 496,700, 0, '#FAFAFA'],  /* Slack 通知    */
+ [44.5,  22,  0, 504,700, 0, '#F4F7FB'],  /* BI            */
+ [52  , 252,  0, 476,700, 0, '#ffffff'],  /* AI チャット   */
+ [57.5, 268,110, 744,470, 1, '#ffffff']   /* 締め          */
 ];
+function sceneBG(t){                           /* 現在のシーンの背景色 */
+  let i=0;
+  for(let k=0;k<FOCUS.length;k++) if(t>=FOCUS[k][0]) i=k;
+  return FOCUS[i][6];
+}
 let fs=false;                                  /* 疑似全画面（Fullscreen API 非対応端末用） */
 const nfs=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
 const vv=()=>({w:(window.visualViewport?visualViewport.width:innerWidth),
@@ -750,6 +756,8 @@ function applyView(t){
   const fw=f.clientWidth, fh=f.clientHeight;
   const capH=$('cap').offsetHeight||56;
   const availH=Math.max(80, fh-capH);
+
+  f.style.background=sceneBG(t);               /* 余白をシーンの色に溶け込ませる */
 
   const sFull=Math.min(fw/1280, fh/720);
   if(sFull>=FITSCALE){                         /* 全体を表示できる */
