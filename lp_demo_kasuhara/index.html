@@ -742,7 +742,7 @@ function layout(){
 }
 
 /* ---------- 表示：全体が読める大きさで収まるならそのまま、無理なら要点に寄る ---------- */
-const MINSCALE=.82;                            /* 文字が読める最小倍率 */
+const MINSCALE=.78;                            /* 文字が読める最小倍率 */
 const FITSCALE=.75;                            /* これ以上縮むなら寄せに切り替える */
 function applyView(t){
   layout();
@@ -762,18 +762,22 @@ function applyView(t){
   for(let k=0;k<FOCUS.length;k++) if(t>=FOCUS[k][0]) i=k;
   const r=FOCUS[i], pv=i>0?FOCUS[i-1]:FOCUS[i];
   const g=eo(p(t,r[0],r[0]+.35));              /* シーン切替でなめらかに寄せ替える */
+  const rx=lp(pv[1],r[1],g), ry=lp(pv[2],r[2],g);
   const rw=lp(pv[3],r[3],g), rh=lp(pv[4],r[4],g);
-  const cx=lp(pv[1],r[1],g)+rw/2, cy=lp(pv[2],r[2],g)+rh/2;
 
-  /* 収めようとして小さくなりすぎる場合は、はみ出しを許して倍率を確保する */
+  /* 収めようとして小さくなりすぎる場合は、下側を切って倍率を確保する */
   let s=Math.min(fw/rw, availH/rh);
   s=Math.min(1.15, Math.max(s, MINSCALE));
 
-  let tx=fw/2-cx*s, ty=availH/2-cy*s;
-  if(1280*s>=fw)     tx=Math.min(0, Math.max(fw-1280*s, tx));   /* 端に余白を出さない */
-  else               tx=(fw-1280*s)/2;
-  if(720*s>=availH)  ty=Math.min(0, Math.max(availH-720*s, ty));
-  else               ty=(availH-720*s)/2;
+  /* 横：注目領域の中央に合わせ、ステージ外に余白が出ないよう寄せ戻す */
+  let tx=fw/2-(rx+rw/2)*s;
+  if(1280*s>=fw) tx=Math.min(0, Math.max(fw-1280*s, tx));
+  else           tx=(fw-1280*s)/2;
+
+  /* 縦：注目領域の上端を基準に置く。入り切らない分は下端を切る */
+  let ty;
+  if(720*s<=availH) ty=(availH-720*s)/2;       /* 全高が入るなら中央に */
+  else              ty=Math.max(availH-720*s, Math.min(0, -ry*s));
   st.style.transform='translate('+tx+'px,'+ty+'px) scale('+s+')';
 }
 const shell=$('frame').parentElement;
