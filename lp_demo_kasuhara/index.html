@@ -213,9 +213,11 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
   place-items:center;font-size:10.5px;color:var(--mut)}
 
 /* caption */
-.cap{position:absolute;left:0;right:0;bottom:0;height:74px;background:rgba(8,14,26,.92);
-  display:flex;align-items:center;justify-content:center}
-.cap span{color:#fff;font-size:23px;font-weight:700;letter-spacing:.01em}
+.cap{position:absolute;left:0;right:0;bottom:0;z-index:5;
+  height:clamp(48px,8vw,74px);background:rgba(8,14,26,.92);
+  display:flex;align-items:center;justify-content:center;padding:0 12px}
+.cap span{color:#fff;font-weight:700;letter-spacing:.01em;text-align:center;
+  font-size:clamp(15px,4.2vw,23px);line-height:1.3}
 
 /* ---------- fullscreen / rotate mode ---------- */
 .fsb{flex:none;display:flex;align-items:center;gap:6px;background:#1E293B;color:#CBD5E1;
@@ -227,14 +229,13 @@ body.fs{overflow:hidden}
 .shell.fs .ctrl{position:fixed;z-index:60;left:10px;right:10px;bottom:10px;margin:0;
   background:rgba(8,14,26,.86);padding:9px 13px;border-radius:13px;backdrop-filter:blur(8px)}
 .shell.fs .chips,.shell.fs .legend{display:none}
-.hint{position:fixed;z-index:60;left:0;right:0;top:14px;text-align:center;font-size:12px;
-  color:#94A3B8;display:none;pointer-events:none}
+.shell.fs .frame{aspect-ratio:auto}
 
 /* ---------- narrow screens ---------- */
 @media (max-width:760px){
   body{padding:10px 0 18px;justify-content:flex-start}
   .shell{max-width:100%}
-  .frame{border-radius:0}
+  .frame{border-radius:0;aspect-ratio:3/4}
   .ctrl{padding:0 12px;gap:9px;margin-top:11px}
   .pp{width:38px;height:38px;font-size:13px}
   .tc{font-size:11px}
@@ -427,16 +428,16 @@ body.fs{overflow:hidden}
     <div id="e3" class="lgs"><div class="lgi gf"></div></div>
   </div></div>
 
+</div>
   <div class="cap" id="cap" style="opacity:0"><span id="captext"></span></div>
-</div></div>
+</div>
 
 <div class="ctrl">
   <button class="pp" id="pp" aria-label="再生／一時停止">▶</button>
   <input class="scrub" id="scrub" type="range" min="0" max="60" step="0.01" value="0" aria-label="シーク">
   <span class="tc mono" id="tc">00.0 / 60.0</span>
-  <button class="fsb" id="fsb" aria-label="拡大表示">⤢ <span id="fsl">拡大</span></button>
+  <button class="fsb" id="fsb" aria-label="全画面表示">⤢ <span id="fsl">全画面</span></button>
 </div>
-<div class="hint" id="hint">端末を横向きにすると、そのまま大きく表示されます</div>
 <div class="chips" id="chips"></div>
 <div class="legend"><b>Space</b> 再生／停止　<b>←→</b> 0.5秒送り　─　
   録音データ・氏名・電話番号・ファイルパスはすべてダミーです。</div>
@@ -693,6 +694,7 @@ function render(t){
     const nx=MK[i+1]?MK[i+1][1]:61;
     $('ch'+i).classList.toggle('on',t>=m[1]&&t<nx);
   });
+  applyView(t);
 }
 
 /* ---------------- transport ---------------- */
@@ -717,37 +719,49 @@ addEventListener('keydown',e=>{
   if(e.code==='ArrowLeft'){pause();t=Math.max(0,t-.5);render(t);}
   if(e.code==='Escape'&&fs){setFs(false);}
 });
+/* ---------- pan & scan: 狭い画面では各シーンの要点に寄せて見せる ---------- */
+/* [シーン開始秒, x, y, w, h]  ステージ座標(1280x720)上の注目領域 */
+const FOCUS=[
+ [0   , 170,175, 940,420],   /* タイトル      */
+ [4.5 , 190, 88, 480,640],   /* 一覧          */
+ [13  , 278, 96, 480,640],   /* 文字起こし    */
+ [22  , 190, 96, 480,640],   /* 分析項目定義  */
+ [29  , 806,  4, 474,620],   /* alert_tags    */
+ [37  , 664,136, 496,648],   /* Slack 通知    */
+ [44.5,  22, 56, 504,660],   /* BI            */
+ [52  , 252, 16, 476,620],   /* AI チャット   */
+ [57.5, 268,110, 744,470]    /* 締め          */
+];
 let fs=false;
-function fit(){
-  const st=$('stage');
-  if(fs){
-    const vw=innerWidth, vh=innerHeight, port=vh>vw;
-    if(port){                                  /* 縦持ち → 90度回転して画面いっぱいに */
-      const s=Math.min(vw/720, vh/1280);
-      st.style.transform='translate('+((vw-720*s)/2+720*s)+'px,'+((vh-1280*s)/2)+'px)'
-        +' rotate(90deg) scale('+s+')';
-    }else{                                     /* 横持ち → そのままフィット */
-      const s=Math.min(vw/1280, vh/720);
-      st.style.transform='translate('+((vw-1280*s)/2)+'px,'+((vh-720*s)/2)+'px) scale('+s+')';
-    }
-    $('hint').style.display=port?'block':'none';
-  }else{
-    st.style.transform='scale('+($('frame').clientWidth/1280)+')';
-    $('hint').style.display='none';
-  }
+const narrow=()=>innerWidth<=760;
+function applyView(t){
+  const f=$('frame'), st=$('stage');
+  const fw=f.clientWidth, fh=f.clientHeight;
+  if(!narrow()&&!fs){ st.style.transform='scale('+(fw/1280)+')'; return; }
+  let i=0;
+  for(let k=0;k<FOCUS.length;k++) if(t>=FOCUS[k][0]) i=k;
+  const r=FOCUS[i], pv=i>0?FOCUS[i-1]:FOCUS[i];
+  const g=eo(p(t,r[0],r[0]+.35));            /* 切替時になめらかに寄せ替える */
+  const rx=lp(pv[1],r[1],g), ry=lp(pv[2],r[2],g);
+  const rw=lp(pv[3],r[3],g), rh=lp(pv[4],r[4],g);
+  const capH=$('cap').offsetHeight||56;
+  const availH=Math.max(80,fh-capH);         /* 字幕帯に隠れないよう高さを確保 */
+  const s=Math.min(fw/rw, availH/rh);
+  st.style.transform='translate('+((fw-rw*s)/2-rx*s)+'px,'
+    +((availH-rh*s)/2-ry*s)+'px) scale('+s+')';
 }
 function setFs(v){
   fs=v;
   document.body.classList.toggle('fs',v);
   $('frame').parentElement.classList.toggle('fs',v);
-  $('fsl').textContent=v?'閉じる':'拡大';
-  fit();
+  $('fsl').textContent=v?'閉じる':'全画面';
+  render(t);
 }
 $('fsb').onclick=()=>setFs(!fs);
-addEventListener('resize',fit);
-addEventListener('orientationchange',()=>setTimeout(fit,120));
-new ResizeObserver(fit).observe($('frame'));
-fit(); render(0); requestAnimationFrame(loop);
+addEventListener('resize',()=>render(t));
+addEventListener('orientationchange',()=>setTimeout(()=>render(t),150));
+new ResizeObserver(()=>render(t)).observe($('frame'));
+render(0); requestAnimationFrame(loop);
 if(!matchMedia('(prefers-reduced-motion: reduce)').matches) setTimeout(play,600);
 })();
 </script>
