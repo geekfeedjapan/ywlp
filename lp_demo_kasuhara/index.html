@@ -710,17 +710,17 @@ addEventListener('keydown',e=>{
   if(e.code==='Escape'&&fs){setFs(false);}
 });
 /* ---------- pan & scan: 狭い画面では各シーンの要点に寄せて見せる ---------- */
-/* [シーン開始秒, x, y, w, h]  ステージ座標(1280x720)上の注目領域 */
+/* [シーン開始秒, x, y, w, h, 収める] 6番目=1 なら切らずに全体を収める */
 const FOCUS=[
- [0   , 170,175, 940,420],   /* タイトル      */
- [4.5 , 190, 88, 480,640],   /* 一覧          */
- [13  , 278, 96, 480,640],   /* 文字起こし    */
- [22  , 190, 96, 480,640],   /* 分析項目定義  */
- [29  , 806,  4, 474,620],   /* alert_tags    */
- [37  , 664,136, 496,648],   /* Slack 通知    */
- [44.5,  22, 56, 504,660],   /* BI            */
- [52  , 252, 16, 476,620],   /* AI チャット   */
- [57.5, 268,110, 744,470]    /* 締め          */
+ [0   , 170,175, 940,420, 1],  /* タイトル      */
+ [4.5 , 190,  0, 480,700, 0],  /* 一覧          */
+ [13  , 278,  0, 480,700, 0],  /* 文字起こし    */
+ [22  , 190,  0, 480,700, 0],  /* 分析項目定義  */
+ [29  , 806,  0, 474,700, 0],  /* alert_tags    */
+ [37  , 664,  0, 496,700, 0],  /* Slack 通知    */
+ [44.5,  22,  0, 504,700, 0],  /* BI            */
+ [52  , 252,  0, 476,700, 0],  /* AI チャット   */
+ [57.5, 268,110, 744,470, 1]   /* 締め          */
 ];
 let fs=false;                                  /* 疑似全画面（Fullscreen API 非対応端末用） */
 const nfs=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
@@ -765,19 +765,21 @@ function applyView(t){
   const rx=lp(pv[1],r[1],g), ry=lp(pv[2],r[2],g);
   const rw=lp(pv[3],r[3],g), rh=lp(pv[4],r[4],g);
 
-  /* 収めようとして小さくなりすぎる場合は、下側を切って倍率を確保する */
+  const keepAll=r[5]===1;                      /* タイトル・締めは切らずに収める */
   let s=Math.min(fw/rw, availH/rh);
-  s=Math.min(1.15, Math.max(s, MINSCALE));
+  if(!keepAll) s=Math.max(s, MINSCALE);        /* 文字が読めない倍率までは縮めない */
+  s=Math.min(1.15, s);
 
   /* 横：注目領域の中央に合わせ、ステージ外に余白が出ないよう寄せ戻す */
   let tx=fw/2-(rx+rw/2)*s;
   if(1280*s>=fw) tx=Math.min(0, Math.max(fw-1280*s, tx));
   else           tx=(fw-1280*s)/2;
 
-  /* 縦：注目領域の上端を基準に置く。入り切らない分は下端を切る */
+  /* 縦：ステージ上端を画面上端に固定する。切るのは下端だけ */
   let ty;
   if(720*s<=availH) ty=(availH-720*s)/2;       /* 全高が入るなら中央に */
-  else              ty=Math.max(availH-720*s, Math.min(0, -ry*s));
+  else if(keepAll)  ty=(availH-rh*s)/2-ry*s;   /* 収める指定は注目領域を中央に */
+  else              ty=0;                      /* 上は絶対に切らない */
   st.style.transform='translate('+tx+'px,'+ty+'px) scale('+s+')';
 }
 const shell=$('frame').parentElement;
