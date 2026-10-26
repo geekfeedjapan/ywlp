@@ -852,7 +852,7 @@ div.big[aria-hidden="true"]{display:none!important}
   let hideT=null,overCtl=false,dragging=false,lastIcon='';
   function placeSub(){
     const W=vp.clientWidth,H=vp.clientHeight,fh=frame.offsetHeight,fw=frame.offsetWidth,s=fw/1920;
-    const below=false;
+    const below=!document.fullscreenElement&&H>W&&(H-fh)/2>=Math.max(64,40*s*2);
     subEl.style.fontSize=Math.max(13,Math.round(34*s))+'px';subEl.style.maxWidth=(Math.min(fw,W)-24)+'px';subEl.style.whiteSpace=Math.round(34*s)<20?'normal':'nowrap';
     subEl.classList.toggle('below',below);
     if(below){subEl.style.top=((H+fh)/2+10)+'px';subEl.style.bottom='auto';}
