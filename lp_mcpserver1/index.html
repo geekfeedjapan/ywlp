@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-PCCL46WF');</script>
+<!-- End Google Tag Manager -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YouWire MCP Server｜通話録音データをAIの力に変える</title>
@@ -1474,6 +1481,9 @@ a { text-decoration: none; color: inherit; }
 </head>
 
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PCCL46WF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
 <!-- HEADER -->
 <header class="header" id="header">
@@ -2489,6 +2499,10 @@ confirmSend.addEventListener('click', async function() {
     const data = await res.json();
 
     if (data.status === 'mail_sent') {
+      // 問い合わせ完了を記録（www.youwire.jp の完了ページと同じイベント。社内アドレスは除外）
+      const sentEmail = String(formDataCache.get('your-email') || '').toLowerCase();
+      window.dataLayer = window.dataLayer || [];
+      dataLayer.push({ event: 'yw_contact_complete', form_variant: 'lp_mcpserver1', isInternal: sentEmail.indexOf('@geekfeed.co.jp') > -1 });
       // STEP 3: Show Done
       mcpConfirm.style.display = 'none';
       mcpDone.style.display = '';
