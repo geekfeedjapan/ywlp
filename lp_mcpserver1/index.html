@@ -2230,7 +2230,8 @@ a { text-decoration: none; color: inherit; }
         <form class="cta-form-fields" id="mcpContactForm">
           <input type="hidden" name="checkbox-981[]" value="MCP Server">
           <input type="text" name="company-name" class="cta-form-field" placeholder="会社名 *" required>
-          <input type="text" name="your-name" class="cta-form-field" placeholder="お名前 *" required>
+          <input type="text" name="last-name" class="cta-form-field" placeholder="姓 *" required>
+          <input type="text" name="first-name" class="cta-form-field" placeholder="名 *" required>
           <input type="tel" name="your-tel" class="cta-form-field" placeholder="電話番号 *" required>
           <input type="email" name="your-email" class="cta-form-field" placeholder="メールアドレス *" required>
           <input type="email" name="your-email_confirm" class="cta-form-field" placeholder="メールアドレス（確認） *" required>
@@ -2404,9 +2405,11 @@ mcpForm.addEventListener('submit', function(e) {
   }
 
   // Build confirm display
+  const lastName = mcpForm.querySelector('[name="last-name"]').value;
+  const firstName = mcpForm.querySelector('[name="first-name"]').value;
   const vals = {
     '会社名': mcpForm.querySelector('[name="company-name"]').value,
-    'お名前': mcpForm.querySelector('[name="your-name"]').value,
+    'お名前': lastName + ' ' + firstName,
     '電話番号': mcpForm.querySelector('[name="your-tel"]').value,
     'メールアドレス': em,
     'ご要望': Array.from(checked).map(cb => cb.value).join('、'),
@@ -2452,6 +2455,8 @@ mcpForm.addEventListener('submit', function(e) {
   formDataCache.append('_wpcf7cf_steps', '{}');
   formDataCache.append('_wpcf7cf_options', JSON.stringify({"form_id":3051,"conditions":[{"then_field":"group-1","and_rules":[{"if_field":"checkbox-552","operator":"equals","if_value":"資料請求"}]},{"then_field":"group-2","and_rules":[{"if_field":"checkbox-552","operator":"equals","if_value":"お見積り依頼"}]},{"then_field":"group-3","and_rules":[{"if_field":"checkbox-552","operator":"equals","if_value":"トライアル希望"}]},{"then_field":"group-4","and_rules":[{"if_field":"checkbox-552","operator":"equals","if_value":"代理店希望"}]},{"then_field":"group-5","and_rules":[{"if_field":"checkbox-552","operator":"equals","if_value":"詳細説明希望"}]},{"then_field":"group-6","and_rules":[{"if_field":"checkbox-552","operator":"equals","if_value":"その他"}]}],"settings":{"animation":"yes","animation_intime":"200","animation_outtime":"200","conditions_ui":"normal","notice_dismissed":"true"}}));
   formDataCache.append('company-name', vals['会社名']);
+  formDataCache.append('last-name', lastName);
+  formDataCache.append('first-name', firstName);
   formDataCache.append('your-name', vals['お名前']);
   formDataCache.append('your-tel', vals['電話番号']);
   formDataCache.append('your-email', em);
@@ -2465,6 +2470,9 @@ mcpForm.addEventListener('submit', function(e) {
   formDataCache.append('your-message', (msg || '') + '\n\nフォーム表示URL: ' + pageUrl + sep + 'fromlp=lp_mcpserver1');
   formDataCache.append('acceptance-253', '1');
   formDataCache.append('your-current-url', pageUrl + sep + 'fromlp=lp_mcpserver1');
+  // 流入情報（GTMが保存したCookie「yw_src」を通知メールに載せる）
+  const ywSrc = document.cookie.match(/(?:^|; )yw_src=([^;]+)/);
+  formDataCache.append('yw_src', ywSrc ? decodeURIComponent(ywSrc[1]) : '');
 
   // Show confirm, hide form
   mcpForm.style.display = 'none';
